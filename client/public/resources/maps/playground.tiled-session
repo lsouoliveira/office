@@ -1,0 +1,125 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "playground.json",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "file.lastUsedOpenFilter": "Todos os Ficheiros (*)",
+    "fileStates": {
+        "": {
+            "scaleInDock": 1
+        },
+        "Interiors_free_16x16.tsx": {
+            "scaleInDock": 3,
+            "scaleInEditor": 3
+        },
+        "Modern_Office_Black_Shadow.json": {
+            "scaleInDock": 3,
+            "scaleInEditor": 1
+        },
+        "Modern_Office_Black_Shadow.tsj": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "Modern_Office_Black_Shadow.tsx": {
+            "scaleInDock": 4,
+            "scaleInEditor": 1
+        },
+        "Room_Builder_Office_16x16.json": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "Room_Builder_Office_16x16.tsj": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "Room_Builder_Office_16x16.tsx": {
+            "scaleInDock": 2,
+            "scaleInEditor": 4
+        },
+        "collision_tileset.json": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "collision_tileset.tsj": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "collision_tileset.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 11
+        },
+        "playground.json": {
+            "scale": 5.5,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 71.81818181818181,
+                "y": 73.63636363636364
+            }
+        },
+        "playground.json#Interiors_free_16x16": {
+            "scaleInDock": 1
+        },
+        "playground.tmj": {
+            "scale": 7.611874999999999,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 80.0065686838,
+                "y": 80.0065686838
+            }
+        },
+        "playground.tmj#collision_tileset": {
+            "scaleInDock": 1
+        },
+        "playground.tmx": {
+            "scale": 4,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 68.75,
+                "y": 92.5
+            }
+        },
+        "playground.tmx#Interiors_free_16x16": {
+            "scaleInDock": 1
+        },
+        "playground.tmx#collision_tileset": {
+            "scaleInDock": 8
+        }
+    },
+    "last.imagePath": "/home/lucas/Github/middle_earth/client/public/resources/maps",
+    "map.height": 10,
+    "map.lastUsedFormat": "json",
+    "map.tileHeight": 16,
+    "map.tileWidth": 16,
+    "map.width": 10,
+    "openFiles": [
+        "collision_tileset.json",
+        "Modern_Office_Black_Shadow.json",
+        "Room_Builder_Office_16x16.json",
+        "playground.json"
+    ],
+    "project": "playground.tiled-project",
+    "recentFiles": [
+        "collision_tileset.json",
+        "Modern_Office_Black_Shadow.json",
+        "Room_Builder_Office_16x16.json",
+        "playground.json",
+        "Room_Builder_Office_16x16.tsj",
+        "Modern_Office_Black_Shadow.tsj",
+        "collision_tileset.tsj",
+        "playground.tmj",
+        "playground.tmx",
+        "Room_Builder_Office_16x16.tsx",
+        "collision_tileset.tsx",
+        "Interiors_free_16x16.tsx"
+    ],
+    "tileset.lastUsedFormat": "json",
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    }
+}

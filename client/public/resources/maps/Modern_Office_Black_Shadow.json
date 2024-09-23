@@ -1,0 +1,14 @@
+{ "columns":16,
+ "image":"Modern_Office_Black_Shadow.png",
+ "imageheight":848,
+ "imagewidth":256,
+ "margin":0,
+ "name":"Modern_Office_Black_Shadow",
+ "spacing":0,
+ "tilecount":848,
+ "tiledversion":"1.11.0",
+ "tileheight":16,
+ "tilewidth":16,
+ "type":"tileset",
+ "version":"1.10"
+}

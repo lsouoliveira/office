@@ -1,0 +1,2 @@
+web: nodemon dist/main.js
+js: yarn build --watch
