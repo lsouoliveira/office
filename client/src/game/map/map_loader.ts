@@ -1,7 +1,7 @@
 import { Assets, Texture, Rectangle, Sprite } from 'pixi.js'
 import { Level } from './map'
 import { MapLayer } from './map_layer'
-import { Tile, StaticTile } from './tiles/static_tile'
+import { StaticTile } from './tiles/static_tile'
 
 class MapLoader {
     static fromObject(object: any): Level  {

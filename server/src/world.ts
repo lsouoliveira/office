@@ -1,20 +1,8 @@
 import { Server } from 'socket.io'
 import { Player, Direction, PlayerState, PlayerMovement } from './player'
+import fs from 'fs'
 
 const TICK_RATE = 1.0 / 60.0
-
-const GRID = [
- [1074, 1074, 1074, 1074, 1074, 1074, 1074, 1074, 1074, 1074],
- [1074, 1074, 1074, 1074, 1074, 1074, 1074, 1074, 1074, 1074],
- [1074, 0,    0,    0,    0,    0,    0,    0,    0,    1074],
- [1074, 0,    0,    0,    0,    0,    0,    0,    0,    1074],
- [1074, 0,    0,    1074, 1074, 1074, 0,    0,    0,    1074],
- [1074, 0,    0,    1074, 1074, 1074, 0,    0,    0,    1074],
- [1074, 0,    0,    0,    0,    0,    0,    0,    0,    1074],
- [1074, 0,    0,    0,    0,    0,    0,    0,    0,    1074],
- [1074, 0,    0,    0,    0,    0,    0,    0,    0,    1074],
- [1074, 1074, 1074, 1074, 1074, 1074, 1074, 1074, 1074, 1074]
-]
 
 interface GameState {
     players: Map<string, Player>
@@ -31,6 +19,7 @@ class World {
   private io: Server
   private gameState: GameState
   private sessions: Map<string, Session>
+  private collisionMap: number[][]
 
   constructor(io: Server) {
       this.io = io
@@ -42,6 +31,7 @@ class World {
 
   init () {
       this.setupServer()
+      this.loadCollisionMap("../client/public/resources/maps/playground.json")
   }
 
   mainloop() {
@@ -97,6 +87,7 @@ class World {
           socket.broadcast.emit("player:connected", player.playerData)
 
           socket.on("player:move", (data) => { this.handlePlayerMove(socket, data) })
+          socket.on("player:message", (data) => { this.handlePlayerMessage(socket, data) })
           socket.on('disconnect', async () => {
               const matchingSockets = await this.io.in(socket.sessionId).allSockets()
               const isDisconnected = matchingSockets.size === 0
@@ -126,15 +117,16 @@ class World {
       const player = new Player({
           id: crypto.randomUUID(),
           position: {
-              x: 5 * 16,
-              y: 6 * 16
+              x: 1 * 16,
+              y: 3 * 16
           },
           direction: Direction.South,
           state: PlayerState.Idle,
-          speed: 30
+          speed: 30,
+          name: socket.username
       })
 
-      const playerMovement = new PlayerMovement(player, GRID)
+      const playerMovement = new PlayerMovement(player, this.collisionMap)
 
       player.init(playerMovement)
 
@@ -183,6 +175,43 @@ class World {
         Math.floor(x / 16),
         Math.floor(y / 16)
     )
+  }
+
+  private loadCollisionMap(path) {
+      const data = JSON.parse(fs.readFileSync(path, 'utf8'))
+      const collisionLayer = data.layers.find(layer => layer.name === 'collision')
+      const collisionMap = []
+
+      for (let i = 0; i < collisionLayer.height; i++) {
+          const row = []
+
+          for (let j = 0; j < collisionLayer.width; j++) {
+              row.push(collisionLayer.data[i * collisionLayer.width + j] !== 0 ? 1 : 0)
+          }
+
+          collisionMap.push(row)
+      }
+
+      this.collisionMap = collisionMap
+  }
+
+  private handlePlayerMessage(socket, message) {
+      const session = this.sessions[socket.sessionId]
+
+      if (!session) {
+          return
+      }
+
+      const player = this.gameState.players[session.playerId]
+
+      if (!player) {
+          return
+      }
+
+      this.io.emit("player:message", {
+          playerId: player.playerData.id,
+          message: message
+      })
   }
 }
 

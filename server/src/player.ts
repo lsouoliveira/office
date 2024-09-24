@@ -23,7 +23,8 @@ interface PlayerData {
     position: Position 
     direction: Direction
     state: PlayerState
-    speed: number
+    speed: number,
+    name: string
 }
 
 class PathFinding {

@@ -1284,8 +1284,8 @@ var require_node = __commonJS({
           }
           break;
         case "FILE":
-          var fs = require("fs");
-          stream2 = new fs.SyncWriteStream(fd2, { autoClose: false });
+          var fs2 = require("fs");
+          stream2 = new fs2.SyncWriteStream(fd2, { autoClose: false });
           stream2._type = "fs";
           break;
         case "PIPE":
@@ -17280,8 +17280,8 @@ var require_node2 = __commonJS({
           }
           break;
         case "FILE":
-          var fs = require("fs");
-          stream2 = new fs.SyncWriteStream(fd2, { autoClose: false });
+          var fs2 = require("fs");
+          stream2 = new fs2.SyncWriteStream(fd2, { autoClose: false });
           stream2._type = "fs";
           break;
         case "PIPE":
@@ -17999,8 +17999,8 @@ var require_node3 = __commonJS({
           }
           break;
         case "FILE":
-          var fs = require("fs");
-          stream2 = new fs.SyncWriteStream(fd2, { autoClose: false });
+          var fs2 = require("fs");
+          stream2 = new fs2.SyncWriteStream(fd2, { autoClose: false });
           stream2._type = "fs";
           break;
         case "PIPE":
@@ -18883,7 +18883,7 @@ var require_view = __commonJS({
     "use strict";
     var debug = require_src3()("express:view");
     var path = require("path");
-    var fs = require("fs");
+    var fs2 = require("fs");
     var dirname = path.dirname;
     var basename = path.basename;
     var extname = path.extname;
@@ -18949,7 +18949,7 @@ var require_view = __commonJS({
     function tryStat(path2) {
       debug('stat "%s"', path2);
       try {
-        return fs.statSync(path2);
+        return fs2.statSync(path2);
       } catch (e) {
         return void 0;
       }
@@ -19554,8 +19554,8 @@ var require_node4 = __commonJS({
           }
           break;
         case "FILE":
-          var fs = require("fs");
-          stream2 = new fs.SyncWriteStream(fd2, { autoClose: false });
+          var fs2 = require("fs");
+          stream2 = new fs2.SyncWriteStream(fd2, { autoClose: false });
           stream2._type = "fs";
           break;
         case "PIPE":
@@ -19742,7 +19742,7 @@ var require_types = __commonJS({
 var require_mime = __commonJS({
   "node_modules/mime/mime.js"(exports2, module2) {
     var path = require("path");
-    var fs = require("fs");
+    var fs2 = require("fs");
     function Mime() {
       this.types = /* @__PURE__ */ Object.create(null);
       this.extensions = /* @__PURE__ */ Object.create(null);
@@ -19763,7 +19763,7 @@ var require_mime = __commonJS({
     };
     Mime.prototype.load = function(file) {
       this._loading = file;
-      var map = {}, content = fs.readFileSync(file, "ascii"), lines = content.split(/[\r\n]+/);
+      var map = {}, content = fs2.readFileSync(file, "ascii"), lines = content.split(/[\r\n]+/);
       lines.forEach(function(line) {
         var fields = line.replace(/\s*#.*|^\s*|\s*$/g, "").split(/\s+/);
         map[fields.shift()] = fields;
@@ -20001,7 +20001,7 @@ var require_send = __commonJS({
     var escapeHtml = require_escape_html();
     var etag = require_etag();
     var fresh = require_fresh();
-    var fs = require("fs");
+    var fs2 = require("fs");
     var mime = require_mime();
     var ms = require_ms5();
     var onFinished = require_on_finished();
@@ -20334,7 +20334,7 @@ var require_send = __commonJS({
       var i = 0;
       var self = this;
       debug('stat "%s"', path2);
-      fs.stat(path2, function onstat(err, stat) {
+      fs2.stat(path2, function onstat(err, stat) {
         if (err && err.code === "ENOENT" && !extname(path2) && path2[path2.length - 1] !== sep) {
           return next(err);
         }
@@ -20349,7 +20349,7 @@ var require_send = __commonJS({
         }
         var p = path2 + "." + self._extensions[i++];
         debug('stat "%s"', p);
-        fs.stat(p, function(err2, stat) {
+        fs2.stat(p, function(err2, stat) {
           if (err2) return next(err2);
           if (stat.isDirectory()) return next();
           self.emit("file", p, stat);
@@ -20367,7 +20367,7 @@ var require_send = __commonJS({
         }
         var p = join(path2, self._index[i]);
         debug('stat "%s"', p);
-        fs.stat(p, function(err2, stat) {
+        fs2.stat(p, function(err2, stat) {
           if (err2) return next(err2);
           if (stat.isDirectory()) return next();
           self.emit("file", p, stat);
@@ -20379,7 +20379,7 @@ var require_send = __commonJS({
     SendStream.prototype.stream = function stream(path2, options) {
       var self = this;
       var res = this.res;
-      var stream2 = fs.createReadStream(path2, options);
+      var stream2 = fs2.createReadStream(path2, options);
       this.emit("stream", stream2);
       stream2.pipe(res);
       function cleanup() {
@@ -38105,23 +38105,13 @@ var Player = class extends import_events.default {
 };
 
 // src/world.ts
+var import_fs = __toESM(require("fs"));
 var TICK_RATE = 1 / 60;
-var GRID = [
-  [1074, 1074, 1074, 1074, 1074, 1074, 1074, 1074, 1074, 1074],
-  [1074, 1074, 1074, 1074, 1074, 1074, 1074, 1074, 1074, 1074],
-  [1074, 0, 0, 0, 0, 0, 0, 0, 0, 1074],
-  [1074, 0, 0, 0, 0, 0, 0, 0, 0, 1074],
-  [1074, 0, 0, 1074, 1074, 1074, 0, 0, 0, 1074],
-  [1074, 0, 0, 1074, 1074, 1074, 0, 0, 0, 1074],
-  [1074, 0, 0, 0, 0, 0, 0, 0, 0, 1074],
-  [1074, 0, 0, 0, 0, 0, 0, 0, 0, 1074],
-  [1074, 0, 0, 0, 0, 0, 0, 0, 0, 1074],
-  [1074, 1074, 1074, 1074, 1074, 1074, 1074, 1074, 1074, 1074]
-];
 var World = class {
   io;
   gameState;
   sessions;
+  collisionMap;
   constructor(io3) {
     this.io = io3;
     this.gameState = {
@@ -38131,6 +38121,7 @@ var World = class {
   }
   init() {
     this.setupServer();
+    this.loadCollisionMap("../client/public/resources/maps/playground.json");
   }
   mainloop() {
     for (const player of Object.values(this.gameState.players)) {
@@ -38173,6 +38164,9 @@ var World = class {
       socket.on("player:move", (data) => {
         this.handlePlayerMove(socket, data);
       });
+      socket.on("player:message", (data) => {
+        this.handlePlayerMessage(socket, data);
+      });
       socket.on("disconnect", async () => {
         const matchingSockets = await this.io.in(socket.sessionId).allSockets();
         const isDisconnected = matchingSockets.size === 0;
@@ -38195,14 +38189,15 @@ var World = class {
     const player = new Player({
       id: crypto.randomUUID(),
       position: {
-        x: 5 * 16,
-        y: 6 * 16
+        x: 1 * 16,
+        y: 3 * 16
       },
       direction: 1 /* South */,
       state: 0 /* Idle */,
-      speed: 30
+      speed: 30,
+      name: socket.username
     });
-    const playerMovement = new PlayerMovement(player, GRID);
+    const playerMovement = new PlayerMovement(player, this.collisionMap);
     player.init(playerMovement);
     player.on("change", (playerData) => {
       this.io.emit("player:change", playerData);
@@ -38237,11 +38232,44 @@ var World = class {
       Math.floor(y / 16)
     );
   }
+  loadCollisionMap(path) {
+    const data = JSON.parse(import_fs.default.readFileSync(path, "utf8"));
+    const collisionLayer = data.layers.find((layer) => layer.name === "collision");
+    const collisionMap = [];
+    for (let i = 0; i < collisionLayer.height; i++) {
+      const row = [];
+      for (let j = 0; j < collisionLayer.width; j++) {
+        row.push(collisionLayer.data[i * collisionLayer.width + j] !== 0 ? 1 : 0);
+      }
+      collisionMap.push(row);
+    }
+    this.collisionMap = collisionMap;
+  }
+  handlePlayerMessage(socket, message) {
+    const session = this.sessions[socket.sessionId];
+    if (!session) {
+      return;
+    }
+    const player = this.gameState.players[session.playerId];
+    if (!player) {
+      return;
+    }
+    this.io.emit("player:message", {
+      playerId: player.playerData.id,
+      message
+    });
+  }
 };
 
 // src/index.ts
 var app = (0, import_express.default)();
 app.use((0, import_cors.default)());
+app.use((req, res, next) => {
+  if (req.query.token === "123") {
+    return next();
+  }
+  res.status(401).send("Unauthorized");
+});
 app.use(import_express.default.static("../client/public"));
 var httpServer = app.listen(3e3, () => {
   console.log("Listening at port 3000");
