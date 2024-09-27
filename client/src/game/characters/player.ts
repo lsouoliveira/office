@@ -1,3 +1,4 @@
+import * as PIXI from 'pixi.js'
 import { AnimatedSprite, Spritesheet } from 'pixi.js'
 import { Animator } from './../animation/animator'
 import { PlayerMessage } from './../entities/player_message'
@@ -19,11 +20,24 @@ class Player extends AnimatedSprite {
   private animator: Animator
   private lastMessage: PlayerMessage
   private name: string
+  public playerName: PIXI.Text
 
   constructor(id: string, spriteSheet: Spritesheet) {
     super(spriteSheet.animations.idle_south)
 
     this.id = id
+    this.playerName = new PIXI.Text('', {
+      fontFamily: 'Arial',
+      fontSize: 256,
+      fill: 0x00ff00,
+      stroke: 0x000000,
+      strokeThickness: 32
+    })
+    this.playerName.scale.set(8 / 256)
+    this.playerName.anchor.set(0.5, 1)
+    this.playerName.position.set(8, -8)
+
+    this.addChild(this.playerName)
   }
 
   init(animator: Animator) {
@@ -54,6 +68,8 @@ class Player extends AnimatedSprite {
   updateData(data: any) {
     this.position.set(data.position.x, data.position.y)
     this.name = data.name
+
+    this.playerName.text = this.name
 
     if (data.state == State.Moving) {
       switch (data.direction) {
@@ -86,6 +102,10 @@ class Player extends AnimatedSprite {
           break
       }
     }
+  }
+
+  clear() {
+    this.playerName.destroy()
   }
 }
 

@@ -1,22 +1,37 @@
-import { Graphics } from 'pixi.js'
-import { Level } from './map/map'
+import { Container, Graphics } from 'pixi.js'
+import { GameMap } from './map/game_map'
+import { TILE_SIZE } from './map/tile'
 
-class Cursor extends Graphics {
-  private map: Level
-
-  constructor(width: number, height: number, borderColor: number, map: Level) {
+class CursorRenderer extends Graphics {
+  constructor(width: number, height: number) {
     super()
 
-    this.map = map
+    this.rect(0, 0, width, height)
+  }
+}
 
-    this.rect(0, 0, width, height).setStrokeStyle({ color: borderColor, width: 1 }).stroke()
+class Cursor extends Container {
+  private renderer: CursorRenderer
+  private map: GameMap
+  private isHidden: boolean
+
+  constructor(width: number, height: number, map: GameMap) {
+    super()
+
+    this.renderer = new CursorRenderer(width, height)
+    this.map = map
+    this.isHidden = false
+
+    this.addChild(this.renderer)
   }
 
-  update() {}
-
   moveTo(x: number, y: number) {
-    const tileX = Math.floor(x / this.map.tileSize)
-    const tileY = Math.floor(y / this.map.tileSize)
+    if (this.isHidden) {
+      return
+    }
+
+    const tileX = Math.floor(x / TILE_SIZE)
+    const tileY = Math.floor(y / TILE_SIZE)
 
     if (!this.map.contains(tileX, tileY)) {
       this.visible = false
@@ -24,20 +39,42 @@ class Cursor extends Graphics {
       return
     }
 
-    this.visible = true
-    this.position.set(tileX * this.map.tileSize, tileY * this.map.tileSize)
+    const tile = this.map.getTile(tileX, tileY)
 
-    if (this.map.checkCollision(tileX, tileY)) {
-      this.clear()
+    if (tile.isEmpty()) {
+      this.visible = false
+
+      return
+    }
+
+    this.visible = true
+    this.position.set(tileX * TILE_SIZE, tileY * TILE_SIZE)
+
+    if (!tile.isWalkable()) {
+      this.renderer
+        .clear()
         .beginFill(0xff0000, 0.5)
-        .rect(0, 0, this.map.tileSize, this.map.tileSize)
+        .setStrokeStyle({ width: 1, color: 0x000000 })
+        .rect(0, 0, TILE_SIZE, TILE_SIZE)
         .endFill()
     } else {
-      this.clear()
+      this.renderer
+        .clear()
         .beginFill(0x00ff00, 0.5)
-        .rect(0, 0, this.map.tileSize, this.map.tileSize)
+        .setStrokeStyle({ width: 1, color: 0x000000 })
+        .rect(0, 0, TILE_SIZE, TILE_SIZE)
         .endFill()
     }
+  }
+
+  hide() {
+    this.visible = false
+    this.isHidden = true
+  }
+
+  show() {
+    this.visible = true
+    this.isHidden = false
   }
 }
 

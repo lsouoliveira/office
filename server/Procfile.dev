@@ -1,2 +1,2 @@
-web: nodemon dist/main.js
+web: nodemon --ignore map.json dist/main.js
 js: yarn build --watch

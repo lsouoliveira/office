@@ -1,9 +1,10 @@
 import { Text } from 'pixi.js'
 import { Player } from './../characters/player'
+import { type Entity } from './entity'
 
 const DEFAULT_DURATION = 2500
 
-class PlayerMessage extends Text {
+class PlayerMessage extends Text implements Entity {
   private duration: number
   private timer: number
 
@@ -13,7 +14,7 @@ class PlayerMessage extends Text {
       fontFamily: 'Arial',
       fontSize: 256,
       stroke: 0x000000,
-      strokeThickness: 48
+      strokeThickness: 32
     })
 
     this.duration = duration

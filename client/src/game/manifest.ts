@@ -26,6 +26,11 @@ export default {
           data: { scaleMode: 'nearest' }
         },
         {
+          alias: 'collision_tileset.png',
+          src: 'resources/maps/collision_tileset.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
           alias: 'default_spritesheet.json',
           src: 'resources/characters/default_spritesheet.json'
         },

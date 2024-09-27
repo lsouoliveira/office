@@ -18,6 +18,18 @@ class Client {
   sendMessage(message: string) {
     this.socket.emit('player:message', message)
   }
+
+  placeItem(x: number, y: number, itemId: string) {
+    this.socket.emit('player:placeItem', { x, y, itemId })
+  }
+
+  removeItem(x: number, y: number) {
+    this.socket.emit('player:removeItem', { x, y })
+  }
+
+  changeName(name: string) {
+    this.socket.emit('player:changeName', name)
+  }
 }
 
 export { Client }
