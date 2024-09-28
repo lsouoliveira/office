@@ -2,6 +2,7 @@
 import { onMounted, onUnmounted, useTemplateRef, reactive, ref, computed } from 'vue'
 import { Game } from './game/game'
 import { SPRITES } from './game/data/sprites'
+import { OSApplication } from './os/os_application'
 
 const gameRoot = useTemplateRef('gameRoot')
 const chatMessageInput = useTemplateRef('chatMessageInput')
@@ -17,6 +18,9 @@ const user = reactive({
   name: localStorage.getItem('username') || ''
 })
 const showConfigModal = ref(false)
+const showOS = ref(false)
+
+const osRoot = useTemplateRef('osRoot')
 
 onMounted(() => {
   const game = new Game(gameRoot.value)
@@ -25,6 +29,9 @@ onMounted(() => {
   loadSprites().then((sprites) => {
     items.data = sprites
   })
+
+  // const os = new OSApplication(osRoot.value)
+  // os.start()
 
   window.addEventListener('keydown', (e) => {
     switch (e.key) {
@@ -162,13 +169,13 @@ const handleConfig = (e) => {
     </div>
   </div>
 
-  <div ref="gameRoot" id="game-root"></div>
+  <div ref="gameRoot" id="game-root" v-show="!showOS"></div>
   <div class="absolute bottom-0 left-0 w-full">
     <div class="flex items-center justify-center p-4">
       <b-input
         placeholder="Digite alguma coisa..."
         v-model="chatMessage.value"
-        v-show="chatMessage.show"
+        v-if="chatMessage.show"
         @keydown.enter="handleChatMessage"
         class="w-full max-w-xl"
         ref="chatMessageInput"
@@ -178,7 +185,7 @@ const handleConfig = (e) => {
 
   <div
     class="fixed top-0 left-0 h-screen bg-white border-r w-48 p-4 dark:bg-gray-800 dark:border-gray-700 overflow-auto"
-    v-show="items.show"
+    v-if="items.show"
   >
     <div class="flex flex-col items-center space-y-4">
       <div class="text-lg font-bold text-white dark:text-gray-200">Items</div>
@@ -196,6 +203,12 @@ const handleConfig = (e) => {
           </button>
         </div>
       </div>
+    </div>
+  </div>
+
+  <div class="fixed top-0 left-0 w-full h-full" v-if="showOS">
+    <div class="flex items-center justify-center w-full h-full">
+      <div class="aspect-video w-full max-w-[1280px] rounded-lg overflow-hidden" ref="osRoot"></div>
     </div>
   </div>
 </template>
