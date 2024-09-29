@@ -411,6 +411,30 @@ const SPRITES = {
     height: 1,
     states: [138],
     tileset: 'resources/maps/Modern_Office_Black_Shadow.png'
+  },
+  plant1: {
+    y: 0,
+    width: 1,
+    height: 3,
+    states: [118],
+    pivot: { x: 0, y: 2 },
+    tileset: 'resources/maps/Modern_Office_Black_Shadow.png'
+  },
+  plant2: {
+    y: 0,
+    width: 1,
+    height: 2,
+    states: [166],
+    pivot: { x: 0, y: 1 },
+    tileset: 'resources/maps/Modern_Office_Black_Shadow.png'
+  },
+  plant3: {
+    y: 0,
+    width: 1,
+    height: 3,
+    states: [198],
+    pivot: { x: 0, y: 2 },
+    tileset: 'resources/maps/Modern_Office_Black_Shadow.png'
   }
 }
 

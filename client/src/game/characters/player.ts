@@ -114,6 +114,8 @@ class Player extends AnimatedSprite {
     switch (facing) {
       case Direction.North:
         this.animator.play('idle_north')
+        this.position.set(x, y - 8)
+        return
         break
       case Direction.West:
         this.animator.play('sit_west')

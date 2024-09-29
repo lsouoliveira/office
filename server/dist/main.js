@@ -38944,6 +38944,9 @@ var Player = class extends import_events.default {
     this.playerData.position.y = y;
     this.notifyChange();
   }
+  setSpeed(speed) {
+    this.playerData.speed = speed;
+  }
   notifyChange() {
     this.emit("change", this.playerData);
   }
@@ -38972,7 +38975,7 @@ var Tile = class {
     return this.items[this.items.length - 1];
   }
   getTopItemWithAction() {
-    return this.items.reverse().find((item) => item.getActionId() !== void 0);
+    return this.items.toReversed().find((item) => item.getActionId() !== void 0);
   }
   isEmpty() {
     return this.items.length === 0;
@@ -39016,6 +39019,12 @@ var GameMap = class {
   }
   contains(x, y) {
     return x >= 0 && x < this.width && y >= 0 && y < this.height;
+  }
+  getWidth() {
+    return this.width;
+  }
+  getHeight() {
+    return this.height;
   }
   toData() {
     return {
@@ -39435,6 +39444,18 @@ var ITEMS = {
     isGround: false,
     isWalkable: false,
     actionId: "computer"
+  },
+  plant1: {
+    isGround: false,
+    isWalkable: true
+  },
+  plant2: {
+    isGround: false,
+    isWalkable: true
+  },
+  plant3: {
+    isGround: false,
+    isWalkable: true
   }
 };
 var TICK_RATE = 1 / 60;
@@ -39634,6 +39655,10 @@ var World = class {
       this.handleTeleportCommand(socket, parts);
     } else if (command == "tp_player") {
       this.handleTeleportPlayerCommand(socket, parts);
+    } else if (command == "clear_map") {
+      this.handleClearMapCommand(socket);
+    } else if (command == "player_speed") {
+      this.handlePlayerSpeedCommand(socket, parts);
     }
   }
   handleAdminCommand(socket) {
@@ -39679,6 +39704,34 @@ var World = class {
         return;
       }
     }
+  }
+  handleClearMapCommand(socket) {
+    if (!this.isAdmin(socket)) {
+      return;
+    }
+    for (let y = 0; y < this.map.getHeight(); y++) {
+      for (let x = 0; x < this.map.getWidth(); x++) {
+        const tile = this.map.getTile(x, y);
+        while (!tile.isEmpty()) {
+          tile.removeTopItem();
+        }
+      }
+    }
+  }
+  handlePlayerSpeedCommand(socket, parts) {
+    if (!this.isAdmin(socket)) {
+      return;
+    }
+    const session = this.sessions[socket.sessionId];
+    if (!session) {
+      return;
+    }
+    const player = this.players[session.playerId];
+    if (!player) {
+      return;
+    }
+    console.log("[ Server ] Changing player speed to", parts[1]);
+    player.setSpeed(parseInt(parts[1]));
   }
   handlePlaceItem(socket, data) {
     console.log("[ Server ] Placing item at", data.x, data.y);
@@ -39761,6 +39814,9 @@ var World = class {
       return;
     }
     const item = tile.getTopItemWithAction();
+    if (!item) {
+      return;
+    }
     this.handleItemUse(socket, player, tile, item);
   }
   handlePlayerDisconnect(socket, player) {

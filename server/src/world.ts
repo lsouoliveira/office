@@ -240,6 +240,18 @@ const ITEMS = {
     isGround: false,
     isWalkable: false,
     actionId: 'computer'
+  },
+  plant1: {
+    isGround: false,
+    isWalkable: true
+  },
+  plant2: {
+    isGround: false,
+    isWalkable: true
+  },
+  plant3: {
+    isGround: false,
+    isWalkable: true
   }
 }
 
@@ -512,6 +524,10 @@ class World {
       this.handleTeleportCommand(socket, parts)
     } else if (command == 'tp_player') {
       this.handleTeleportPlayerCommand(socket, parts)
+    } else if (command == 'clear_map') {
+      this.handleClearMapCommand(socket)
+    } else if (command == 'player_speed') {
+      this.handlePlayerSpeedCommand(socket, parts)
     }
   }
 
@@ -576,6 +592,44 @@ class World {
         return
       }
     }
+  }
+
+  private handleClearMapCommand(socket) {
+    if (!this.isAdmin(socket)) {
+      return
+    }
+
+    for (let y = 0; y < this.map.getHeight(); y++) {
+      for (let x = 0; x < this.map.getWidth(); x++) {
+        const tile = this.map.getTile(x, y)
+
+        while (!tile.isEmpty()) {
+          tile.removeTopItem()
+        }
+      }
+    }
+  }
+
+  private handlePlayerSpeedCommand(socket, parts) {
+    if (!this.isAdmin(socket)) {
+      return
+    }
+
+    const session = this.sessions[socket.sessionId]
+
+    if (!session) {
+      return
+    }
+
+    const player = this.players[session.playerId]
+
+    if (!player) {
+      return
+    }
+
+    console.log('[ Server ] Changing player speed to', parts[1])
+
+    player.setSpeed(parseInt(parts[1]))
   }
 
   private handlePlaceItem(socket, data) {
@@ -693,6 +747,10 @@ class World {
     }
 
     const item = tile.getTopItemWithAction()
+
+    if (!item) {
+      return
+    }
 
     this.handleItemUse(socket, player, tile, item)
   }

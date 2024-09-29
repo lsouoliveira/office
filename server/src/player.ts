@@ -310,6 +310,10 @@ class Player extends EventEmitter {
     this.notifyChange()
   }
 
+  setSpeed(speed: number) {
+    this.playerData.speed = speed
+  }
+
   notifyChange() {
     this.emit('change', this.playerData)
   }

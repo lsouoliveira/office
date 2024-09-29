@@ -31,6 +31,14 @@ class GameMap {
     return x >= 0 && x < this.width && y >= 0 && y < this.height
   }
 
+  getWidth(): number {
+    return this.width
+  }
+
+  getHeight(): number {
+    return this.height
+  }
+
   toData() {
     return {
       width: this.width,

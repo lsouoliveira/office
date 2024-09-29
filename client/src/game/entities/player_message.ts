@@ -33,7 +33,7 @@ class PlayerMessage extends Text implements Entity {
     const formattedMessage = `${player.name} diz: ${message}`
     const playerMessage = new PlayerMessage(formattedMessage, duration)
 
-    playerMessage.position.set(player.x + 8, player.y - 8)
+    playerMessage.position.set(player.x + 8, player.y - 16)
     playerMessage.anchor.set(0.5, 1)
     playerMessage.scale.set(8 / 256)
 

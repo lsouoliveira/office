@@ -24,17 +24,8 @@ const osApplication = ref(null)
 const osRoot = useTemplateRef('osRoot')
 
 onMounted(() => {
-  // const game = new Game(gameRoot.value)
-  // game.init()
-
-  showOs.value = true
-
-  setTimeout(() => {
-    const os = new OSApplication(osRoot.value)
-    os.start()
-
-    osApplication.value = os
-  }, 0)
+  const game = new Game(gameRoot.value)
+  game.init()
 
   loadSprites().then((sprites) => {
     items.data = sprites
@@ -235,9 +226,9 @@ const handleOsClose = () => {
     </div>
   </div>
 
-  <b-modal v-model="showOs" @close="handleOsClose" width="960">
+  <b-modal v-model="showOs" @close="handleOsClose" width="1280">
     <div
-      class="aspect-video w-full max-w-[960px] mx-auto rounded-lg overflow-hidden"
+      class="aspect-video w-full max-w-[1280px] mx-auto rounded-lg overflow-hidden"
       ref="osRoot"
     ></div>
   </b-modal>
