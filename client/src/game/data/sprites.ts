@@ -375,6 +375,20 @@ const SPRITES = {
     states: [370],
     pivot: { x: 0, y: 2 },
     tileset: 'resources/maps/Modern_Office_Black_Shadow.png'
+  },
+  computer_west_top: {
+    y: 0,
+    width: 1,
+    height: 1,
+    states: [715],
+    tileset: 'resources/maps/Modern_Office_Black_Shadow.png'
+  },
+  computer_west_bottom: {
+    y: 0,
+    width: 1,
+    height: 1,
+    states: [731],
+    tileset: 'resources/maps/Modern_Office_Black_Shadow.png'
   }
 }
 

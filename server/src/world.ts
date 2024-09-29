@@ -3,6 +3,10 @@ import { Player, Direction, PlayerState, PlayerMovement } from './player'
 import { GameMap } from './map/game_map'
 import { Item } from './items/item'
 import { ItemType } from './items/item_type'
+import { MoveTask } from './tasks/move_task'
+import { SitTask } from './tasks/sit_task'
+import { ComputerTask } from './tasks/computer_task'
+
 const fs = require('node:fs')
 
 const MAP_WIDTH = 100
@@ -35,7 +39,8 @@ const ITEMS = {
   },
   office_chair3: {
     isGround: false,
-    isWalkable: false
+    isWalkable: false,
+    actionId: 'sit'
   },
   office_chair4: {
     isGround: false,
@@ -204,6 +209,15 @@ const ITEMS = {
   vending_machine: {
     isGround: false,
     isWalkable: true
+  },
+  computer_west_bottom: {
+    isGround: false,
+    isWalkable: false
+  },
+  computer_west_top: {
+    isGround: false,
+    isWalkable: false,
+    actionId: 'computer'
   }
 }
 
@@ -300,6 +314,9 @@ class World {
       socket.on('player:changeName', (data) => {
         this.handlePlayerChangeName(socket, data)
       })
+      socket.on('player:use', (data) => {
+        this.handleUse(socket, data)
+      })
       socket.on('disconnect', async () => {
         const matchingSockets = await this.io.in(socket.sessionId).allSockets()
         const isDisconnected = matchingSockets.size === 0
@@ -312,6 +329,8 @@ class World {
           }
 
           socket.broadcast.emit('player:disconnected', player.playerData)
+
+          this.handlePlayerDisconnect(socket, player)
         }
       })
     })
@@ -383,8 +402,13 @@ class World {
     }
 
     const { x, y } = data
+    const tileX = Math.floor(x / 16)
+    const tileY = Math.floor(y / 16)
 
-    player.movement.moveTo(Math.floor(x / 16), Math.floor(y / 16))
+    const task = new MoveTask(player, [tileX, tileY])
+
+    player.clearTasks()
+    player.addTask(task)
   }
 
   private loadMap(path) {
@@ -514,6 +538,127 @@ class World {
     player.playerData.name = name
 
     this.io.emit('player:change', player.playerData)
+  }
+
+  private handleUse(socket, data) {
+    console.log('[ Server ] Using item at', data.x, data.y)
+
+    const session = this.sessions[socket.sessionId]
+
+    if (!session) {
+      return
+    }
+
+    const player = this.players[session.playerId]
+
+    if (!player) {
+      return
+    }
+
+    const tileX = Math.floor(data.x / 16)
+    const tileY = Math.floor(data.y / 16)
+
+    if (!this.map.contains(tileX, tileY)) {
+      return
+    }
+
+    const tile = this.map.getTile(tileX, tileY)
+
+    if (tile.isEmpty()) {
+      return
+    }
+
+    const item = tile.getTopItem()
+
+    this.handleItemUse(socket, player, tile, item)
+  }
+
+  private handlePlayerDisconnect(socket, player) {
+    if (player.isOccupyingItem()) {
+      const item = player.getOccupiedItem()
+
+      item.vacate()
+    }
+  }
+
+  handleItemUse(socket, player, tile, item) {
+    console.log('[ Server ] Using item', item.getType().getId())
+    console.log('[ Server ] Item action', item.getActionId())
+
+    if (!item.getActionId()) {
+      return
+    }
+
+    if (item.getActionId() == 'sit') {
+      this.performSitAction(socket, player, tile, item)
+    } else if (item.getActionId() == 'computer') {
+      this.performComputerAction(socket, player, tile)
+    }
+  }
+
+  findAvailableNeighbourTile(player, tile) {
+    const possibleTileNeighbors = [
+      [tile.getX() - 1, tile.getY()],
+      [tile.getX() + 1, tile.getY()],
+      [tile.getX(), tile.getY() - 1],
+      [tile.getX(), tile.getY() + 1],
+      [tile.getX() - 1, tile.getY() - 1],
+      [tile.getX() + 1, tile.getY() - 1],
+      [tile.getX() - 1, tile.getY() + 1],
+      [tile.getX() + 1, tile.getY() + 1]
+    ]
+
+    possibleTileNeighbors.sort((a, b) => {
+      return player.movement.getDistanceTo(a[0], a[1]) - player.movement.getDistanceTo(b[0], b[1])
+    })
+
+    for (const neighbourTile of possibleTileNeighbors) {
+      if (!this.map.contains(neighbourTile[0], neighbourTile[1])) {
+        continue
+      }
+
+      if (player.movement.canReach(neighbourTile[0], neighbourTile[1])) {
+        return neighbourTile
+      }
+    }
+
+    return null
+  }
+
+  private performSitAction(socket, player, tile, item) {
+    player.clearTasks()
+
+    if (!player.movement.isNeighbour(tile.getX(), tile.getY())) {
+      const target = this.findAvailableNeighbourTile(player, tile)
+
+      if (!target) {
+        return
+      }
+
+      const moveTask = new MoveTask(player, [target[0], target[1]])
+      player.addTask(moveTask)
+    }
+
+    const sitTask = new SitTask(player, item, tile, socket)
+    player.addTask(sitTask)
+  }
+
+  private performComputerAction(socket, player, tile) {
+    player.clearTasks()
+
+    if (!player.movement.isNeighbour(tile.getX(), tile.getY())) {
+      const target = this.findAvailableNeighbourTile(player, tile)
+
+      if (!target) {
+        return
+      }
+
+      const moveTask = new MoveTask(player, [target[0], target[1]])
+      player.addTask(moveTask)
+    }
+
+    const computerTask = new ComputerTask(socket)
+    player.addTask(computerTask)
   }
 
   private notifyMapChange() {

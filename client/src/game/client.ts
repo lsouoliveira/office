@@ -30,6 +30,10 @@ class Client {
   changeName(name: string) {
     this.socket.emit('player:changeName', name)
   }
+
+  use(x: number, y: number) {
+    this.socket.emit('player:use', { x, y })
+  }
 }
 
 export { Client }

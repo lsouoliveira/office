@@ -26,8 +26,10 @@ class WindowManager extends EventEmitter {
 
   setupMouseEvents() {
     this.system.getCanvas()?.addEventListener('mousedown', (event) => {
-      const x = event.clientX - this.system.getCanvas()!.getBoundingClientRect().left
-      const y = event.clientY - this.system.getCanvas()!.getBoundingClientRect().top
+      const { x, y } = this.system.getScreenCoordinates(
+        event.clientX - this.system.getCanvas()!.getBoundingClientRect().left,
+        event.clientY - this.system.getCanvas()!.getBoundingClientRect().top
+      )
 
       for (let i = this.windows.length - 1; i >= 0; i--) {
         const offsetX = x - this.windows[i].getX()
@@ -38,7 +40,7 @@ class WindowManager extends EventEmitter {
         if (window.contains(x, y)) {
           if (
             x >= window.getRealX() + window.getRealWidth() - 24 &&
-            x <= window.getRealX() + window.getRealWidth() - 16 &&
+            x <= window.getRealX() + window.getRealWidth() - 8 &&
             y >= window.getRealY() + 8 &&
             y <= window.getRealY() + 24
           ) {
@@ -65,8 +67,10 @@ class WindowManager extends EventEmitter {
     })
 
     this.system.getCanvas()?.addEventListener('mousemove', (event) => {
-      const x = event.clientX - this.system.getCanvas()!.getBoundingClientRect().left
-      const y = event.clientY - this.system.getCanvas()!.getBoundingClientRect().top
+      const { x, y } = this.system.getScreenCoordinates(
+        event.clientX - this.system.getCanvas()!.getBoundingClientRect().left,
+        event.clientY - this.system.getCanvas()!.getBoundingClientRect().top
+      )
 
       if (this.isDragging && this.focusedWindow) {
         this.focusedWindow.setPosition(
@@ -94,8 +98,10 @@ class WindowManager extends EventEmitter {
     this.system.getCanvas()?.addEventListener('mouseup', (event) => {
       this.isDragging = false
 
-      const x = event.clientX - this.system.getCanvas()!.getBoundingClientRect().left
-      const y = event.clientY - this.system.getCanvas()!.getBoundingClientRect().top
+      const { x, y } = this.system.getScreenCoordinates(
+        event.clientX - this.system.getCanvas()!.getBoundingClientRect().left,
+        event.clientY - this.system.getCanvas()!.getBoundingClientRect().top
+      )
 
       if (this.focusedWindow && this.focusedWindow.contains(x, y)) {
         const offsetX = x - this.focusedWindow.getX()
@@ -106,8 +112,10 @@ class WindowManager extends EventEmitter {
     })
 
     this.system.getCanvas()?.addEventListener('dblclick', (event) => {
-      const x = event.clientX - this.system.getCanvas()!.getBoundingClientRect().left
-      const y = event.clientY - this.system.getCanvas()!.getBoundingClientRect().top
+      const { x, y } = this.system.getScreenCoordinates(
+        event.clientX - this.system.getCanvas()!.getBoundingClientRect().left,
+        event.clientY - this.system.getCanvas()!.getBoundingClientRect().top
+      )
 
       if (this.focusedWindow && this.focusedWindow.contains(x, y)) {
         const offsetX = x - this.focusedWindow.getX()

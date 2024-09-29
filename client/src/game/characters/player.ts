@@ -12,7 +12,8 @@ enum Direction {
 
 enum State {
   Idle,
-  Moving
+  Moving,
+  Sitting
 }
 
 class Player extends AnimatedSprite {
@@ -102,6 +103,11 @@ class Player extends AnimatedSprite {
           break
       }
     }
+  }
+
+  sit(x: number, y: number) {
+    this.animator.play('sit_west')
+    this.position.set(x, y)
   }
 
   clear() {

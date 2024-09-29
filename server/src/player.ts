@@ -1,6 +1,8 @@
 import EventEmitter from 'events'
 import { Grid, AStarFinder } from 'pathfinding'
 import { GameMap } from './map'
+import { Task } from './tasks/task'
+import { Item } from './items/item'
 
 interface Position {
   x: number
@@ -16,7 +18,8 @@ enum Direction {
 
 enum PlayerState {
   Idle,
-  Moving
+  Moving,
+  Sitting
 }
 
 interface PlayerData {
@@ -92,6 +95,12 @@ class PlayerMovement {
       return
     }
 
+    if (this.player.isOccupyingItem()) {
+      const item = this.player.getOccupiedItem()
+
+      item.vacate()
+    }
+
     this.player.playerData.state = PlayerState.Moving
 
     const playerPos = [this.gridX(), this.gridY()]
@@ -108,6 +117,10 @@ class PlayerMovement {
     } else {
       this.targetPath = shortestPath
     }
+  }
+
+  getDistanceTo(tileX, tileY) {
+    return Math.abs(this.gridX() - tileX) + Math.abs(this.gridY() - tileY)
   }
 
   moveToPoint(x, y, dt) {
@@ -145,6 +158,10 @@ class PlayerMovement {
     return this.map.getTile(x, y).isWalkable()
   }
 
+  isNeighbour(tileX, tileY) {
+    return Math.abs(this.gridX() - tileX) <= 1 && Math.abs(this.gridY() - tileY) <= 1
+  }
+
   gridWidth() {
     return this.map.width
   }
@@ -159,6 +176,29 @@ class PlayerMovement {
 
   gridY() {
     return Math.floor(this.player.playerData.position.y / 16)
+  }
+
+  isMoving() {
+    return this.player.playerData.state === PlayerState.Moving
+  }
+
+  canReach(tileX: number, tileY: number) {
+    if (!this.validatePosition(tileX, tileY)) {
+      return false
+    }
+
+    const path = new PathFinding(this.createGrid()).findPath(
+      this.gridX(),
+      this.gridY(),
+      tileX,
+      tileY
+    )
+
+    if (path.length === 0) {
+      return false
+    }
+
+    return true
   }
 
   createGrid() {
@@ -179,6 +219,8 @@ class PlayerMovement {
 class Player extends EventEmitter {
   public playerData: PlayerData
   public movement: PlayerMovement
+  private tasks: Task[] = []
+  private occupiedItem: Item
 
   constructor(playerData: PlayerData) {
     super()
@@ -191,7 +233,56 @@ class Player extends EventEmitter {
   }
 
   update(dt: number) {
+    this.performNextTask()
     this.movement.update(dt)
+  }
+
+  performNextTask() {
+    const task = this.nextTask()
+
+    if (task) {
+      task.perform()
+
+      if (task.isDone()) {
+        this.tasks.shift()
+      }
+    }
+  }
+
+  addTask(task: Task) {
+    this.tasks.push(task)
+  }
+
+  clearTasks() {
+    this.tasks = []
+  }
+
+  nextTask() {
+    if (this.tasks.length === 0) {
+      return null
+    }
+
+    return this.tasks[0]
+  }
+
+  sit(item: any) {
+    if (item.isOccupied()) {
+      return false
+    }
+
+    item.occupy(this)
+    this.playerData.state = PlayerState.Sitting
+    this.occupiedItem = item
+
+    return true
+  }
+
+  isOccupyingItem() {
+    return this.occupiedItem !== undefined
+  }
+
+  getOccupiedItem() {
+    return this.occupiedItem
   }
 
   notifyChange() {

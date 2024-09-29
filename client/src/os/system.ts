@@ -17,6 +17,7 @@ class System {
   private surfaceCanvas?: HTMLCanvasElement
   private surfaceContext?: CanvasRenderingContext2D
   private lastFrameTime: number = 0
+  private isRunning: boolean = true
 
   constructor(root: HTMLElement) {
     this.root = root
@@ -51,6 +52,10 @@ class System {
   }
 
   loop(frameTime: number) {
+    if (!this.isRunning) {
+      return
+    }
+
     const dt = (frameTime - this.lastFrameTime) / 1000
     this.lastFrameTime = frameTime
 
@@ -113,6 +118,11 @@ class System {
     this.processManager.launch(process_class)
   }
 
+  teardown() {
+    this.isRunning = false
+    this.input.teardown()
+  }
+
   Windows() {
     return this.windowManager
   }
@@ -127,6 +137,20 @@ class System {
 
   getCanvas() {
     return this.canvas
+  }
+
+  getScreenCoordinates(x: number, y: number) {
+    if (!this.canvas) {
+      throw new Error('Failed to get canvas')
+    }
+
+    const scaleX = this.canvas.width / SYSTEM_RESOLUTION.width
+    const scaleY = this.canvas.height / SYSTEM_RESOLUTION.height
+
+    return {
+      x: x / scaleX,
+      y: y / scaleY
+    }
   }
 }
 

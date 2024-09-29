@@ -593,6 +593,78 @@
                 "w": 16,
                 "h": 32
             }
+        },
+        "sit_west1": {
+            "frame": {
+                "x": 96,
+                "y": 160,
+                "w": 16,
+                "h": 32
+            },
+            "sourceSize": {
+                "w": 16,
+                "h": 32
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 16,
+                "h": 32
+            }
+        },
+        "sit_west2": {
+            "frame": {
+                "x": 112,
+                "y": 160,
+                "w": 16,
+                "h": 32
+            },
+            "sourceSize": {
+                "w": 16,
+                "h": 32
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 16,
+                "h": 32
+            }
+        },
+        "sit_west3": {
+            "frame": {
+                "x": 128,
+                "y": 160,
+                "w": 16,
+                "h": 32
+            },
+            "sourceSize": {
+                "w": 16,
+                "h": 32
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 16,
+                "h": 32
+            }
+        },
+        "sit_west4": {
+            "frame": {
+                "x": 144,
+                "y": 160,
+                "w": 16,
+                "h": 32
+            },
+            "sourceSize": {
+                "w": 16,
+                "h": 32
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 16,
+                "h": 32
+            }
         }
     },
     "meta": {
@@ -652,6 +724,12 @@
             "walk_west2",
             "walk_west3",
             "walk_west4"
+        ],
+        "sit_west": [
+            "sit_west1",
+            "sit_west2",
+            "sit_west3",
+            "sit_west4"
         ]
     }
 }

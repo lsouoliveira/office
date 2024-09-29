@@ -38787,6 +38787,10 @@ var PlayerMovement = class {
     if (!this.validatePosition(tileX, tileY)) {
       return;
     }
+    if (this.player.isOccupyingItem()) {
+      const item = this.player.getOccupiedItem();
+      item.vacate();
+    }
     this.player.playerData.state = 1 /* Moving */;
     const playerPos = [this.gridX(), this.gridY()];
     const shortestPath = new PathFinding(this.createGrid()).findPath(
@@ -38800,6 +38804,9 @@ var PlayerMovement = class {
     } else {
       this.targetPath = shortestPath;
     }
+  }
+  getDistanceTo(tileX, tileY) {
+    return Math.abs(this.gridX() - tileX) + Math.abs(this.gridY() - tileY);
   }
   moveToPoint(x, y, dt) {
     const playerData = this.player.playerData;
@@ -38825,6 +38832,9 @@ var PlayerMovement = class {
     }
     return this.map.getTile(x, y).isWalkable();
   }
+  isNeighbour(tileX, tileY) {
+    return Math.abs(this.gridX() - tileX) <= 1 && Math.abs(this.gridY() - tileY) <= 1;
+  }
   gridWidth() {
     return this.map.width;
   }
@@ -38836,6 +38846,24 @@ var PlayerMovement = class {
   }
   gridY() {
     return Math.floor(this.player.playerData.position.y / 16);
+  }
+  isMoving() {
+    return this.player.playerData.state === 1 /* Moving */;
+  }
+  canReach(tileX, tileY) {
+    if (!this.validatePosition(tileX, tileY)) {
+      return false;
+    }
+    const path = new PathFinding(this.createGrid()).findPath(
+      this.gridX(),
+      this.gridY(),
+      tileX,
+      tileY
+    );
+    if (path.length === 0) {
+      return false;
+    }
+    return true;
   }
   createGrid() {
     const grid = [];
@@ -38851,6 +38879,8 @@ var PlayerMovement = class {
 var Player = class extends import_events.default {
   playerData;
   movement;
+  tasks = [];
+  occupiedItem;
   constructor(playerData) {
     super();
     this.playerData = playerData;
@@ -38859,7 +38889,44 @@ var Player = class extends import_events.default {
     this.movement = playerMovement;
   }
   update(dt) {
+    this.performNextTask();
     this.movement.update(dt);
+  }
+  performNextTask() {
+    const task = this.nextTask();
+    if (task) {
+      task.perform();
+      if (task.isDone()) {
+        this.tasks.shift();
+      }
+    }
+  }
+  addTask(task) {
+    this.tasks.push(task);
+  }
+  clearTasks() {
+    this.tasks = [];
+  }
+  nextTask() {
+    if (this.tasks.length === 0) {
+      return null;
+    }
+    return this.tasks[0];
+  }
+  sit(item) {
+    if (item.isOccupied()) {
+      return false;
+    }
+    item.occupy(this);
+    this.playerData.state = 2 /* Sitting */;
+    this.occupiedItem = item;
+    return true;
+  }
+  isOccupyingItem() {
+    return this.occupiedItem !== void 0;
+  }
+  getOccupiedItem() {
+    return this.occupiedItem;
   }
   notifyChange() {
     this.emit("change", this.playerData);
@@ -38887,6 +38954,9 @@ var Tile = class {
   }
   getTopItem() {
     return this.items[this.items.length - 1];
+  }
+  isEmpty() {
+    return this.items.length === 0;
   }
   removeTopItem() {
     return this.items.pop();
@@ -38942,6 +39012,7 @@ var crypto2 = require("crypto");
 var Item = class {
   id;
   type;
+  occupiedBy;
   constructor(type, id) {
     this.id = id || crypto2.randomUUID();
     this.type = type;
@@ -38951,6 +39022,18 @@ var Item = class {
   }
   isWalkable() {
     return this.type.isWalkable();
+  }
+  isOccupied() {
+    return !!this.occupiedBy;
+  }
+  occupy(player) {
+    this.occupiedBy = player;
+  }
+  vacate() {
+    this.occupiedBy = void 0;
+  }
+  getActionId() {
+    return this.type.getActionId();
   }
   getId() {
     return this.id;
@@ -38971,11 +39054,13 @@ var ItemType = class {
   id;
   _isGround;
   _isWalkable;
+  actionId;
   constructor(id, options) {
-    const { isGround, isWalkable } = options;
+    const { isGround, isWalkable, actionId } = options;
     this.id = id;
     this._isGround = isGround;
     this._isWalkable = isWalkable;
+    this.actionId = actionId;
   }
   getId() {
     return this.id;
@@ -38986,12 +39071,96 @@ var ItemType = class {
   isWalkable() {
     return this._isWalkable;
   }
+  getActionId() {
+    return this.actionId;
+  }
   toData() {
     return {
       id: this.id,
       isGround: this._isGround,
       isWalkable: this._isWalkable
     };
+  }
+};
+
+// src/tasks/task.ts
+var Task = class {
+  done = false;
+  perform() {
+    if (this.isDone()) {
+      return;
+    }
+    this._perform();
+  }
+  _perform() {
+    throw new Error("Not implemented");
+  }
+  isDone() {
+    return this.done;
+  }
+  markAsDone() {
+    this.done = true;
+  }
+};
+
+// src/tasks/move_task.ts
+var MoveTask = class extends Task {
+  player;
+  target;
+  isMoving = false;
+  constructor(player, target) {
+    super();
+    this.player = player;
+    this.target = target;
+  }
+  _perform() {
+    if (!this.isMoving) {
+      this.isMoving = true;
+      this.player.movement.moveTo(this.target[0], this.target[1]);
+    } else if (this.player.movement.gridX() === this.target[0] && this.player.movement.gridY() === this.target[1] && !this.player.movement.isMoving()) {
+      this.markAsDone();
+    }
+  }
+};
+
+// src/tasks/sit_task.ts
+var SitTask = class extends Task {
+  player;
+  item;
+  tile;
+  socket;
+  constructor(player, item, tile, socket) {
+    super();
+    this.player = player;
+    this.item = item;
+    this.tile = tile;
+    this.socket = socket;
+  }
+  _perform() {
+    if (!this.player.movement.isMoving()) {
+      if (!this.player.sit(this.item)) {
+        this.markAsDone();
+        return;
+      }
+      this.socket.emit("player:sit", {
+        playerId: this.player.playerData.id,
+        itemId: this.item.getId(),
+        tile: this.tile.toData()
+      });
+      this.markAsDone();
+    }
+  }
+};
+
+// src/tasks/computer_task.ts
+var ComputerTask = class extends Task {
+  constructor(socket) {
+    super();
+    this.socket = socket;
+  }
+  _perform() {
+    this.socket.emit("computer:open");
+    this.markAsDone();
   }
 };
 
@@ -39024,7 +39193,8 @@ var ITEMS = {
   },
   office_chair3: {
     isGround: false,
-    isWalkable: false
+    isWalkable: false,
+    actionId: "sit"
   },
   office_chair4: {
     isGround: false,
@@ -39193,6 +39363,15 @@ var ITEMS = {
   vending_machine: {
     isGround: false,
     isWalkable: true
+  },
+  computer_west_bottom: {
+    isGround: false,
+    isWalkable: false
+  },
+  computer_west_top: {
+    isGround: false,
+    isWalkable: false,
+    actionId: "computer"
   }
 };
 var TICK_RATE = 1 / 60;
@@ -39263,6 +39442,9 @@ var World = class {
       socket.on("player:changeName", (data) => {
         this.handlePlayerChangeName(socket, data);
       });
+      socket.on("player:use", (data) => {
+        this.handleUse(socket, data);
+      });
       socket.on("disconnect", async () => {
         const matchingSockets = await this.io.in(socket.sessionId).allSockets();
         const isDisconnected = matchingSockets.size === 0;
@@ -39272,6 +39454,7 @@ var World = class {
             session2.connected = false;
           }
           socket.broadcast.emit("player:disconnected", player.playerData);
+          this.handlePlayerDisconnect(socket, player);
         }
       });
     });
@@ -39324,7 +39507,11 @@ var World = class {
       return;
     }
     const { x, y } = data;
-    player.movement.moveTo(Math.floor(x / 16), Math.floor(y / 16));
+    const tileX = Math.floor(x / 16);
+    const tileY = Math.floor(y / 16);
+    const task = new MoveTask(player, [tileX, tileY]);
+    player.clearTasks();
+    player.addTask(task);
   }
   loadMap(path) {
     console.log("[ Server ] Loading map...");
@@ -39417,6 +39604,96 @@ var World = class {
     session.username = name;
     player.playerData.name = name;
     this.io.emit("player:change", player.playerData);
+  }
+  handleUse(socket, data) {
+    console.log("[ Server ] Using item at", data.x, data.y);
+    const session = this.sessions[socket.sessionId];
+    if (!session) {
+      return;
+    }
+    const player = this.players[session.playerId];
+    if (!player) {
+      return;
+    }
+    const tileX = Math.floor(data.x / 16);
+    const tileY = Math.floor(data.y / 16);
+    if (!this.map.contains(tileX, tileY)) {
+      return;
+    }
+    const tile = this.map.getTile(tileX, tileY);
+    if (tile.isEmpty()) {
+      return;
+    }
+    const item = tile.getTopItem();
+    this.handleItemUse(socket, player, tile, item);
+  }
+  handlePlayerDisconnect(socket, player) {
+    if (player.isOccupyingItem()) {
+      const item = player.getOccupiedItem();
+      item.vacate();
+    }
+  }
+  handleItemUse(socket, player, tile, item) {
+    console.log("[ Server ] Using item", item.getType().getId());
+    console.log("[ Server ] Item action", item.getActionId());
+    if (!item.getActionId()) {
+      return;
+    }
+    if (item.getActionId() == "sit") {
+      this.performSitAction(socket, player, tile, item);
+    } else if (item.getActionId() == "computer") {
+      this.performComputerAction(socket, player, tile);
+    }
+  }
+  findAvailableNeighbourTile(player, tile) {
+    const possibleTileNeighbors = [
+      [tile.getX() - 1, tile.getY()],
+      [tile.getX() + 1, tile.getY()],
+      [tile.getX(), tile.getY() - 1],
+      [tile.getX(), tile.getY() + 1],
+      [tile.getX() - 1, tile.getY() - 1],
+      [tile.getX() + 1, tile.getY() - 1],
+      [tile.getX() - 1, tile.getY() + 1],
+      [tile.getX() + 1, tile.getY() + 1]
+    ];
+    possibleTileNeighbors.sort((a, b) => {
+      return player.movement.getDistanceTo(a[0], a[1]) - player.movement.getDistanceTo(b[0], b[1]);
+    });
+    for (const neighbourTile of possibleTileNeighbors) {
+      if (!this.map.contains(neighbourTile[0], neighbourTile[1])) {
+        continue;
+      }
+      if (player.movement.canReach(neighbourTile[0], neighbourTile[1])) {
+        return neighbourTile;
+      }
+    }
+    return null;
+  }
+  performSitAction(socket, player, tile, item) {
+    player.clearTasks();
+    if (!player.movement.isNeighbour(tile.getX(), tile.getY())) {
+      const target = this.findAvailableNeighbourTile(player, tile);
+      if (!target) {
+        return;
+      }
+      const moveTask = new MoveTask(player, [target[0], target[1]]);
+      player.addTask(moveTask);
+    }
+    const sitTask = new SitTask(player, item, tile, socket);
+    player.addTask(sitTask);
+  }
+  performComputerAction(socket, player, tile) {
+    player.clearTasks();
+    if (!player.movement.isNeighbour(tile.getX(), tile.getY())) {
+      const target = this.findAvailableNeighbourTile(player, tile);
+      if (!target) {
+        return;
+      }
+      const moveTask = new MoveTask(player, [target[0], target[1]]);
+      player.addTask(moveTask);
+    }
+    const computerTask = new ComputerTask(socket);
+    player.addTask(computerTask);
   }
   notifyMapChange() {
   }

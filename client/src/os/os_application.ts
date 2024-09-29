@@ -13,6 +13,10 @@ class OSApplication {
     this.system.start()
     this.system.launch(Startup)
   }
+
+  teardown() {
+    this.system.teardown()
+  }
 }
 
 export { OSApplication }

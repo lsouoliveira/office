@@ -18,7 +18,8 @@ const user = reactive({
   name: localStorage.getItem('username') || ''
 })
 const showConfigModal = ref(false)
-const showOS = ref(false)
+const showOs = ref(false)
+const osApplication = ref(null)
 
 const osRoot = useTemplateRef('osRoot')
 
@@ -30,8 +31,16 @@ onMounted(() => {
     items.data = sprites
   })
 
-  // const os = new OSApplication(osRoot.value)
-  // os.start()
+  window.addEventListener('ui:show_os', () => {
+    showOs.value = true
+
+    setTimeout(() => {
+      const os = new OSApplication(osRoot.value)
+      os.start()
+
+      osApplication.value = os
+    }, 0)
+  })
 
   window.addEventListener('keydown', (e) => {
     switch (e.key) {
@@ -132,6 +141,12 @@ const handleConfig = (e) => {
 
   window.dispatchEvent(new CustomEvent('ui:config', { detail: { name } }))
 }
+
+const handleOsClose = () => {
+  if (osApplication.value) {
+    osApplication.value.teardown()
+  }
+}
 </script>
 <template>
   <b-modal
@@ -169,7 +184,8 @@ const handleConfig = (e) => {
     </div>
   </div>
 
-  <div ref="gameRoot" id="game-root" v-show="!showOS"></div>
+  <div ref="gameRoot" id="game-root"></div>
+
   <div class="absolute bottom-0 left-0 w-full">
     <div class="flex items-center justify-center p-4">
       <b-input
@@ -206,11 +222,9 @@ const handleConfig = (e) => {
     </div>
   </div>
 
-  <div class="fixed top-0 left-0 w-full h-full" v-if="showOS">
-    <div class="flex items-center justify-center w-full h-full">
-      <div class="aspect-video w-full max-w-[1280px] rounded-lg overflow-hidden" ref="osRoot"></div>
-    </div>
-  </div>
+  <b-modal v-model="showOs" @close="handleOsClose" width="960" >
+    <div class="aspect-video w-full max-w-[960px] mx-auto rounded-lg overflow-hidden" ref="osRoot"></div>
+  </b-modal>
 </template>
 
 <style scoped>

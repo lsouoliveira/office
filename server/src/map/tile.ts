@@ -29,6 +29,10 @@ class Tile {
     return this.items[this.items.length - 1]
   }
 
+  isEmpty(): boolean {
+    return this.items.length === 0
+  }
+
   removeTopItem(): Item | undefined {
     return this.items.pop()
   }

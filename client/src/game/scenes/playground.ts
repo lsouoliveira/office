@@ -76,7 +76,7 @@ class Playground extends Scene {
 
   connectToServer() {
     const credentials = {
-      username: localStorage.getItem('username') || 'Sem nome',
+      username: (localStorage.getItem('username') || 'Sem nome').substring(0, 32),
       sessionId: localStorage.getItem('sessionId')
     }
 
@@ -87,6 +87,8 @@ class Playground extends Scene {
       this.client.socket.on('player:disconnected', this.handlePlayerDisconnected.bind(this))
       this.client.socket.on('player:change', this.handlePlayerChange.bind(this))
       this.client.socket.on('player:message', this.handlePlayerMessage.bind(this))
+      this.client.socket.on('player:sit', this.handlePlayerSit.bind(this))
+      this.client.socket.on('computer:open', this.handleComputerOpen.bind(this))
       this.client.socket.on('item:added', this.handleItemAdded.bind(this))
       this.client.socket.on('item:removed', this.handleItemRemoved.bind(this))
       this.client.socket.on('gameState', this.handleGameState.bind(this))
@@ -158,7 +160,8 @@ class Playground extends Scene {
       new Animation('walk_north', spritesheet.animations.walk_north, 0.2),
       new Animation('walk_south', spritesheet.animations.walk_south, 0.2),
       new Animation('walk_east', spritesheet.animations.walk_east, 0.2),
-      new Animation('walk_west', spritesheet.animations.walk_west, 0.2)
+      new Animation('walk_west', spritesheet.animations.walk_west, 0.2),
+      new Animation('sit_west', spritesheet.animations.sit_west, 0.025)
     ])
 
     player.init(animator)
@@ -234,19 +237,30 @@ class Playground extends Scene {
     const tileX = Math.floor(x / TILE_SIZE)
     const tileY = Math.floor(y / TILE_SIZE)
 
-    if (!this.isPlacingItem) {
-      this.client.moveTo(x, y)
+    if (!this.map.contains(tileX, tileY)) {
       return
     }
 
+    const tile = this.map.getTile(tileX, tileY)
+
+    if (this.isPlacingItem) {
+      this.handlePlaceItem(tileX, tileY)
+    } else if (tile.isEmpty() || tile.isWalkable()) {
+      this.client.moveTo(x, y)
+    } else if (!tile.isEmpty()) {
+      this.client.use(x, y)
+    }
+  }
+
+  private handlePlaceItem(x: number, y: number) {
     if (!this.spriteCursor.getSpriteId()) {
       return
     }
 
     if (!this.ctrlPressed) {
-      this.client.placeItem(x, y, this.spriteCursor.getSpriteId())
+      this.client.placeItem(x * TILE_SIZE, y * TILE_SIZE, this.spriteCursor.getSpriteId())
     } else {
-      this.client.removeItem(x, y)
+      this.client.removeItem(x * TILE_SIZE, y * TILE_SIZE)
     }
   }
 
@@ -268,7 +282,7 @@ class Playground extends Scene {
   }
 
   private handleSendMessage({ detail: { message } }) {
-    this.client.sendMessage(message)
+    this.client.sendMessage(message.substring(0, 100))
   }
 
   private handleSelectItem({ detail: { id } }) {
@@ -284,7 +298,7 @@ class Playground extends Scene {
   }
 
   private handleConfig({ detail: { name } }) {
-    this.client.changeName(name)
+    this.client.changeName(name.substring(0, 32))
   }
 
   private handleKeyDown(e) {
@@ -306,6 +320,20 @@ class Playground extends Scene {
 
     this.addEntity(chatMessage)
     this.uiLayer.addChild(chatMessage)
+  }
+
+  private handlePlayerSit({ playerId, tile: { x, y } }) {
+    const player = this.players[playerId]
+
+    if (!player) {
+      return
+    }
+
+    player.sit(x * TILE_SIZE, y * TILE_SIZE)
+  }
+
+  private handleComputerOpen() {
+    window.dispatchEvent(new CustomEvent('ui:show_os'))
   }
 
   private handleItemAdded({ x, y, item: { id, itemType } }) {
