@@ -37,6 +37,10 @@ class Item {
     return this.type.getActionId()
   }
 
+  getFacing(): string | undefined {
+    return this.type.getFacing()
+  }
+
   getId(): string {
     return this.id
   }

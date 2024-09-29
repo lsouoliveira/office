@@ -35,16 +35,19 @@ const ITEMS = {
   },
   office_chair2: {
     isGround: false,
-    isWalkable: false
+    isWalkable: false,
+    actionId: 'sit',
+    facing: Direction.East
   },
   office_chair3: {
     isGround: false,
-    isWalkable: false,
-    actionId: 'sit'
+    isWalkable: false
   },
   office_chair4: {
     isGround: false,
-    isWalkable: false
+    isWalkable: false,
+    actionId: 'sit',
+    facing: Direction.West
   },
   pink_wall: {
     isGround: false,
@@ -628,6 +631,12 @@ class World {
   private performSitAction(socket, player, tile, item) {
     player.clearTasks()
 
+    if (player.isOccupyingItem()) {
+      const occupiedItem = player.getOccupiedItem()
+
+      occupiedItem.vacate()
+    }
+
     if (!player.movement.isNeighbour(tile.getX(), tile.getY())) {
       const target = this.findAvailableNeighbourTile(player, tile)
 
@@ -662,7 +671,7 @@ class World {
   }
 
   private notifyMapChange() {
-    // this.persistMap()
+    this.persistMap()
   }
 
   private persistMap() {

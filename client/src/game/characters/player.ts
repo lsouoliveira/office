@@ -105,8 +105,16 @@ class Player extends AnimatedSprite {
     }
   }
 
-  sit(x: number, y: number) {
-    this.animator.play('sit_west')
+  sit(x: number, y: number, facing: Direction) {
+    switch (facing) {
+      case Direction.West:
+        this.animator.play('sit_west')
+        break
+      case Direction.East:
+        this.animator.play('sit_east')
+        break
+    }
+
     this.position.set(x, y)
   }
 

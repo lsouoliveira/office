@@ -222,7 +222,7 @@ const handleOsClose = () => {
     </div>
   </div>
 
-  <b-modal v-model="showOs" @close="handleOsClose" width="960" >
+  <b-modal v-model="showOs" @close="handleOsClose" width="960">
     <div class="aspect-video w-full max-w-[960px] mx-auto rounded-lg overflow-hidden" ref="osRoot"></div>
   </b-modal>
 </template>

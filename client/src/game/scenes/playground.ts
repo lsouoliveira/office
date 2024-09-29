@@ -129,7 +129,9 @@ class Playground extends Scene {
 
           const itemType = new ItemType(itemId, {
             isGround: itemTypeData.isGround,
-            isWalkable: itemTypeData.isWalkable
+            isWalkable: itemTypeData.isWalkable,
+            actionId: itemTypeData.actionId,
+            facing: itemTypeData.facing
           })
           const item = new Item(itemData.id, itemType)
 
@@ -161,7 +163,8 @@ class Playground extends Scene {
       new Animation('walk_south', spritesheet.animations.walk_south, 0.2),
       new Animation('walk_east', spritesheet.animations.walk_east, 0.2),
       new Animation('walk_west', spritesheet.animations.walk_west, 0.2),
-      new Animation('sit_west', spritesheet.animations.sit_west, 0.025)
+      new Animation('sit_west', spritesheet.animations.sit_west, 0.025),
+      new Animation('sit_east', spritesheet.animations.sit_east, 0.025)
     ])
 
     player.init(animator)
@@ -322,14 +325,14 @@ class Playground extends Scene {
     this.uiLayer.addChild(chatMessage)
   }
 
-  private handlePlayerSit({ playerId, tile: { x, y } }) {
+  private handlePlayerSit({ playerId, facing, tile: { x, y } }) {
     const player = this.players[playerId]
 
     if (!player) {
       return
     }
 
-    player.sit(x * TILE_SIZE, y * TILE_SIZE)
+    player.sit(x * TILE_SIZE, y * TILE_SIZE, facing)
   }
 
   private handleComputerOpen() {
@@ -342,7 +345,9 @@ class Playground extends Scene {
       id,
       new ItemType(itemType.id, {
         isGround: itemType.isGround,
-        isWalkable: itemType.isWalkable
+        isWalkable: itemType.isWalkable,
+        actionId: itemType.actionId,
+        facing: itemType.facing
       })
     )
 

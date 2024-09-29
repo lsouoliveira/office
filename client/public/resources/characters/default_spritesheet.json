@@ -594,6 +594,78 @@
                 "h": 32
             }
         },
+        "sit_east1": {
+            "frame": {
+                "x": 0,
+                "y": 160,
+                "w": 16,
+                "h": 32
+            },
+            "sourceSize": {
+                "w": 16,
+                "h": 32
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 16,
+                "h": 32
+            }
+        },
+        "sit_east2": {
+            "frame": {
+                "x": 16,
+                "y": 160,
+                "w": 16,
+                "h": 32
+            },
+            "sourceSize": {
+                "w": 16,
+                "h": 32
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 16,
+                "h": 32
+            }
+        },
+        "sit_east3": {
+            "frame": {
+                "x": 32,
+                "y": 160,
+                "w": 16,
+                "h": 32
+            },
+            "sourceSize": {
+                "w": 16,
+                "h": 32
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 16,
+                "h": 32
+            }
+        },
+        "sit_east4": {
+            "frame": {
+                "x": 48,
+                "y": 160,
+                "w": 16,
+                "h": 32
+            },
+            "sourceSize": {
+                "w": 16,
+                "h": 32
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 16,
+                "h": 32
+            }
+        },
         "sit_west1": {
             "frame": {
                 "x": 96,
@@ -724,6 +796,12 @@
             "walk_west2",
             "walk_west3",
             "walk_west4"
+        ],
+        "sit_east": [
+            "sit_east1",
+            "sit_east2",
+            "sit_east3",
+            "sit_east4"
         ],
         "sit_west": [
             "sit_west1",

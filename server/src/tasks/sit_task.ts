@@ -29,7 +29,8 @@ class SitTask extends Task {
       this.socket.emit('player:sit', {
         playerId: this.player.playerData.id,
         itemId: this.item.getId(),
-        tile: this.tile.toData()
+        tile: this.tile.toData(),
+        facing: this.item.getFacing()
       })
 
       this.markAsDone()

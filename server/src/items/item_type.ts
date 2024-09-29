@@ -2,6 +2,7 @@ interface ItemTypeOptions {
   isGround: boolean
   isWalkable: boolean
   actionId?: string
+  facing?: string
 }
 
 class ItemType {
@@ -9,14 +10,16 @@ class ItemType {
   private _isGround: boolean
   private _isWalkable: boolean
   private actionId?: string
+  private facing?: string
 
   constructor(id: string, options: ItemTypeOptions) {
-    const { isGround, isWalkable, actionId } = options
+    const { isGround, isWalkable, actionId, facing } = options
 
     this.id = id
     this._isGround = isGround
     this._isWalkable = isWalkable
     this.actionId = actionId
+    this.facing = facing
   }
 
   getId(): string {
@@ -35,11 +38,17 @@ class ItemType {
     return this.actionId
   }
 
+  getFacing(): string | undefined {
+    return this.facing
+  }
+
   toData() {
     return {
       id: this.id,
       isGround: this._isGround,
-      isWalkable: this._isWalkable
+      isWalkable: this._isWalkable,
+      actionId: this.actionId,
+      facing: this.facing
     }
   }
 }

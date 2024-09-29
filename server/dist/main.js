@@ -39035,6 +39035,9 @@ var Item = class {
   getActionId() {
     return this.type.getActionId();
   }
+  getFacing() {
+    return this.type.getFacing();
+  }
   getId() {
     return this.id;
   }
@@ -39055,12 +39058,14 @@ var ItemType = class {
   _isGround;
   _isWalkable;
   actionId;
+  facing;
   constructor(id, options) {
-    const { isGround, isWalkable, actionId } = options;
+    const { isGround, isWalkable, actionId, facing } = options;
     this.id = id;
     this._isGround = isGround;
     this._isWalkable = isWalkable;
     this.actionId = actionId;
+    this.facing = facing;
   }
   getId() {
     return this.id;
@@ -39074,11 +39079,16 @@ var ItemType = class {
   getActionId() {
     return this.actionId;
   }
+  getFacing() {
+    return this.facing;
+  }
   toData() {
     return {
       id: this.id,
       isGround: this._isGround,
-      isWalkable: this._isWalkable
+      isWalkable: this._isWalkable,
+      actionId: this.actionId,
+      facing: this.facing
     };
   }
 };
@@ -39145,7 +39155,8 @@ var SitTask = class extends Task {
       this.socket.emit("player:sit", {
         playerId: this.player.playerData.id,
         itemId: this.item.getId(),
-        tile: this.tile.toData()
+        tile: this.tile.toData(),
+        facing: this.item.getFacing()
       });
       this.markAsDone();
     }
@@ -39189,16 +39200,19 @@ var ITEMS = {
   },
   office_chair2: {
     isGround: false,
-    isWalkable: false
+    isWalkable: false,
+    actionId: "sit",
+    facing: 2 /* East */
   },
   office_chair3: {
     isGround: false,
-    isWalkable: false,
-    actionId: "sit"
+    isWalkable: false
   },
   office_chair4: {
     isGround: false,
-    isWalkable: false
+    isWalkable: false,
+    actionId: "sit",
+    facing: 3 /* West */
   },
   pink_wall: {
     isGround: false,
@@ -39671,6 +39685,10 @@ var World = class {
   }
   performSitAction(socket, player, tile, item) {
     player.clearTasks();
+    if (player.isOccupyingItem()) {
+      const occupiedItem = player.getOccupiedItem();
+      occupiedItem.vacate();
+    }
     if (!player.movement.isNeighbour(tile.getX(), tile.getY())) {
       const target = this.findAvailableNeighbourTile(player, tile);
       if (!target) {
@@ -39696,6 +39714,7 @@ var World = class {
     player.addTask(computerTask);
   }
   notifyMapChange() {
+    this.persistMap();
   }
   persistMap() {
     console.log("[ Server ] Persisting map...");
