@@ -80,7 +80,7 @@ class Playground extends Scene {
       sessionId: localStorage.getItem('sessionId')
     }
 
-    this.client = new Client('ws://localhost:3000', credentials)
+    this.client = new Client(GAME_WEB_SERVER, credentials)
     this.client.socket.on('connect', () => {
       this.client.socket.on('session', this.handleSession.bind(this))
       this.client.socket.on('player:connected', this.handlePlayerConnected.bind(this))

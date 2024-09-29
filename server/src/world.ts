@@ -9,6 +9,7 @@ import { ComputerTask } from './tasks/computer_task'
 import { DrinkTask } from './tasks/drink_task'
 
 const fs = require('node:fs')
+const crypto = require('crypto')
 
 const MAP_WIDTH = 100
 const MAP_HEIGHT = 100
