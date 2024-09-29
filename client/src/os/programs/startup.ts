@@ -3,6 +3,7 @@ import { OS } from '../windows/window'
 import { Desktop } from './desktop'
 import { TitleBar } from './title_bar'
 import { TaskBar } from './task_bar'
+import { Notepad } from './notepad'
 
 const PROGRESS_BAR_WIDTH = 400
 const PROGRESS_BAR_HEIGHT = 2.5
@@ -30,14 +31,15 @@ class Startup extends Process {
   }
 
   update(dt: number) {
-    const progressIncrement = Math.random() * 0.025
-    // const progressIncrement = 1
+    // const progressIncrement = Math.random() * 0.025
+    const progressIncrement = 1
     this.progress = Math.min(progressIncrement + this.progress, 1)
 
     if (this.progress >= 1) {
       this.system.Processes().launch(Desktop)
       this.system.Processes().launch(TitleBar)
       this.system.Processes().launch(TaskBar)
+      this.system.Processes().launch(Notepad)
       this.system.Processes().terminate(this.getPid())
     }
   }

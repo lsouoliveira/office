@@ -22,6 +22,7 @@ class WindowManager extends EventEmitter {
 
   setupEvents() {
     this.setupMouseEvents()
+    this.setupKeyboardEvents()
   }
 
   setupMouseEvents() {
@@ -122,6 +123,20 @@ class WindowManager extends EventEmitter {
         const offsetY = y - this.focusedWindow.getY()
 
         this.focusedWindow.onDoubleClick(offsetX, offsetY)
+      }
+    })
+  }
+
+  setupKeyboardEvents() {
+    this.system.getCanvas()?.addEventListener('keydown', (event) => {
+      if (this.focusedWindow) {
+        this.focusedWindow.onKeyDown(event.key)
+      }
+    })
+
+    this.system.getCanvas()?.addEventListener('keyup', (event) => {
+      if (this.focusedWindow) {
+        this.focusedWindow.onKeyUp(event.key)
       }
     })
   }

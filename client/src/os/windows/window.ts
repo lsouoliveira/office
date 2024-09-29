@@ -248,6 +248,14 @@ namespace OS {
     onDoubleClick(x: number, y: number) {
       this.emit('dblclick', x, y)
     }
+
+    onKeyDown(key: string) {
+      this.emit('keydown', key)
+    }
+
+    onKeyUp(key: string) {
+      this.emit('keyup', key)
+    }
   }
 }
 

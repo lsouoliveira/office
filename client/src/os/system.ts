@@ -30,6 +30,7 @@ class System {
     this.canvas = document.createElement('canvas')
     this.canvas.width = this.root.clientWidth
     this.canvas.height = this.root.clientHeight
+    this.canvas.setAttribute('tabindex', '-1')
 
     if (!this.canvas) {
       throw new Error('Failed to create canvas')
