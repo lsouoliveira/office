@@ -29,6 +29,10 @@ class Tile {
     return this.items[this.items.length - 1]
   }
 
+  getTopItemWithAction(): Item | undefined {
+    return this.items.reverse().find((item) => item.getActionId() !== undefined)
+  }
+
   isEmpty(): boolean {
     return this.items.length === 0
   }

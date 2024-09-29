@@ -93,7 +93,12 @@ class Player extends AnimatedSprite {
           this.animator.play('idle_north')
           break
         case Direction.South:
-          this.animator.play('idle_south')
+          if (data.isDrinking) {
+            this.animator.play('drink_south')
+          } else {
+            this.animator.play('idle_south')
+          }
+
           break
         case Direction.East:
           this.animator.play('idle_east')
@@ -107,11 +112,17 @@ class Player extends AnimatedSprite {
 
   sit(x: number, y: number, facing: Direction) {
     switch (facing) {
+      case Direction.North:
+        this.animator.play('idle_north')
+        break
       case Direction.West:
         this.animator.play('sit_west')
         break
       case Direction.East:
         this.animator.play('sit_east')
+        break
+      case Direction.South:
+        this.animator.play('idle_south')
         break
     }
 

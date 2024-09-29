@@ -29,6 +29,8 @@ interface PlayerData {
   state: PlayerState
   speed: number
   name: string
+  isDrinking: boolean
+  isAdmin: boolean
 }
 
 class PathFinding {
@@ -159,7 +161,7 @@ class PlayerMovement {
   }
 
   isNeighbour(tileX, tileY) {
-    return Math.abs(this.gridX() - tileX) <= 1 && Math.abs(this.gridY() - tileY) <= 1
+    return Math.abs(this.gridX() - tileX) <= 1 && Math.abs(this.gridY() + 1 - tileY) <= 1
   }
 
   gridWidth() {
@@ -216,11 +218,14 @@ class PlayerMovement {
   }
 }
 
+const DRINKING_TIME = 30000
+
 class Player extends EventEmitter {
   public playerData: PlayerData
   public movement: PlayerMovement
   private tasks: Task[] = []
   private occupiedItem: Item
+  private drinkingTimeout: NodeJS.Timeout
 
   constructor(playerData: PlayerData) {
     super()
@@ -283,6 +288,26 @@ class Player extends EventEmitter {
 
   getOccupiedItem() {
     return this.occupiedItem
+  }
+
+  drink() {
+    clearTimeout(this.drinkingTimeout)
+
+    this.playerData.isDrinking = true
+
+    this.drinkingTimeout = setTimeout(() => {
+      this.playerData.isDrinking = false
+      this.notifyChange()
+    }, DRINKING_TIME)
+
+    this.notifyChange()
+  }
+
+  teleport(x, y) {
+    this.playerData.position.x = x
+    this.playerData.position.y = y
+
+    this.notifyChange()
   }
 
   notifyChange() {

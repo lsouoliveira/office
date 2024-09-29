@@ -6,6 +6,7 @@ import { ItemType } from './items/item_type'
 import { MoveTask } from './tasks/move_task'
 import { SitTask } from './tasks/sit_task'
 import { ComputerTask } from './tasks/computer_task'
+import { DrinkTask } from './tasks/drink_task'
 
 const fs = require('node:fs')
 
@@ -31,7 +32,9 @@ const ITEMS = {
   },
   office_chair1: {
     isGround: false,
-    isWalkable: false
+    isWalkable: false,
+    actionId: 'sit',
+    facing: Direction.South
   },
   office_chair2: {
     isGround: false,
@@ -41,7 +44,9 @@ const ITEMS = {
   },
   office_chair3: {
     isGround: false,
-    isWalkable: false
+    isWalkable: false,
+    actionId: 'sit',
+    facing: Direction.North
   },
   office_chair4: {
     isGround: false,
@@ -149,7 +154,12 @@ const ITEMS = {
     isGround: false,
     isWalkable: false
   },
-  coffee_machine_left: {
+  coffee_machine_left_top: {
+    isGround: false,
+    isWalkable: false,
+    actionId: 'drink'
+  },
+  coffee_machine_left_bottom: {
     isGround: false,
     isWalkable: true
   },
@@ -218,6 +228,15 @@ const ITEMS = {
     isWalkable: false
   },
   computer_west_top: {
+    isGround: false,
+    isWalkable: false,
+    actionId: 'computer'
+  },
+  laptop_top: {
+    isGround: false,
+    isWalkable: false
+  },
+  laptop_bottom: {
     isGround: false,
     isWalkable: false,
     actionId: 'computer'
@@ -447,6 +466,12 @@ class World {
   }
 
   private handlePlayerMessage(socket, message) {
+    if (message.startsWith('/')) {
+      this.handleCommand(socket, message)
+
+      return
+    }
+
     const session = this.sessions[socket.sessionId]
 
     if (!session) {
@@ -465,8 +490,100 @@ class World {
     })
   }
 
+  private handleCommand(socket, message) {
+    const parts = message.split(' ')
+    const command = parts[0].substring(1)
+
+    if (command === 'admin') {
+      const password = parts[1]
+
+      if (password === process.env.ADMIN_PASSWORD) {
+        this.handleAdminCommand(socket)
+
+        return
+      }
+    }
+
+    if (!this.isAdmin(socket)) {
+      return
+    }
+
+    if (command === 'tp') {
+      this.handleTeleportCommand(socket, parts)
+    } else if (command == 'tp_player') {
+      this.handleTeleportPlayerCommand(socket, parts)
+    }
+  }
+
+  private handleAdminCommand(socket) {
+    const session = this.sessions[socket.sessionId]
+
+    if (!session) {
+      return
+    }
+
+    const player = this.players[session.playerId]
+
+    if (!player) {
+      return
+    }
+
+    player.playerData.isAdmin = true
+  }
+
+  private handleTeleportCommand(socket, parts) {
+    const session = this.sessions[socket.sessionId]
+
+    if (!session) {
+      return
+    }
+
+    const player = this.players[session.playerId]
+
+    if (!player) {
+      return
+    }
+
+    const x = parseInt(parts[1]) * 16
+    const y = parseInt(parts[2]) * 16
+
+    player.teleport(x, y)
+  }
+
+  private handleTeleportPlayerCommand(socket, parts) {
+    const session = this.sessions[socket.sessionId]
+
+    if (!session) {
+      return
+    }
+
+    const player = this.players[session.playerId]
+
+    if (!player) {
+      return
+    }
+
+    let playerName = parts.slice(1, parts.length - 2).join(' ')
+    playerName = playerName.substring(1, playerName.length - 1)
+
+    const x = parseInt(parts[2]) * 16
+    const y = parseInt(parts[3]) * 16
+
+    for (const player of Object.values(this.players)) {
+      if (player.playerData.name === playerName) {
+        player.teleport(x, y)
+
+        return
+      }
+    }
+  }
+
   private handlePlaceItem(socket, data) {
     console.log('[ Server ] Placing item at', data.x, data.y)
+
+    if (!this.isAdmin(socket)) {
+      return
+    }
 
     const tileX = Math.floor(data.x / 16)
     const tileY = Math.floor(data.y / 16)
@@ -498,6 +615,10 @@ class World {
 
   private handleRemoveItem(socket, data) {
     console.log('[ Server ] Removing item at', data.x, data.y)
+
+    if (!this.isAdmin(socket)) {
+      return
+    }
 
     const tileX = Math.floor(data.x / 16)
     const tileY = Math.floor(data.y / 16)
@@ -571,7 +692,7 @@ class World {
       return
     }
 
-    const item = tile.getTopItem()
+    const item = tile.getTopItemWithAction()
 
     this.handleItemUse(socket, player, tile, item)
   }
@@ -596,6 +717,8 @@ class World {
       this.performSitAction(socket, player, tile, item)
     } else if (item.getActionId() == 'computer') {
       this.performComputerAction(socket, player, tile)
+    } else if (item.getActionId() == 'drink') {
+      this.performDrinkAction(socket, player, tile)
     }
   }
 
@@ -670,6 +793,24 @@ class World {
     player.addTask(computerTask)
   }
 
+  private performDrinkAction(socket, player, tile) {
+    player.clearTasks()
+
+    if (!player.movement.isNeighbour(tile.getX(), tile.getY())) {
+      const target = this.findAvailableNeighbourTile(player, tile)
+
+      if (!target) {
+        return
+      }
+
+      const moveTask = new MoveTask(player, [target[0], target[1]])
+      player.addTask(moveTask)
+    }
+
+    const drinkTask = new DrinkTask(player)
+    player.addTask(drinkTask)
+  }
+
   private notifyMapChange() {
     this.persistMap()
   }
@@ -685,6 +826,26 @@ class World {
         console.error(`[ Server ] Error saving map: ${err}`)
       }
     })
+  }
+
+  isAdmin(socket) {
+    if (process.env.ADMIN_PASSWORD === undefined) {
+      return true
+    }
+
+    const session = this.sessions[socket.sessionId]
+
+    if (!session) {
+      return false
+    }
+
+    const player = this.players[session.playerId]
+
+    if (!player) {
+      return false
+    }
+
+    return player.playerData.isAdmin
   }
 }
 

@@ -259,7 +259,15 @@ const SPRITES = {
     pivot: { x: 0, y: 1 },
     tileset: 'resources/maps/Modern_Office_Black_Shadow.png'
   },
-  coffee_machine_left: {
+  coffee_machine_left_top: {
+    y: 0,
+    width: 1,
+    height: 2,
+    states: [618],
+    pivot: { x: 0, y: 1 },
+    tileset: 'resources/maps/Modern_Office_Black_Shadow.png'
+  },
+  coffee_machine_left_bottom: {
     y: 0,
     width: 1,
     height: 3,
@@ -388,6 +396,20 @@ const SPRITES = {
     width: 1,
     height: 1,
     states: [731],
+    tileset: 'resources/maps/Modern_Office_Black_Shadow.png'
+  },
+  laptop_top: {
+    y: 0,
+    width: 1,
+    height: 1,
+    states: [122],
+    tileset: 'resources/maps/Modern_Office_Black_Shadow.png'
+  },
+  laptop_bottom: {
+    y: 0,
+    width: 1,
+    height: 1,
+    states: [138],
     tileset: 'resources/maps/Modern_Office_Black_Shadow.png'
   }
 }

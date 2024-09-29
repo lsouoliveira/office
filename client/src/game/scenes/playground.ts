@@ -164,7 +164,8 @@ class Playground extends Scene {
       new Animation('walk_east', spritesheet.animations.walk_east, 0.2),
       new Animation('walk_west', spritesheet.animations.walk_west, 0.2),
       new Animation('sit_west', spritesheet.animations.sit_west, 0.025),
-      new Animation('sit_east', spritesheet.animations.sit_east, 0.025)
+      new Animation('sit_east', spritesheet.animations.sit_east, 0.025),
+      new Animation('drink_south', spritesheet.animations.drink_south, 0.025)
     ])
 
     player.init(animator)
