@@ -830,7 +830,7 @@ class World {
       player.addTask(moveTask)
     }
 
-    const sitTask = new SitTask(player, item, tile, socket)
+    const sitTask = new SitTask(player, item, tile)
     player.addTask(sitTask)
   }
 

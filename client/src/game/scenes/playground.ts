@@ -89,7 +89,6 @@ class Playground extends Scene {
       this.client.socket.on('player:disconnected', this.handlePlayerDisconnected.bind(this))
       this.client.socket.on('player:change', this.handlePlayerChange.bind(this))
       this.client.socket.on('player:message', this.handlePlayerMessage.bind(this))
-      this.client.socket.on('player:sit', this.handlePlayerSit.bind(this))
       this.client.socket.on('computer:open', this.handleComputerOpen.bind(this))
       this.client.socket.on('item:added', this.handleItemAdded.bind(this))
       this.client.socket.on('item:removed', this.handleItemRemoved.bind(this))
@@ -326,18 +325,6 @@ class Playground extends Scene {
 
     this.addEntity(chatMessage)
     this.uiLayer.addChild(chatMessage)
-  }
-
-  private handlePlayerSit({ playerId, facing, tile: { x, y } }) {
-    const player = this.players[playerId]
-
-    if (!player) {
-      return
-    }
-
-    player.sit(x * TILE_SIZE, y * TILE_SIZE, facing)
-
-    this.reorderEntitiesLayer()
   }
 
   private handleComputerOpen() {

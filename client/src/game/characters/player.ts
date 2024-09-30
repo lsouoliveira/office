@@ -87,6 +87,8 @@ class Player extends AnimatedSprite {
           this.animator.play('walk_west')
           break
       }
+    } else if (data.state == State.Sitting) {
+      this.sit(data.position.x, data.position.y, data.direction)
     } else {
       switch (data.direction) {
         case Direction.North:

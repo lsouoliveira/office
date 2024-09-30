@@ -38915,13 +38915,17 @@ var Player = class extends import_events.default {
     }
     return this.tasks[0];
   }
-  sit(item) {
+  sit(tile, item) {
     if (item.isOccupied()) {
       return false;
     }
     item.occupy(this);
     this.playerData.state = 2 /* Sitting */;
+    this.playerData.direction = item.getFacing();
+    this.playerData.position.x = tile.x * 16;
+    this.playerData.position.y = tile.y * 16;
     this.occupiedItem = item;
+    this.notifyChange();
     return true;
   }
   isOccupyingItem() {
@@ -39166,26 +39170,15 @@ var SitTask = class extends Task {
   player;
   item;
   tile;
-  socket;
-  constructor(player, item, tile, socket) {
+  constructor(player, item, tile) {
     super();
     this.player = player;
     this.item = item;
     this.tile = tile;
-    this.socket = socket;
   }
   _perform() {
     if (!this.player.movement.isMoving()) {
-      if (!this.player.sit(this.item)) {
-        this.markAsDone();
-        return;
-      }
-      this.socket.emit("player:sit", {
-        playerId: this.player.playerData.id,
-        itemId: this.item.getId(),
-        tile: this.tile.toData(),
-        facing: this.item.getFacing()
-      });
+      this.player.sit(this.tile, this.item);
       this.markAsDone();
     }
   }
@@ -39878,7 +39871,7 @@ var World = class {
       const moveTask = new MoveTask(player, [target[0], target[1]]);
       player.addTask(moveTask);
     }
-    const sitTask = new SitTask(player, item, tile, socket);
+    const sitTask = new SitTask(player, item, tile);
     player.addTask(sitTask);
   }
   performComputerAction(socket, player, tile) {

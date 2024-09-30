@@ -5,33 +5,20 @@ import { Tile } from './../tiles/tile'
 
 class SitTask extends Task {
   private player: Player
-  private item: any
-  private tile
-  private socket: any
+  private item: Item
+  private tile: Tile
 
-  constructor(player: Player, item: Item, tile: Tile, socket: any) {
+  constructor(player: Player, item: Item, tile: Tile) {
     super()
 
     this.player = player
     this.item = item
     this.tile = tile
-    this.socket = socket
   }
 
   _perform() {
     if (!this.player.movement.isMoving()) {
-      if (!this.player.sit(this.item)) {
-        this.markAsDone()
-
-        return
-      }
-
-      this.socket.emit('player:sit', {
-        playerId: this.player.playerData.id,
-        itemId: this.item.getId(),
-        tile: this.tile.toData(),
-        facing: this.item.getFacing()
-      })
+      this.player.sit(this.tile, this.item)
 
       this.markAsDone()
     }

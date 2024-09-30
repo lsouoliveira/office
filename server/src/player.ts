@@ -270,14 +270,20 @@ class Player extends EventEmitter {
     return this.tasks[0]
   }
 
-  sit(item: any) {
+  sit(tile: any, item: any) {
     if (item.isOccupied()) {
       return false
     }
 
     item.occupy(this)
+
     this.playerData.state = PlayerState.Sitting
+    this.playerData.direction = item.getFacing()
+    this.playerData.position.x = tile.x * 16
+    this.playerData.position.y = tile.y * 16
     this.occupiedItem = item
+
+    this.notifyChange()
 
     return true
   }
