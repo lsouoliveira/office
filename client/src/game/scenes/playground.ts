@@ -54,6 +54,10 @@ class Playground extends Scene {
   }
 
   update() {
+    for (const entity of this.entities) {
+      entity.updateEntity(this.app.ticker.deltaMS / 1000)
+    }
+
     if (this.player) {
       this.camera.centerAt(
         this.player.position.x + this.player.width / 2,
@@ -62,10 +66,6 @@ class Playground extends Scene {
     }
 
     this.camera.update()
-
-    for (const entity of this.entities) {
-      entity.update(this.app.ticker.deltaMS)
-    }
 
     this.reorderEntitiesLayer()
   }
@@ -89,6 +89,7 @@ class Playground extends Scene {
       this.client.socket.on('player:disconnected', this.handlePlayerDisconnected.bind(this))
       this.client.socket.on('player:change', this.handlePlayerChange.bind(this))
       this.client.socket.on('player:message', this.handlePlayerMessage.bind(this))
+      this.client.socket.on('player:move', this.handlePlayerMove.bind(this))
       this.client.socket.on('computer:open', this.handleComputerOpen.bind(this))
       this.client.socket.on('item:added', this.handleItemAdded.bind(this))
       this.client.socket.on('item:removed', this.handleItemRemoved.bind(this))
@@ -189,6 +190,7 @@ class Playground extends Scene {
     this.players[playerData.id] = this.player
 
     this.entitiesLayer.addChild(this.player)
+    this.addEntity(this.player)
   }
 
   private handlePlayerConnected(playerData: any) {
@@ -227,6 +229,7 @@ class Playground extends Scene {
 
     this.players[playerData.id] = player
     this.entitiesLayer.addChild(player)
+    this.addEntity(player)
   }
 
   private onMouseMove(e) {
@@ -325,6 +328,16 @@ class Playground extends Scene {
 
     this.addEntity(chatMessage)
     this.uiLayer.addChild(chatMessage)
+  }
+
+  private handlePlayerMove({ playerId, x, y, direction }) {
+    const player = this.players[playerId]
+
+    if (!player) {
+      return
+    }
+
+    player.moveTo(x, y, direction)
   }
 
   private handleComputerOpen() {

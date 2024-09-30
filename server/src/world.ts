@@ -11,9 +11,6 @@ import { DrinkTask } from './tasks/drink_task'
 const fs = require('node:fs')
 const crypto = require('crypto')
 
-const MAP_WIDTH = 100
-const MAP_HEIGHT = 100
-
 const ITEMS = {
   invisible_wall: {
     isGround: false,
@@ -398,6 +395,15 @@ class World {
 
     player.on('change', (playerData) => {
       this.io.emit('player:change', playerData)
+    })
+
+    player.on('move', ({ x, y, direction }) => {
+      this.io.emit('player:move', {
+        playerId: player.playerData.id,
+        x,
+        y,
+        direction
+      })
     })
 
     this.players[player.playerData.id] = player

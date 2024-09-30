@@ -2,6 +2,7 @@ import * as PIXI from 'pixi.js'
 import { AnimatedSprite, Spritesheet } from 'pixi.js'
 import { Animator } from './../animation/animator'
 import { PlayerMessage } from './../entities/player_message'
+import { type Entity } from './../entities/entity'
 
 enum Direction {
   North,
@@ -16,12 +17,26 @@ enum State {
   Sitting
 }
 
-class Player extends AnimatedSprite {
+interface Target {
+  x: number
+  y: number
+  direction: Direction
+}
+
+const lerp = (start: number, end: number, t: number) => {
+  return start * (1 - t) + end * t
+}
+
+class Player extends AnimatedSprite implements Entity {
   public readonly id: string
   private animator: Animator
   private lastMessage: PlayerMessage
   private name: string
   public playerName: PIXI.Text
+  private targets: Target[] = []
+  private speed = 1
+  private direction: Direction
+  private isDrinking: boolean
 
   constructor(id: string, spriteSheet: Spritesheet) {
     super(spriteSheet.animations.idle_south)
@@ -66,53 +81,113 @@ class Player extends AnimatedSprite {
     return this.lastMessage
   }
 
-  updateData(data: any) {
-    this.position.set(data.position.x, data.position.y)
-    this.name = data.name
+  updateEntity(dt: number) {
+    this.moveToNextTarget(dt)
+  }
 
-    this.playerName.text = this.name
+  moveToNextTarget(dt: number) {
+    if (this.hasTargets()) {
+      const target = this.targets[0]
 
-    if (data.state == State.Moving) {
-      switch (data.direction) {
-        case Direction.North:
-          this.animator.play('walk_north')
-          break
-        case Direction.South:
-          this.animator.play('walk_south')
-          break
-        case Direction.East:
-          this.animator.play('walk_east')
-          break
-        case Direction.West:
-          this.animator.play('walk_west')
-          break
+      this.direction = target.direction
+
+      if (this.moveToPoint(target.x * 16, target.y * 16, dt)) {
+        this.targets.shift()
+      } else {
+        this.playWalkAnimation()
       }
-    } else if (data.state == State.Sitting) {
-      this.sit(data.position.x, data.position.y, data.direction)
     } else {
-      switch (data.direction) {
-        case Direction.North:
-          this.animator.play('idle_north')
-          break
-        case Direction.South:
-          if (data.isDrinking) {
-            this.animator.play('drink_south')
-          } else {
-            this.animator.play('idle_south')
-          }
+      this.playIdleAnimation()
+    }
+  }
 
-          break
-        case Direction.East:
-          this.animator.play('idle_east')
-          break
-        case Direction.West:
-          this.animator.play('idle_west')
-          break
-      }
+  playWalkAnimation() {
+    switch (this.direction) {
+      case Direction.North:
+        this.animator.play('walk_north')
+        break
+      case Direction.South:
+        this.animator.play('walk_south')
+        break
+      case Direction.East:
+        this.animator.play('walk_east')
+        break
+      case Direction.West:
+        this.animator.play('walk_west')
+        break
+    }
+  }
+
+  playIdleAnimation() {
+    switch (this.direction) {
+      case Direction.North:
+        this.animator.play('idle_north')
+        break
+      case Direction.South:
+        if (this.isDrinking) {
+          this.animator.play('drink_south')
+        } else {
+          this.animator.play('idle_south')
+        }
+
+        break
+      case Direction.East:
+        this.animator.play('idle_east')
+        break
+      case Direction.West:
+        this.animator.play('idle_west')
+        break
+    }
+  }
+
+  moveToPoint(x, y, dt) {
+    const dx = x - this.position.x
+    const dy = y - this.position.y
+
+    const distance = Math.sqrt(dx ** 2 + dy ** 2)
+
+    if (distance === 0) {
+      return true
+    }
+
+    const t = Math.min(1, (this.speed * dt) / distance)
+
+    this.position.x = lerp(this.position.x, x, t)
+    this.position.y = lerp(this.position.y, y, t)
+
+    if (distance < 1) {
+      this.position.x = x
+      this.position.y = y
+
+      return true
+    }
+
+    return false
+  }
+
+  updateData(data: any) {
+    if (!this.hasTargets() || !this.canReach(data.position)) {
+      this.clearTargets()
+      this.position.set(data.position.x, data.position.y)
+    }
+
+    this.direction = data.direction
+    this.speed = data.speed
+    this.isDrinking = data.isDrinking
+
+    this.setName(data.name)
+
+    if (data.state == State.Sitting) {
+      this.clearTargets()
+      this.sit(data.position.x, data.position.y, data.direction)
+    } else if (!this.hasTargets()) {
+      this.playIdleAnimation()
     }
   }
 
   sit(x: number, y: number, facing: Direction) {
+    this.clearTargets()
+
     switch (facing) {
       case Direction.North:
         this.animator.play('idle_north')
@@ -131,6 +206,42 @@ class Player extends AnimatedSprite {
     }
 
     this.position.set(x, y)
+  }
+
+  moveTo(x: number, y: number, direction: Direction) {
+    this.targets.push({ x, y, direction })
+  }
+
+  setName(name: string) {
+    this.name = name
+    this.playerName.text = name
+  }
+
+  hasTargets() {
+    return this.targets.length > 0
+  }
+
+  canReach(position: { x: number; y: number }) {
+    const tileX = Math.floor(position.x / 16)
+    const tileY = Math.floor(position.y / 16)
+
+    if (this.getTileX() == tileX && this.getTileY() == tileY) {
+      return true
+    }
+
+    return this.targets.some((target) => target.x == tileX && target.y == tileY)
+  }
+
+  getTileX() {
+    return Math.floor(this.position.x / 16)
+  }
+
+  getTileY() {
+    return Math.floor(this.position.y / 16)
+  }
+
+  clearTargets() {
+    this.targets = []
   }
 
   clear() {

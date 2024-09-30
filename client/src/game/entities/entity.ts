@@ -1,5 +1,5 @@
 interface Entity {
-  update(dt: number): void
+  updateEntity(dt: number): void
 }
 
 export { Entity }

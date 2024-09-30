@@ -12,6 +12,7 @@ class DrinkTask extends Task {
 
   _perform() {
     this.player.drink()
+    this.markAsDone()
   }
 }
 

@@ -2,7 +2,7 @@ import { Text } from 'pixi.js'
 import { Player } from './../characters/player'
 import { type Entity } from './entity'
 
-const DEFAULT_DURATION = 2500
+const DEFAULT_DURATION = 2.5
 
 class PlayerMessage extends Text implements Entity {
   private duration: number
@@ -21,7 +21,7 @@ class PlayerMessage extends Text implements Entity {
     this.timer = 0
   }
 
-  update(dt: number) {
+  updateEntity(dt: number) {
     this.timer += dt
 
     if (this.timer >= this.duration) {

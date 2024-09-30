@@ -84,11 +84,11 @@ class PlayerMovement {
         }
 
         if (this.moveToPoint(targetPos[0], targetPos[1], dt)) {
+          this.player.emit('move', { x: target[0], y: target[1], direction: player.direction })
+
           this.targetPath.shift()
         }
       }
-
-      this.player.notifyChange()
     }
   }
 
@@ -318,6 +318,7 @@ class Player extends EventEmitter {
 
   setSpeed(speed: number) {
     this.playerData.speed = speed
+    this.notifyChange()
   }
 
   notifyChange() {

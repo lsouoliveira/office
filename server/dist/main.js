@@ -38777,10 +38777,10 @@ var PlayerMovement = class {
           player.direction = 0 /* North */;
         }
         if (this.moveToPoint(targetPos[0], targetPos[1], dt)) {
+          this.player.emit("move", { x: target[0], y: target[1], direction: player.direction });
           this.targetPath.shift();
         }
       }
-      this.player.notifyChange();
     }
   }
   moveTo(tileX, tileY) {
@@ -38950,6 +38950,7 @@ var Player = class extends import_events.default {
   }
   setSpeed(speed) {
     this.playerData.speed = speed;
+    this.notifyChange();
   }
   notifyChange() {
     this.emit("change", this.playerData);
@@ -39205,6 +39206,7 @@ var DrinkTask = class extends Task {
   }
   _perform() {
     this.player.drink();
+    this.markAsDone();
   }
 };
 
@@ -39558,6 +39560,14 @@ var World = class {
     player.init(playerMovement);
     player.on("change", (playerData) => {
       this.io.emit("player:change", playerData);
+    });
+    player.on("move", ({ x, y, direction }) => {
+      this.io.emit("player:move", {
+        playerId: player.playerData.id,
+        x,
+        y,
+        direction
+      });
     });
     this.players[player.playerData.id] = player;
     this.sessions[socket.sessionId] = {
