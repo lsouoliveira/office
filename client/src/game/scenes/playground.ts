@@ -35,6 +35,8 @@ class Playground extends Scene {
   async onStart() {
     // const stats = new Stats(this.app.renderer)
 
+    this.entitiesLayer.sortableChildren = true
+
     this.playerSpritesheet = new Spritesheet(
       Assets.get('Bob_16x16.png'),
       Assets.get('default_spritesheet.json').data
@@ -52,8 +54,6 @@ class Playground extends Scene {
   }
 
   update() {
-    this.reorderEntitiesLayer()
-
     if (this.player) {
       this.camera.centerAt(
         this.player.position.x + this.player.width / 2,
@@ -66,6 +66,8 @@ class Playground extends Scene {
     for (const entity of this.entities) {
       entity.update(this.app.ticker.deltaMS)
     }
+
+    this.reorderEntitiesLayer()
   }
 
   setupMapBuilder() {
@@ -80,7 +82,7 @@ class Playground extends Scene {
       sessionId: localStorage.getItem('sessionId')
     }
 
-    this.client = new Client(GAME_WEB_SERVER, credentials)
+    this.client = new Client('ws://localhost:3000', credentials)
     this.client.socket.on('connect', () => {
       this.client.socket.on('session', this.handleSession.bind(this))
       this.client.socket.on('player:connected', this.handlePlayerConnected.bind(this))
@@ -334,6 +336,8 @@ class Playground extends Scene {
     }
 
     player.sit(x * TILE_SIZE, y * TILE_SIZE, facing)
+
+    this.reorderEntitiesLayer()
   }
 
   private handleComputerOpen() {
@@ -376,12 +380,16 @@ class Playground extends Scene {
     nonGroundChildren.sort((a, b) => {
       const diff = a.y - a.height * a.anchor.y - (b.y - b.height * b.anchor.y)
 
-      if (diff === 0) {
-        if (a.isPlayer) {
+      if (diff == 0) {
+        if (a.isPlayer && !b.isPlayer) {
           return 1
         }
 
-        return 0
+        if (!a.isPlayer && b.isPlayer) {
+          return -1
+        }
+
+        return diff
       }
 
       return diff
@@ -392,8 +400,6 @@ class Playground extends Scene {
     for (const child of nonGroundChildren) {
       child.zIndex = zIndex++
     }
-
-    this.entitiesLayer.sortChildren()
   }
 }
 

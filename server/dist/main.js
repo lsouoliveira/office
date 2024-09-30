@@ -39036,13 +39036,13 @@ var GameMap = class {
 };
 
 // src/items/item.ts
-var crypto2 = require("crypto");
+var crypto = require("crypto");
 var Item = class {
   id;
   type;
   occupiedBy;
   constructor(type, id) {
-    this.id = id || crypto2.randomUUID();
+    this.id = id || crypto.randomUUID();
     this.type = type;
   }
   isGround() {
@@ -39217,6 +39217,7 @@ var DrinkTask = class extends Task {
 
 // src/world.ts
 var fs = require("node:fs");
+var crypto2 = require("crypto");
 var ITEMS = {
   invisible_wall: {
     isGround: false,
@@ -39497,7 +39498,7 @@ var World = class {
       if (!username) {
         next(new Error("No username"));
       }
-      socket.sessionId = crypto.randomUUID();
+      socket.sessionId = crypto2.randomUUID();
       socket.username = username;
       next();
     });
@@ -39550,7 +39551,7 @@ var World = class {
       return session;
     }
     const player = new Player({
-      id: crypto.randomUUID(),
+      id: crypto2.randomUUID(),
       position: {
         x: 3 * 16,
         y: 3 * 16
