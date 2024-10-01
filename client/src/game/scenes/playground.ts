@@ -14,6 +14,7 @@ import { SPRITES } from './../data/sprites'
 import { Cursor } from './../cursor'
 import { SpriteCursor } from './../sprite_cursor'
 import { Stats } from 'pixi-stats'
+import { Chat } from './../entities/chat'
 
 const TILE_SIZE = 16
 
@@ -31,6 +32,7 @@ class Playground extends Scene {
   private spriteCursor: SpriteCursor
   private isPlacingItem: boolean = false
   private ctrlPressed: boolean = false
+  private chat: Chat
 
   async onStart() {
     // const stats = new Stats(this.app.renderer)
@@ -110,6 +112,12 @@ class Playground extends Scene {
     window.addEventListener('ui:config', this.handleConfig.bind(this))
     window.addEventListener('keydown', this.handleKeyDown.bind(this))
     window.addEventListener('keyup', this.handleKeyUp.bind(this))
+
+    this.chat = new Chat({ maxMessages: 15 })
+    this.chat.position.set(8, 8)
+
+    this.app.stage.addChild(this.chat)
+    this.addEntity(this.chat)
   }
 
   setupMap(mapData) {
@@ -328,6 +336,8 @@ class Playground extends Scene {
 
     this.addEntity(chatMessage)
     this.uiLayer.addChild(chatMessage)
+
+    this.chat.addMessage(player.name, message)
   }
 
   private handlePlayerMove({ playerId, x, y, direction }) {
