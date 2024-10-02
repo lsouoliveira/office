@@ -38943,6 +38943,10 @@ var Player = class extends import_events.default {
     }, DRINKING_TIME);
     this.notifyChange();
   }
+  setSkin(skin) {
+    this.playerData.skin = skin;
+    this.notifyChange();
+  }
   teleport(x, y) {
     this.playerData.position.x = x;
     this.playerData.position.y = y;
@@ -39213,6 +39217,7 @@ var DrinkTask = class extends Task {
 // src/world.ts
 var fs = require("node:fs");
 var crypto2 = require("crypto");
+var DEFAULT_SKIN = "Bob";
 var ITEMS = {
   invisible_wall: {
     isGround: false,
@@ -39522,6 +39527,9 @@ var World = class {
       socket.on("player:changeName", (data) => {
         this.handlePlayerChangeName(socket, data);
       });
+      socket.on("player:changeSkin", (data) => {
+        this.handlePlayerChangeSkin(socket, data);
+      });
       socket.on("player:use", (data) => {
         this.handleUse(socket, data);
       });
@@ -39554,7 +39562,8 @@ var World = class {
       direction: 1 /* South */,
       state: 0 /* Idle */,
       speed: 50,
-      name: socket.username
+      name: socket.username,
+      skin: DEFAULT_SKIN
     });
     const playerMovement = new PlayerMovement(player, this.map);
     player.init(playerMovement);
@@ -39797,6 +39806,18 @@ var World = class {
     session.username = name;
     player.playerData.name = name;
     this.io.emit("player:change", player.playerData);
+  }
+  handlePlayerChangeSkin(socket, skin) {
+    console.log("[ Server ] Changing player skin to", skin);
+    const session = this.sessions[socket.sessionId];
+    if (!session) {
+      return;
+    }
+    const player = this.players[session.playerId];
+    if (!player) {
+      return;
+    }
+    player.setSkin(skin);
   }
   handleUse(socket, data) {
     console.log("[ Server ] Using item at", data.x, data.y);

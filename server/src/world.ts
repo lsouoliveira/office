@@ -10,6 +10,7 @@ import { DrinkTask } from './tasks/drink_task'
 
 const fs = require('node:fs')
 const crypto = require('crypto')
+const DEFAULT_SKIN = 'Bob'
 
 const ITEMS = {
   invisible_wall: {
@@ -346,6 +347,9 @@ class World {
       socket.on('player:changeName', (data) => {
         this.handlePlayerChangeName(socket, data)
       })
+      socket.on('player:changeSkin', (data) => {
+        this.handlePlayerChangeSkin(socket, data)
+      })
       socket.on('player:use', (data) => {
         this.handleUse(socket, data)
       })
@@ -386,7 +390,8 @@ class World {
       direction: Direction.South,
       state: PlayerState.Idle,
       speed: 50,
-      name: socket.username
+      name: socket.username,
+      skin: DEFAULT_SKIN
     })
 
     const playerMovement = new PlayerMovement(player, this.map)
@@ -723,6 +728,24 @@ class World {
     player.playerData.name = name
 
     this.io.emit('player:change', player.playerData)
+  }
+
+  private handlePlayerChangeSkin(socket, skin) {
+    console.log('[ Server ] Changing player skin to', skin)
+
+    const session = this.sessions[socket.sessionId]
+
+    if (!session) {
+      return
+    }
+
+    const player = this.players[session.playerId]
+
+    if (!player) {
+      return
+    }
+
+    player.setSkin(skin)
   }
 
   private handleUse(socket, data) {

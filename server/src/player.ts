@@ -31,6 +31,7 @@ interface PlayerData {
   name: string
   isDrinking: boolean
   isAdmin: boolean
+  skin: string
 }
 
 class PathFinding {
@@ -306,6 +307,11 @@ class Player extends EventEmitter {
       this.notifyChange()
     }, DRINKING_TIME)
 
+    this.notifyChange()
+  }
+
+  setSkin(skin: string) {
+    this.playerData.skin = skin
     this.notifyChange()
   }
 

@@ -3,6 +3,7 @@ import { onMounted, onUnmounted, useTemplateRef, reactive, ref, computed } from 
 import { Game } from './game/game'
 import { SPRITES } from './game/data/sprites'
 import { OSApplication } from './os/os_application'
+import ConfigModal from './components/config_modal.vue'
 
 const gameRoot = useTemplateRef('gameRoot')
 const chatMessageInput = useTemplateRef('chatMessageInput')
@@ -14,9 +15,7 @@ const items = reactive({
   data: [],
   show: false
 })
-const user = reactive({
-  name: localStorage.getItem('username') || ''
-})
+
 const showConfigModal = ref(false)
 const showOs = ref(false)
 const osApplication = ref(null)
@@ -134,18 +133,6 @@ const handleItem = (item) => {
   window.dispatchEvent(new CustomEvent('ui:select_item', { detail: { id: item.id } }))
 }
 
-const handleConfig = (e) => {
-  e.preventDefault()
-
-  const form = new FormData(e.target)
-  const name = form.get('name')
-
-  localStorage.setItem('username', name)
-  showConfigModal.value = false
-
-  window.dispatchEvent(new CustomEvent('ui:config', { detail: { name } }))
-}
-
 const handleOsClose = () => {
   if (osApplication.value) {
     osApplication.value.teardown()
@@ -153,34 +140,7 @@ const handleOsClose = () => {
 }
 </script>
 <template>
-  <b-modal
-    v-model="showConfigModal"
-    has-modal-card
-    trap-focus
-    :destroy-on-hide="false"
-    aria-role="dialog"
-    aria-label="Configurações"
-    close-button-aria-label="Close"
-    aria-modal
-  >
-    <form @submit="handleConfig">
-      <div class="modal-card" style="width: auto">
-        <header class="modal-card-head">
-          <p class="modal-card-title">Configurações</p>
-          <button type="button" class="delete" @click="$emit('close')" />
-        </header>
-        <section class="modal-card-body">
-          <b-field label="Nome">
-            <b-input type="text" placeholder="Como você se chama?" name="name" required> </b-input>
-          </b-field>
-        </section>
-
-        <footer class="modal-card-foot">
-          <b-button label="Salvar" type="is-primary" expanded native-type="submit" />
-        </footer>
-      </div>
-    </form>
-  </b-modal>
+  <config-modal @close="showConfigModal = false" v-model="showConfigModal" v-if="showConfigModal" />
 
   <div class="fixed top-0 left-0 w-full">
     <div class="flex items-center justify-end p-4">

@@ -17,6 +17,26 @@ import { Stats } from 'pixi-stats'
 import { Chat } from './../entities/chat'
 
 const TILE_SIZE = 16
+const DEFAULT_SKIN = 'Bob'
+
+const SKINS = [
+  {
+    name: 'Bob',
+    sprite: 'Bob_16x16.png'
+  },
+  {
+    name: 'Alex',
+    sprite: 'Alex_16x16.png'
+  },
+  {
+    name: 'Amelia',
+    sprite: 'Amelia_16x16.png'
+  },
+  {
+    name: 'Adam',
+    sprite: 'Adam_16x16.png'
+  }
+]
 
 class Playground extends Scene {
   private camera: Camera
@@ -33,18 +53,23 @@ class Playground extends Scene {
   private isPlacingItem: boolean = false
   private ctrlPressed: boolean = false
   private chat: Chat
+  private spritesheets: Map<string, Spritesheet> = new Map()
 
   async onStart() {
     // const stats = new Stats(this.app.renderer)
 
     this.entitiesLayer.sortableChildren = true
 
-    this.playerSpritesheet = new Spritesheet(
-      Assets.get('Bob_16x16.png'),
-      Assets.get('default_spritesheet.json').data
-    )
+    SKINS.forEach(({ name, sprite }) => {
+      this.spritesheets.set(
+        name,
+        new Spritesheet(Assets.get(sprite), Assets.get('default_spritesheet.json').data)
+      )
+    })
 
-    await this.playerSpritesheet.parse()
+    for (const spritesheet of this.spritesheets.values()) {
+      await spritesheet.parse()
+    }
 
     this.camera = new Camera(this)
     this.camera.scale = Math.min(
@@ -163,7 +188,17 @@ class Playground extends Scene {
   private createPlayer(id: string, spritesheet: Spritesheet) {
     const player = new Player(id, spritesheet)
 
-    const animator = new Animator(player, [
+    const animator = this.createAnimator(player as AnimatedSprite, spritesheet)
+
+    player.init(animator)
+    player.zIndex = 1
+    player.isPlayer = true
+
+    return player
+  }
+
+  private createAnimator(player: AnimatedSprite, spritesheet: Spritesheet) {
+    return new Animator(player, [
       new Animation('idle_north', spritesheet.animations.idle_north, 0.025),
       new Animation('idle_north', spritesheet.animations.idle_north, 0.025),
       new Animation('idle_south', spritesheet.animations.idle_south, 0.025),
@@ -177,12 +212,6 @@ class Playground extends Scene {
       new Animation('sit_east', spritesheet.animations.sit_east, 0.025),
       new Animation('drink_south', spritesheet.animations.drink_south, 0.025)
     ])
-
-    player.init(animator)
-    player.zIndex = 1
-    player.isPlayer = true
-
-    return player
   }
 
   private handleSession(session: any) {
@@ -192,7 +221,10 @@ class Playground extends Scene {
 
     localStorage.setItem('sessionId', sessionId)
 
-    this.player = this.createPlayer(playerData.id, this.playerSpritesheet)
+    this.player = this.createPlayer(
+      playerData.id,
+      this.spritesheets.get(playerData.skin || DEFAULT_SKIN)
+    )
     this.player.onStart()
     this.player.position.set(playerData.position.x, playerData.position.y)
     this.players[playerData.id] = this.player
@@ -231,7 +263,10 @@ class Playground extends Scene {
   }
 
   private addPlayer(playerData: any) {
-    const player = this.createPlayer(playerData.id, this.playerSpritesheet)
+    const player = this.createPlayer(
+      playerData.id,
+      this.spritesheets.get(playerData.skin || DEFAULT_SKIN)
+    )
     player.onStart()
     player.updateData(playerData)
 
@@ -282,7 +317,16 @@ class Playground extends Scene {
 
   private handlePlayerChange(playerData: any) {
     if (this.players[playerData.id]) {
-      this.players[playerData.id].updateData(playerData)
+      const player = this.players[playerData.id]
+
+      player.updateData(playerData)
+
+      const skin = playerData.skin || DEFAULT_SKIN
+      const spritesheet = this.spritesheets.get(skin)
+
+      const animator = this.createAnimator(player as AnimatedSprite, spritesheet)
+
+      player.setAnimator(animator)
     }
   }
 
@@ -313,8 +357,9 @@ class Playground extends Scene {
     this.cursor.show()
   }
 
-  private handleConfig({ detail: { name } }) {
+  private handleConfig({ detail: { name, skinName } }) {
     this.client.changeName(name.substring(0, 32))
+    this.client.changeSkin(skinName)
   }
 
   private handleKeyDown(e) {

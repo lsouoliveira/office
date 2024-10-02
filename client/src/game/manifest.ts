@@ -38,6 +38,21 @@ export default {
           alias: 'Bob_16x16.png',
           src: 'resources/images/Bob_16x16.png',
           data: { scaleMode: 'nearest' }
+        },
+        {
+          alias: 'Alex_16x16.png',
+          src: 'resources/images/Alex_16x16.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
+          alias: 'Amelia_16x16.png',
+          src: 'resources/images/Amelia_16x16.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
+          alias: 'Adam_16x16.png',
+          src: 'resources/images/Adam_16x16.png',
+          data: { scaleMode: 'nearest' }
         }
       ]
     }

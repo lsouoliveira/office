@@ -247,6 +247,10 @@ class Player extends AnimatedSprite implements Entity {
   clear() {
     this.playerName.destroy()
   }
+
+  setAnimator(animator: Animator) {
+    this.animator = animator
+  }
 }
 
 export { Player, Direction }

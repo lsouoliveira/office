@@ -31,6 +31,10 @@ class Client {
     this.socket.emit('player:changeName', name)
   }
 
+  changeSkin(skin: string) {
+    this.socket.emit('player:changeSkin', skin)
+  }
+
   use(x: number, y: number) {
     this.socket.emit('player:use', { x, y })
   }
