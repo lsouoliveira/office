@@ -38754,6 +38754,7 @@ function lerp(a, b, t) {
 var PlayerMovement = class {
   player;
   targetPath;
+  nextTile;
   map;
   constructor(player, map) {
     this.player = player;
@@ -38761,24 +38762,19 @@ var PlayerMovement = class {
   }
   update(dt) {
     if (this.player.playerData.state === 1 /* Moving */) {
-      if (!this.targetPath || this.targetPath.length === 0) {
+      if (!this.nextTile) {
         this.player.playerData.state = 0 /* Idle */;
       } else {
         const player = this.player.playerData;
-        const target = this.targetPath[0];
+        const target = this.nextTile;
         const targetPos = [target[0] * 16, target[1] * 16];
-        if (player.position.x < targetPos[0]) {
-          player.direction = 2 /* East */;
-        } else if (player.position.x > targetPos[0]) {
-          player.direction = 3 /* West */;
-        } else if (player.position.y < targetPos[1]) {
-          player.direction = 1 /* South */;
-        } else if (player.position.y > targetPos[1]) {
-          player.direction = 0 /* North */;
-        }
+        player.direction = this.directionFor(target[0], target[1]);
         if (this.moveToPoint(targetPos[0], targetPos[1], dt)) {
-          this.player.emit("move", { x: target[0], y: target[1], direction: player.direction });
-          this.targetPath.shift();
+          this.nextTile = this.targetPath.shift();
+          if (this.nextTile) {
+            const direction = this.directionFor(this.nextTile[0], this.nextTile[1]);
+            this.player.emit("move", { x: this.nextTile[0], y: this.nextTile[1], direction });
+          }
         }
       }
     }
@@ -38803,7 +38799,35 @@ var PlayerMovement = class {
       this.player.playerData.state = 0 /* Idle */;
     } else {
       this.targetPath = shortestPath;
+      if (this.targetPath[0][0] === this.gridX() && this.targetPath[0][1] === this.gridY()) {
+        this.targetPath.shift();
+      }
+      if (!this.nextTile) {
+        this.nextTile = this.targetPath.shift();
+        if (this.nextTile) {
+          const nextTileDirection = this.directionFor(this.nextTile[0], this.nextTile[1]);
+          this.player.playerData.direction = nextTileDirection;
+          this.player.emit("move", {
+            x: this.nextTile[0],
+            y: this.nextTile[1],
+            direction: nextTileDirection
+          });
+        }
+      }
     }
+  }
+  directionFor(tileX, tileY) {
+    if (tileX === this.gridX() && tileY === this.gridY()) {
+      return this.player.playerData.direction;
+    }
+    if (tileX > this.gridX()) {
+      return 2 /* East */;
+    } else if (tileX < this.gridX()) {
+      return 3 /* West */;
+    } else if (tileY > this.gridY()) {
+      return 1 /* South */;
+    }
+    return 0 /* North */;
   }
   getDistanceTo(tileX, tileY) {
     return Math.abs(this.gridX() - tileX) + Math.abs(this.gridY() - tileY);

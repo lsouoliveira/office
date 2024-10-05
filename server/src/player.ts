@@ -58,6 +58,7 @@ function lerp(a, b, t) {
 class PlayerMovement {
   private player: Player
   private targetPath?: number[][]
+  private nextTile?: number[]
   private map: GameMap
 
   constructor(player: Player, map: GameMap) {
@@ -67,27 +68,23 @@ class PlayerMovement {
 
   update(dt: number) {
     if (this.player.playerData.state === PlayerState.Moving) {
-      if (!this.targetPath || this.targetPath.length === 0) {
+      if (!this.nextTile) {
         this.player.playerData.state = PlayerState.Idle
       } else {
         const player = this.player.playerData
-        const target = this.targetPath[0]
+        const target = this.nextTile
         const targetPos = [target[0] * 16, target[1] * 16]
 
-        if (player.position.x < targetPos[0]) {
-          player.direction = Direction.East
-        } else if (player.position.x > targetPos[0]) {
-          player.direction = Direction.West
-        } else if (player.position.y < targetPos[1]) {
-          player.direction = Direction.South
-        } else if (player.position.y > targetPos[1]) {
-          player.direction = Direction.North
-        }
+        player.direction = this.directionFor(target[0], target[1])
 
         if (this.moveToPoint(targetPos[0], targetPos[1], dt)) {
-          this.player.emit('move', { x: target[0], y: target[1], direction: player.direction })
+          this.nextTile = this.targetPath.shift()
 
-          this.targetPath.shift()
+          if (this.nextTile) {
+            const direction = this.directionFor(this.nextTile[0], this.nextTile[1])
+
+            this.player.emit('move', { x: this.nextTile[0], y: this.nextTile[1], direction })
+          }
         }
       }
     }
@@ -119,7 +116,42 @@ class PlayerMovement {
       this.player.playerData.state = PlayerState.Idle
     } else {
       this.targetPath = shortestPath
+
+      if (this.targetPath[0][0] === this.gridX() && this.targetPath[0][1] === this.gridY()) {
+        this.targetPath.shift()
+      }
+
+      if (!this.nextTile) {
+        this.nextTile = this.targetPath.shift()
+
+        if (this.nextTile) {
+          const nextTileDirection = this.directionFor(this.nextTile[0], this.nextTile[1])
+
+          this.player.playerData.direction = nextTileDirection
+          this.player.emit('move', {
+            x: this.nextTile[0],
+            y: this.nextTile[1],
+            direction: nextTileDirection
+          })
+        }
+      }
     }
+  }
+
+  directionFor(tileX, tileY) {
+    if (tileX === this.gridX() && tileY === this.gridY()) {
+      return this.player.playerData.direction
+    }
+
+    if (tileX > this.gridX()) {
+      return Direction.East
+    } else if (tileX < this.gridX()) {
+      return Direction.West
+    } else if (tileY > this.gridY()) {
+      return Direction.South
+    }
+
+    return Direction.North
   }
 
   getDistanceTo(tileX, tileY) {

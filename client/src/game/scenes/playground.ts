@@ -433,7 +433,7 @@ class Playground extends Scene {
     const nonGroundChildren = this.entitiesLayer.children.filter((child) => child.zIndex !== 0)
 
     nonGroundChildren.sort((a, b) => {
-      const diff = a.y - a.height * a.anchor.y - (b.y - b.height * b.anchor.y)
+      const diff = a.y - a.height * a.anchor.y - a.pivot.y - (b.y - b.height * b.anchor.y - b.pivot.y)
 
       if (diff == 0) {
         if (a.isPlayer && !b.isPlayer) {

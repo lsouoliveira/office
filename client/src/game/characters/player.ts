@@ -169,6 +169,7 @@ class Player extends AnimatedSprite implements Entity {
     if (!this.hasTargets() || !this.canReach(data.position)) {
       this.clearTargets()
       this.position.set(data.position.x, data.position.y)
+      this.pivot.set(0, 0)
     }
 
     this.direction = data.direction
@@ -191,7 +192,7 @@ class Player extends AnimatedSprite implements Entity {
     switch (facing) {
       case Direction.North:
         this.animator.play('idle_north')
-        this.position.set(x, y - 8)
+        this.pivot.set(0, 8)
         return
         break
       case Direction.West:
@@ -209,6 +210,7 @@ class Player extends AnimatedSprite implements Entity {
   }
 
   moveTo(x: number, y: number, direction: Direction) {
+    this.pivot.set(0, 0)
     this.targets.push({ x, y, direction })
   }
 
