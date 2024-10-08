@@ -59,6 +59,38 @@ const SPRITES = {
     pivot: { x: 0, y: 1 },
     tileset: 'resources/maps/Modern_Office_Black_Shadow.png'
   },
+  orange_office_chair1: {
+    y: 0,
+    width: 1,
+    height: 2,
+    states: [162],
+    pivot: { x: 0, y: 1 },
+    tileset: 'resources/maps/Modern_Office_Black_Shadow.png'
+  },
+  orange_office_chair2: {
+    y: 0,
+    width: 1,
+    height: 2,
+    states: [165],
+    pivot: { x: 0, y: 1 },
+    tileset: 'resources/maps/Modern_Office_Black_Shadow.png'
+  },
+  orange_office_chair3: {
+    y: 0,
+    width: 1,
+    height: 2,
+    states: [161],
+    pivot: { x: 0, y: 1 },
+    tileset: 'resources/maps/Modern_Office_Black_Shadow.png'
+  },
+  orange_office_chair4: {
+    y: 0,
+    width: 1,
+    height: 2,
+    states: [164],
+    pivot: { x: 0, y: 1 },
+    tileset: 'resources/maps/Modern_Office_Black_Shadow.png'
+  },
   pink_wall: {
     y: 0,
     width: 1,
@@ -398,6 +430,34 @@ const SPRITES = {
     states: [731],
     tileset: 'resources/maps/Modern_Office_Black_Shadow.png'
   },
+  computer_west_bottom2: {
+    y: 0,
+    width: 1,
+    height: 1,
+    states: [747],
+    tileset: 'resources/maps/Modern_Office_Black_Shadow.png'
+  },
+  computer_east_top: {
+    y: 0,
+    width: 1,
+    height: 1,
+    states: [570],
+    tileset: 'resources/maps/Modern_Office_Black_Shadow.png'
+  },
+  computer_east_bottom: {
+    y: 0,
+    width: 1,
+    height: 1,
+    states: [586],
+    tileset: 'resources/maps/Modern_Office_Black_Shadow.png'
+  },
+  computer_east_bottom2: {
+    y: 0,
+    width: 1,
+    height: 1,
+    states: [602],
+    tileset: 'resources/maps/Modern_Office_Black_Shadow.png'
+  },
   laptop_top: {
     y: 0,
     width: 1,
@@ -434,6 +494,92 @@ const SPRITES = {
     height: 3,
     states: [198],
     pivot: { x: 0, y: 2 },
+    tileset: 'resources/maps/Modern_Office_Black_Shadow.png'
+  },
+  plasma_tv: {
+    y: 1,
+    width: 1,
+    height: 1,
+    states: [286],
+    tileset: 'resources/maps/Modern_Office_Black_Shadow.png'
+  },
+  corner_table_left_corner: {
+    y: 0,
+    width: 1,
+    height: 1,
+    states: [577],
+    tileset: 'resources/maps/Modern_Office_Black_Shadow.png'
+  },
+  corner_table_top_left: {
+    y: 0,
+    width: 1,
+    height: 1,
+    states: [561],
+    tileset: 'resources/maps/Modern_Office_Black_Shadow.png'
+  },
+  coner_table_right_corner: {
+    y: 0,
+    width: 1,
+    height: 1,
+    states: [578],
+    tileset: 'resources/maps/Modern_Office_Black_Shadow.png'
+  },
+  coner_table_right_top: {
+    y: 0,
+    width: 1,
+    height: 1,
+    states: [562],
+    tileset: 'resources/maps/Modern_Office_Black_Shadow.png'
+  },
+  coner_table_top_right_corner_to_left: {
+    y: 0,
+    width: 1,
+    height: 1,
+    states: [545],
+    tileset: 'resources/maps/Modern_Office_Black_Shadow.png'
+  },
+  coner_table_top_right_corner: {
+    y: 0,
+    width: 1,
+    height: 1,
+    states: [547],
+    tileset: 'resources/maps/Modern_Office_Black_Shadow.png'
+  },
+  coner_table_right_middle: {
+    y: 0,
+    width: 1,
+    height: 1,
+    states: [563],
+    tileset: 'resources/maps/Modern_Office_Black_Shadow.png'
+  },
+  phone_top: {
+    y: 0,
+    width: 1,
+    height: 1,
+    states: [584],
+    tileset: 'resources/maps/Modern_Office_Black_Shadow.png'
+  },
+  phone_bottom: {
+    y: 0,
+    width: 1,
+    height: 1,
+    states: [600],
+    tileset: 'resources/maps/Modern_Office_Black_Shadow.png'
+  },
+  water_cooler_top: {
+    y: 0,
+    width: 1,
+    height: 2,
+    states: [252],
+    pivot: { x: 0, y: 1 },
+    tileset: 'resources/maps/Modern_Office_Black_Shadow.png'
+  },
+  water_cooler_bottom: {
+    y: 0,
+    width: 1,
+    height: 2,
+    states: [268],
+    pivot: { x: 0, y: 1 },
     tileset: 'resources/maps/Modern_Office_Black_Shadow.png'
   }
 }

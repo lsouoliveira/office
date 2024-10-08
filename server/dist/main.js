@@ -39283,6 +39283,30 @@ var ITEMS = {
     actionId: "sit",
     facing: 3 /* West */
   },
+  orange_office_chair1: {
+    isGround: false,
+    isWalkable: false,
+    actionId: "sit",
+    facing: 1 /* South */
+  },
+  orange_office_chair2: {
+    isGround: false,
+    isWalkable: false,
+    actionId: "sit",
+    facing: 2 /* East */
+  },
+  orange_office_chair3: {
+    isGround: false,
+    isWalkable: false,
+    actionId: "sit",
+    facing: 0 /* North */
+  },
+  orange_office_chair4: {
+    isGround: false,
+    isWalkable: false,
+    actionId: "sit",
+    facing: 3 /* West */
+  },
   pink_wall: {
     isGround: false,
     isWalkable: false
@@ -39452,11 +39476,28 @@ var ITEMS = {
     isGround: false,
     isWalkable: true
   },
+  computer_west_bottom2: {
+    isGround: false,
+    isWalkable: false
+  },
   computer_west_bottom: {
     isGround: false,
     isWalkable: false
   },
   computer_west_top: {
+    isGround: false,
+    isWalkable: false,
+    actionId: "computer"
+  },
+  computer_east_bottom2: {
+    isGround: false,
+    isWalkable: false
+  },
+  computer_east_bottom: {
+    isGround: false,
+    isWalkable: false
+  },
+  computer_east_top: {
     isGround: false,
     isWalkable: false,
     actionId: "computer"
@@ -39481,6 +39522,55 @@ var ITEMS = {
   plant3: {
     isGround: false,
     isWalkable: true
+  },
+  plasma_tv: {
+    isGround: false,
+    isWalkable: false
+  },
+  corner_table_left_corner: {
+    isGround: false,
+    isWalkable: false
+  },
+  corner_table_top_left: {
+    isGround: false,
+    isWalkable: true
+  },
+  coner_table_right_corner: {
+    isGround: false,
+    isWalkable: false
+  },
+  coner_table_right_top: {
+    isGround: false,
+    isWalkable: false
+  },
+  coner_table_top_right_corner_to_left: {
+    isGround: false,
+    isWalkable: false
+  },
+  coner_table_top_right_corner: {
+    isGround: false,
+    isWalkable: true
+  },
+  coner_table_right_middle: {
+    isGround: false,
+    isWalkable: false
+  },
+  phone_top: {
+    isGround: false,
+    isWalkable: false
+  },
+  phone_bottom: {
+    isGround: false,
+    isWalkable: false
+  },
+  water_cooler_top: {
+    isGround: false,
+    isWalkable: false,
+    actionId: "drink"
+  },
+  water_cooler_bottom: {
+    isGround: false,
+    isWalkable: false
   }
 };
 var TICK_RATE = 1 / 60;
@@ -39556,6 +39646,12 @@ var World = class {
       });
       socket.on("player:use", (data) => {
         this.handleUse(socket, data);
+      });
+      socket.on("player:playNote", (note) => {
+        this.handlePlayNote(socket, note);
+      });
+      socket.on("player:releaseNote", (note) => {
+        this.handleReleaseNote(socket, note);
       });
       socket.on("disconnect", async () => {
         const matchingSockets = await this.io.in(socket.sessionId).allSockets();
@@ -39868,6 +39964,36 @@ var World = class {
     }
     this.handleItemUse(socket, player, tile, item);
   }
+  handlePlayNote(socket, note) {
+    const session = this.sessions[socket.sessionId];
+    if (!session) {
+      return;
+    }
+    const player = this.players[session.playerId];
+    if (!player) {
+      return;
+    }
+    console.log("[ Server ] Playing note", note);
+    this.io.emit("player:notePlayed", {
+      playerId: player.playerData.id,
+      note
+    });
+  }
+  handleReleaseNote(socket, note) {
+    const session = this.sessions[socket.sessionId];
+    if (!session) {
+      return;
+    }
+    const player = this.players[session.playerId];
+    if (!player) {
+      return;
+    }
+    console.log("[ Server ] Releasing note", note);
+    this.io.emit("player:noteReleased", {
+      playerId: player.playerData.id,
+      note
+    });
+  }
   handlePlayerDisconnect(socket, player) {
     if (player.isOccupyingItem()) {
       const item = player.getOccupiedItem();
@@ -39987,7 +40113,7 @@ var World = class {
 // src/index.ts
 var app = (0, import_express.default)();
 app.use((0, import_cors.default)());
-app.use(import_express.default.static("../client/public"));
+app.use(import_express.default.static("../client/dist"));
 var httpServer = app.listen(3e3, () => {
   console.log("Listening at port 3000");
 });

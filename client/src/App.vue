@@ -3,7 +3,10 @@ import { onMounted, onUnmounted, useTemplateRef, reactive, ref, computed } from 
 import { Game } from './game/game'
 import { SPRITES } from './game/data/sprites'
 import { OSApplication } from './os/os_application'
+import { Piano } from './piano'
+
 import ConfigModal from './components/config_modal.vue'
+import PianoModal from './components/piano_modal.vue'
 
 const gameRoot = useTemplateRef('gameRoot')
 const chatMessageInput = useTemplateRef('chatMessageInput')
@@ -18,11 +21,14 @@ const items = reactive({
 
 const showConfigModal = ref(false)
 const showOs = ref(false)
+const showPianoModal = ref(false)
 const osApplication = ref(null)
+const piano = ref(null)
+const isAudioEnabled = ref(false)
 
 const osRoot = useTemplateRef('osRoot')
 
-onMounted(() => {
+onMounted(async () => {
   const game = new Game(gameRoot.value)
   game.init()
 
@@ -82,7 +88,11 @@ const handleChatMessage = ({ target: { value } }) => {
     chatMessage.show = false
   }, 0)
 
-  window.dispatchEvent(new CustomEvent('ui:send_message', { detail: { message } }))
+  if (message === '/piano') {
+    showPianoModal.value = true
+  } else {
+    window.dispatchEvent(new CustomEvent('ui:send_message', { detail: { message } }))
+  }
 }
 
 const clearSelection = () => {
@@ -138,12 +148,63 @@ const handleOsClose = () => {
     osApplication.value.teardown()
   }
 }
+
+const handleNotePress = (note) => {
+  if (piano.value) {
+    piano.value.play(note)
+  }
+
+  window.dispatchEvent(new CustomEvent('ui:note_press', { detail: { note } }))
+}
+
+const handleNoteRelease = (note) => {
+  if (piano.value) {
+    piano.value.release(note)
+  }
+
+  window.dispatchEvent(new CustomEvent('ui:note_release', { detail: { note } }))
+}
+
+const toggleAudio = () => {
+  isAudioEnabled.value = !isAudioEnabled.value
+
+  if (isAudioEnabled.value && !piano.value) {
+    const pianoInstance = new Piano()
+
+    pianoInstance.init().then(() => {
+      piano.value = pianoInstance
+
+      window.addEventListener('ui:note_played', ({ detail: { note } }) => {
+        if (!isAudioEnabled.value) {
+          return
+        }
+
+        console.log('Playing note:', note)
+
+        pianoInstance.play(note)
+      })
+
+      window.addEventListener('ui:note_released', ({ detail: { note } }) => {
+        if (!isAudioEnabled.value) {
+          return
+        }
+
+        pianoInstance.release(note)
+      })
+    })
+  }
+}
 </script>
 <template>
   <config-modal @close="showConfigModal = false" v-model="showConfigModal" v-if="showConfigModal" />
 
   <div class="fixed top-0 left-0 w-full">
-    <div class="flex items-center justify-end p-4">
+    <div class="flex items-center justify-end p-4 gap-2">
+      <b-button
+        :icon-left="isAudioEnabled ? 'volume-high' : 'volume-mute'"
+        type="is-info"
+        @click="toggleAudio"
+      />
       <b-button icon-left="cog" type="is-warning" @click="showConfigModal = true" />
     </div>
   </div>
@@ -192,6 +253,8 @@ const handleOsClose = () => {
       ref="osRoot"
     ></div>
   </b-modal>
+
+  <piano-modal v-model="showPianoModal" @press="handleNotePress" @release="handleNoteRelease" />
 </template>
 
 <style scoped>

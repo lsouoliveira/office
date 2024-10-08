@@ -38,6 +38,14 @@ class Client {
   use(x: number, y: number) {
     this.socket.emit('player:use', { x, y })
   }
+
+  playNote(note: string) {
+    this.socket.emit('player:playNote', note)
+  }
+
+  releaseNote(note: string) {
+    this.socket.emit('player:releaseNote', note)
+  }
 }
 
 export { Client }

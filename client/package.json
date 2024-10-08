@@ -17,6 +17,7 @@
     "pixi-stats": "^3.0.0",
     "pixi.js": "^8.4.1",
     "socket.io-client": "^4.8.0",
+    "tone": "^15.0.4",
     "vue": "^3.4.29"
   },
   "devDependencies": {

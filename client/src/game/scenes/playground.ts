@@ -117,6 +117,8 @@ class Playground extends Scene {
       this.client.socket.on('player:change', this.handlePlayerChange.bind(this))
       this.client.socket.on('player:message', this.handlePlayerMessage.bind(this))
       this.client.socket.on('player:move', this.handlePlayerMove.bind(this))
+      this.client.socket.on('player:notePlayed', this.handleNotePlayed.bind(this))
+      this.client.socket.on('player:noteReleased', this.handleNoteReleased.bind(this))
       this.client.socket.on('computer:open', this.handleComputerOpen.bind(this))
       this.client.socket.on('item:added', this.handleItemAdded.bind(this))
       this.client.socket.on('item:removed', this.handleItemRemoved.bind(this))
@@ -135,6 +137,8 @@ class Playground extends Scene {
     window.addEventListener('ui:select_item', this.handleSelectItem.bind(this))
     window.addEventListener('ui:clear_selection', this.handleClearSelection.bind(this))
     window.addEventListener('ui:config', this.handleConfig.bind(this))
+    window.addEventListener('ui:note_press', this.handleNotePress.bind(this))
+    window.addEventListener('ui:note_release', this.handleNoteRelease.bind(this))
     window.addEventListener('keydown', this.handleKeyDown.bind(this))
     window.addEventListener('keyup', this.handleKeyUp.bind(this))
 
@@ -362,6 +366,14 @@ class Playground extends Scene {
     this.client.changeSkin(skinName)
   }
 
+  private handleNotePress({ detail: { note } }) {
+    this.client.playNote(note)
+  }
+
+  private handleNoteRelease({ detail: { note } }) {
+    this.client.releaseNote(note)
+  }
+
   private handleKeyDown(e) {
     this.ctrlPressed = e.ctrlKey
   }
@@ -393,6 +405,30 @@ class Playground extends Scene {
     }
 
     player.moveTo(x, y, direction)
+  }
+
+  private handleNotePlayed({ playerId, note }) {
+    const player = this.players[playerId]
+
+    if (!player) {
+      return
+    }
+
+    if (player.id !== this.player.id) {
+      window.dispatchEvent(new CustomEvent('ui:note_played', { detail: { note } }))
+    }
+  }
+
+  private handleNoteReleased({ playerId, note }) {
+    const player = this.players[playerId]
+
+    if (!player) {
+      return
+    }
+
+    if (player.id !== this.player.id) {
+      window.dispatchEvent(new CustomEvent('ui:note_released', { detail: { note } }))
+    }
   }
 
   private handleComputerOpen() {
@@ -433,7 +469,8 @@ class Playground extends Scene {
     const nonGroundChildren = this.entitiesLayer.children.filter((child) => child.zIndex !== 0)
 
     nonGroundChildren.sort((a, b) => {
-      const diff = a.y - a.height * a.anchor.y - a.pivot.y - (b.y - b.height * b.anchor.y - b.pivot.y)
+      const diff =
+        a.y - a.height * a.anchor.y - a.pivot.y - (b.y - b.height * b.anchor.y - b.pivot.y)
 
       if (diff == 0) {
         if (a.isPlayer && !b.isPlayer) {
