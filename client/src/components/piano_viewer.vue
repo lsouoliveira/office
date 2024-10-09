@@ -102,8 +102,6 @@ const createKey = (key: string) => {
 }
 
 const handleKeyDown = (e) => {
-  document.title = e.keyCode
-
   const index = WHITE_KEY_SHORCUTS.indexOf(e.keyCode)
 
   if (index > -1 && !e.shiftKey) {
