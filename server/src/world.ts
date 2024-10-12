@@ -7,6 +7,23 @@ import { MoveTask } from './tasks/move_task'
 import { SitTask } from './tasks/sit_task'
 import { ComputerTask } from './tasks/computer_task'
 import { DrinkTask } from './tasks/drink_task'
+import * as winston from 'winston'
+
+const loggerFormat = winston.format.printf(({ level, message, timestamp }) => {
+  return `${timestamp} ${level}: ${message}`
+})
+
+const logger = winston.createLogger({
+  level: 'info',
+  format: winston.format.json(),
+  transports: [new winston.transports.File({ filename: 'combined.log' })]
+})
+
+logger.add(
+  new winston.transports.Console({
+    format: winston.format.combine(winston.format.timestamp(), loggerFormat)
+  })
+)
 
 const fs = require('node:fs')
 const crypto = require('crypto')
@@ -636,7 +653,75 @@ class World {
       this.handleClearMapCommand(socket)
     } else if (command == 'player_speed') {
       this.handlePlayerSpeedCommand(socket, parts)
+    } else {
+      this.handlePreset(socket, command)
     }
+  }
+
+  private async handlePreset(socket, preset) {
+    const session = this.sessions[socket.sessionId]
+
+    if (!session) {
+      return
+    }
+
+    const player = this.players[session.playerId]
+
+    if (!player) {
+      return
+    }
+
+    const presetKey = await this.digest(preset?.toLowerCase())
+    const presetData = this.loadPreset(presetKey)
+
+    if (!presetData) {
+      return
+    }
+
+    logger.info(`Applying preset ${preset} to player ${player.playerData.name}`)
+
+    player.setName(presetData.name)
+    player.setSkin(presetData.skin)
+  }
+
+  private loadPreset(key: string) {
+    const preset = process.env[key]
+
+    if (!preset) {
+      return
+    }
+
+    const parts = preset.split(',')
+
+    return {
+      name: parts[0],
+      skin: parts[1]
+    }
+  }
+
+  private async digest(message) {
+    const msgBuffer = new TextEncoder().encode(message)
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer)
+
+    return Array.from(new Uint8Array(hashBuffer))
+      .map((b) => b.toString(16).padStart(2, '0'))
+      .join('')
+  }
+
+  private handlePlayerPreset(socket, preset) {
+    const session = this.sessions[socket.sessionId]
+
+    if (!session) {
+      return
+    }
+
+    const player = this.players[session.playerId]
+
+    if (!player) {
+      return
+    }
+
+    player.setN
   }
 
   private handleAdminCommand(socket) {
@@ -696,6 +781,8 @@ class World {
     for (const player of Object.values(this.players)) {
       if (player.playerData.name === playerName) {
         player.teleport(x, y)
+        player.clearTasks()
+        player.movement.stop()
 
         return
       }

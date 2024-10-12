@@ -90,6 +90,12 @@ class PlayerMovement {
     }
   }
 
+  stop() {
+    this.targetPath = []
+    this.nextTile = undefined
+    this.player.playerData.state = PlayerState.Idle
+  }
+
   moveTo(tileX, tileY) {
     if (!this.validatePosition(tileX, tileY)) {
       return
@@ -356,6 +362,11 @@ class Player extends EventEmitter {
 
   setSpeed(speed: number) {
     this.playerData.speed = speed
+    this.notifyChange()
+  }
+
+  setName(name: string) {
+    this.playerData.name = name
     this.notifyChange()
   }
 
