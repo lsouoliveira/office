@@ -57,9 +57,14 @@ class Widget extends EventEmitter {
     this.parent = parent
   }
 
-  addChild(child: Widget) {
+  addChild(child: Widget, index?: number) {
     child.setParent(this)
-    this.children.push(child)
+
+    if (index == null) {
+      this.children.push(child)
+    } else {
+      this.children.splice(index, 0, child)
+    }
   }
 
   removeChild(child: Widget) {
@@ -100,7 +105,7 @@ class Widget extends EventEmitter {
   }
 
   onMouseUp(x: number, y: number) {
-    if (!this.contains(x, y) || !this.hasFocus) {
+    if (!this.contains(x, y)) {
       return
     }
 

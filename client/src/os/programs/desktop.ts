@@ -3,6 +3,7 @@ import { OS } from '../windows/window'
 import { DesktopGUI } from './components/desktop_gui/desktop_gui'
 import { Snake } from './snake'
 import { Notepad } from './notepad'
+import { Calendar } from './calendar'
 
 interface DesktopFile {
   id: string
@@ -27,6 +28,12 @@ class Desktop extends Process {
       name: 'Snake',
       image_path: 'resources/images/snake.png',
       process: Snake
+    },
+    {
+      id: 'calendar',
+      name: 'Calendar',
+      image_path: 'resources/images/calendar.png',
+      process: Calendar
     }
   ]
 

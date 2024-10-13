@@ -65,12 +65,14 @@ class GUI {
     return this.system
   }
 
+  requestFocus(widget: Widget) {
+    this.setFocusedWidget(widget)
+  }
+
   private setupMouseEvents() {
     this.window.on('mousedown', (x, y) => {
       const offsetX = x - this.x
       const offsetY = y - this.y
-
-      console.log(offsetX, offsetY)
 
       if (!this.root.contains(offsetX, offsetY)) {
         return
