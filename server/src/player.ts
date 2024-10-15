@@ -32,6 +32,29 @@ interface PlayerData {
   isDrinking: boolean
   isAdmin: boolean
   skin: string
+  helmetSlot?: Equipment
+}
+
+enum EquipmentType {
+  Helmet
+}
+
+class Equipment {
+  private id: string
+  private type: EquipmentType
+
+  constructor(id: string, type: EquipmentType) {
+    this.id = id
+    this.type = type
+  }
+
+  getId() {
+    return this.id
+  }
+
+  getType() {
+    return this.type
+  }
 }
 
 class PathFinding {
@@ -371,8 +394,67 @@ class Player extends EventEmitter {
   }
 
   notifyChange() {
-    this.emit('change', this.playerData)
+    this.emit('change', {
+      id: this.playerData.id,
+      position: this.playerData.position,
+      direction: this.playerData.direction,
+      state: this.playerData.state,
+      speed: this.playerData.speed,
+      name: this.playerData.name,
+      isDrinking: this.playerData.isDrinking,
+      isAdmin: this.playerData.isAdmin,
+      skin: this.playerData.skin,
+      helmetSlot: this.playerData.helmetSlot?.getId()
+    })
+  }
+
+  equip(eq: Equipment) {
+    switch (eq.getType()) {
+      case EquipmentType.Helmet:
+        if (this.playerData.helmetSlot) {
+          this.unequip(this.playerData.helmetSlot)
+        }
+
+        this.playerData.helmetSlot = eq
+        break
+    }
+
+    this.notifyChange()
+  }
+
+  unequip(equipment: Equipment) {
+    switch (equipment.getType()) {
+      case EquipmentType.Helmet:
+        if (this.playerData.helmetSlot?.getId() === equipment.getId()) {
+          this.playerData.helmetSlot = undefined
+        }
+        break
+    }
+
+    this.notifyChange()
+  }
+
+  getEquipment(type: EquipmentType) {
+    switch (type) {
+      case EquipmentType.Helmet:
+        return this.playerData.helmetSlot
+    }
+  }
+
+  getPlayerData() {
+    return {
+      id: this.playerData.id,
+      position: this.playerData.position,
+      direction: this.playerData.direction,
+      state: this.playerData.state,
+      speed: this.playerData.speed,
+      name: this.playerData.name,
+      isDrinking: this.playerData.isDrinking,
+      isAdmin: this.playerData.isAdmin,
+      skin: this.playerData.skin,
+      helmetSlot: this.playerData.helmetSlot?.getId()
+    }
   }
 }
 
-export { Player, PlayerState, Direction, PlayerData, PlayerMovement }
+export { Player, PlayerState, Direction, PlayerData, PlayerMovement, Equipment, EquipmentType }

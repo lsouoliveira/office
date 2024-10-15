@@ -31,6 +31,11 @@ export default {
           data: { scaleMode: 'nearest' }
         },
         {
+          alias: 'items.png',
+          src: 'resources/maps/items.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
           alias: 'default_spritesheet.json',
           src: 'resources/characters/default_spritesheet.json'
         },
@@ -52,6 +57,11 @@ export default {
         {
           alias: 'Adam_16x16.png',
           src: 'resources/images/Adam_16x16.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
+          alias: 'party_cone_04.png',
+          src: 'resources/images/party_cone_04.png',
           data: { scaleMode: 'nearest' }
         }
       ]

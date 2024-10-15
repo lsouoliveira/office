@@ -49,6 +49,10 @@ class Item {
     return this.type
   }
 
+  getEquipmentId(): string | undefined {
+    return this.type.getEquipmentId()
+  }
+
   toData() {
     return {
       id: this.id,

@@ -1,5 +1,5 @@
 import { Server } from 'socket.io'
-import { Player, Direction, PlayerState, PlayerMovement } from './player'
+import { Player, Direction, PlayerState, PlayerMovement, Equipment, EquipmentType } from './player'
 import { GameMap } from './map/game_map'
 import { Item } from './items/item'
 import { ItemType } from './items/item_type'
@@ -7,6 +7,7 @@ import { MoveTask } from './tasks/move_task'
 import { SitTask } from './tasks/sit_task'
 import { ComputerTask } from './tasks/computer_task'
 import { DrinkTask } from './tasks/drink_task'
+import { EquipTempEquipmentTask } from './tasks/equip_temp_equipment_task'
 import * as winston from 'winston'
 
 const loggerFormat = winston.format.printf(({ level, message, timestamp }) => {
@@ -358,8 +359,21 @@ const ITEMS = {
   water_cooler_bottom: {
     isGround: false,
     isWalkable: false
+  },
+  party_cone_04: {
+    isGround: false,
+    isWalkable: false,
+    actionId: 'equipTempItem',
+    equipmentId: 'party_cone_04'
   }
 }
+
+const EQUIPMENTS = [
+  {
+    id: 'party_cone_04',
+    type: EquipmentType.Helmet
+  }
+]
 
 const TICK_RATE = 1.0 / 60.0
 
@@ -429,15 +443,17 @@ class World {
       const session = this.createOrUpdateSession(socket)
       const player = this.players[session.playerId]
 
+      logger.info(`Player ${player?.playerData?.name} connected`)
+
       socket.emit('session', {
         sessionId: session.id,
-        playerData: player.playerData
+        playerData: player.getPlayerData()
       })
 
       socket.join(`player:${session.playerId}`)
 
       socket.emit('gameState', this.getGameState(socket))
-      socket.broadcast.emit('player:connected', player.playerData)
+      socket.broadcast.emit('player:connected', player.getPlayerData())
 
       socket.on('player:move', (data) => {
         this.handlePlayerMove(socket, data)
@@ -477,7 +493,7 @@ class World {
             session.connected = false
           }
 
-          socket.broadcast.emit('player:disconnected', player.playerData)
+          socket.broadcast.emit('player:disconnected', player.getPlayerData())
 
           this.handlePlayerDisconnect(socket, player)
         }
@@ -539,7 +555,7 @@ class World {
   getGameState(socket) {
     const connectedPlayers = Object.values(this.sessions)
       .filter((session) => session.connected)
-      .map((session) => this.players[session.playerId].playerData)
+      .map((session) => this.players[session.playerId].getPlayerData())
 
     return {
       players: connectedPlayers,
@@ -910,7 +926,7 @@ class World {
     session.username = name
     player.playerData.name = name
 
-    this.io.emit('player:change', player.playerData)
+    this.io.emit('player:change', player.getPlayerData())
   }
 
   private handlePlayerChangeSkin(socket, skin) {
@@ -1032,6 +1048,23 @@ class World {
       this.performComputerAction(socket, player, tile)
     } else if (item.getActionId() == 'drink') {
       this.performDrinkAction(socket, player, tile)
+    } else if (item.getActionId() == 'equipTempItem') {
+      logger.info(
+        `[ Server ] Equipping temporary item ${item.getType().getId()} to player ${player.playerData.name}`
+      )
+
+      if (!item.getEquipmentId()) {
+        logger.info(`[ Server ] Item ${item.getType().getId()} does not have an equipment id`)
+        return
+      }
+
+      const equipment = this.createEquipment(item.getEquipmentId())
+
+      if (!equipment) {
+        return
+      }
+
+      this.performEquipTempEquipment(socket, player, tile, equipment)
     }
   }
 
@@ -1124,6 +1157,28 @@ class World {
     player.addTask(drinkTask)
   }
 
+  private performEquipTempEquipment(socket, player, tile, equipment) {
+    logger.info(
+      `[ Server ] Equipping temporary equipment ${equipment.getId()} to player ${player.playerData.name}`
+    )
+
+    player.clearTasks()
+
+    if (!player.movement.isNeighbour(tile.getX(), tile.getY())) {
+      const target = this.findAvailableNeighbourTile(player, tile)
+
+      if (!target) {
+        return
+      }
+
+      const moveTask = new MoveTask(player, [target[0], target[1]])
+      player.addTask(moveTask)
+    }
+
+    const equipTempEquipmentTask = new EquipTempEquipmentTask(player, equipment)
+    player.addTask(equipTempEquipmentTask)
+  }
+
   private notifyMapChange() {
     this.persistMap()
   }
@@ -1159,6 +1214,16 @@ class World {
     }
 
     return player.playerData.isAdmin
+  }
+
+  createEquipment(equipmentId) {
+    const equipmentData = EQUIPMENTS.find((equipment) => equipment.id === equipmentId)
+
+    if (!equipmentData) {
+      return
+    }
+
+    return new Equipment(equipmentId, equipmentData.type)
   }
 }
 

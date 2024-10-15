@@ -581,6 +581,13 @@ const SPRITES = {
     states: [268],
     pivot: { x: 0, y: 1 },
     tileset: 'resources/maps/Modern_Office_Black_Shadow.png'
+  },
+  party_cone_04: {
+    y: 0,
+    width: 1,
+    height: 1,
+    states: [0],
+    tileset: 'resources/maps/items.png'
   }
 }
 

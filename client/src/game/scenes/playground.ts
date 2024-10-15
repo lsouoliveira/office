@@ -15,6 +15,7 @@ import { Cursor } from './../cursor'
 import { SpriteCursor } from './../sprite_cursor'
 import { Stats } from 'pixi-stats'
 import { Chat } from './../entities/chat'
+import { Equipment, EquipmentType } from './../characters/player'
 
 const TILE_SIZE = 16
 const DEFAULT_SKIN = 'Bob'
@@ -38,6 +39,14 @@ const SKINS = [
   }
 ]
 
+const EQUIPMENTS = [
+  {
+    id: 'party_cone_04',
+    type: EquipmentType.Helmet,
+    sprite: 'party_cone_04.png'
+  }
+]
+
 class Playground extends Scene {
   private camera: Camera
   private player: Player
@@ -54,6 +63,7 @@ class Playground extends Scene {
   private ctrlPressed: boolean = false
   private chat: Chat
   private spritesheets: Map<string, Spritesheet> = new Map()
+  private equipmentSpritesheets: Map<string, Spritesheet> = new Map()
 
   async onStart() {
     // const stats = new Stats(this.app.renderer)
@@ -68,6 +78,17 @@ class Playground extends Scene {
     })
 
     for (const spritesheet of this.spritesheets.values()) {
+      await spritesheet.parse()
+    }
+
+    EQUIPMENTS.forEach(({ id, type, sprite }) => {
+      this.equipmentSpritesheets.set(
+        id,
+        new Spritesheet(Assets.get(sprite), Assets.get('default_spritesheet.json').data)
+      )
+    })
+
+    for (const spritesheet of this.equipmentSpritesheets.values()) {
       await spritesheet.parse()
     }
 
@@ -233,6 +254,8 @@ class Playground extends Scene {
     this.player.position.set(playerData.position.x, playerData.position.y)
     this.players[playerData.id] = this.player
 
+    this.updatePlayerEquipment(this.player, playerData)
+
     this.entitiesLayer.addChild(this.player)
     this.addEntity(this.player)
   }
@@ -273,6 +296,7 @@ class Playground extends Scene {
     )
     player.onStart()
     player.updateData(playerData)
+    this.updatePlayerEquipment(player, playerData)
 
     this.players[playerData.id] = player
     this.entitiesLayer.addChild(player)
@@ -331,7 +355,40 @@ class Playground extends Scene {
       const animator = this.createAnimator(player as AnimatedSprite, spritesheet)
 
       player.setAnimator(animator)
+
+      this.updatePlayerEquipment(player, playerData)
     }
+  }
+
+  private updatePlayerEquipment(player: Player, playerData: any) {
+    this.updatePlayerHelmet(player, playerData)
+  }
+
+  private updatePlayerHelmet(player: Player, playerData: any) {
+    console.log('Player helmet:', playerData.helmetSlot)
+
+    if (!playerData.helmetSlot && !player.getHelmet()) {
+      return
+    }
+
+    if (!playerData.helmetSlot) {
+      player.unequip(player.getHelmet())
+
+      return
+    }
+
+    const helmetSpritesheet = this.equipmentSpritesheets.get(playerData.helmetSlot)
+    console.log('Equipped helmet:', playerData.helmetSlot)
+
+    if (!helmetSpritesheet) {
+      return
+    }
+
+    const helmet = new Equipment(playerData.helmetSlot, EquipmentType.Helmet, helmetSpritesheet)
+    const animator = this.createAnimator(helmet as AnimatedSprite, helmetSpritesheet)
+    helmet.init(animator)
+
+    player.equip(helmet)
   }
 
   private handlePlayerDisconnected(playerData: any) {

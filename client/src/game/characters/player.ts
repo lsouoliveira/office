@@ -27,6 +27,31 @@ const lerp = (start: number, end: number, t: number) => {
   return start * (1 - t) + end * t
 }
 
+enum EquipmentType {
+  Helmet
+}
+
+class Equipment extends AnimatedSprite {
+  public readonly id: string
+  public readonly type: EquipmentType
+  private animator?: Animator
+
+  constructor(id: string, type: EquipmentType, spriteSheet: Spritesheet) {
+    super(spriteSheet.animations.idle_south)
+
+    this.id = id
+    this.type = type
+  }
+
+  init(animator: Animator) {
+    this.animator = animator
+  }
+
+  getAnimator() {
+    return this.animator
+  }
+}
+
 class Player extends AnimatedSprite implements Entity {
   public readonly id: string
   private animator: Animator
@@ -37,9 +62,12 @@ class Player extends AnimatedSprite implements Entity {
   private speed = 1
   private direction: Direction
   private isDrinking: boolean
+  private helmetSlot?: Equipment
 
   constructor(id: string, spriteSheet: Spritesheet) {
     super(spriteSheet.animations.idle_south)
+
+    this.sortableChildren = true
 
     this.id = id
     this.playerName = new PIXI.Text('', {
@@ -52,6 +80,7 @@ class Player extends AnimatedSprite implements Entity {
     this.playerName.scale.set(8 / 256)
     this.playerName.anchor.set(0.5, 1)
     this.playerName.position.set(8, -8)
+    this.playerName.zIndex = 10
 
     this.addChild(this.playerName)
   }
@@ -102,40 +131,34 @@ class Player extends AnimatedSprite implements Entity {
   }
 
   playWalkAnimation() {
-    switch (this.direction) {
-      case Direction.North:
-        this.animator.play('walk_north')
-        break
-      case Direction.South:
-        this.animator.play('walk_south')
-        break
-      case Direction.East:
-        this.animator.play('walk_east')
-        break
-      case Direction.West:
-        this.animator.play('walk_west')
-        break
-    }
+    this.playAnimation('walk')
   }
 
   playIdleAnimation() {
+    if (this.isDrinking && this.direction == Direction.South) {
+      this.playAnimation('drink')
+    }
+
+    return this.playAnimation('idle')
+  }
+
+  playAnimation(animation: string) {
     switch (this.direction) {
       case Direction.North:
-        this.animator.play('idle_north')
+        this.animator.play(animation + '_north')
+        this.helmetSlot?.getAnimator().play(animation + '_north')
         break
       case Direction.South:
-        if (this.isDrinking) {
-          this.animator.play('drink_south')
-        } else {
-          this.animator.play('idle_south')
-        }
-
+        this.animator.play(animation + '_south')
+        this.helmetSlot?.getAnimator().play(animation + '_south')
         break
       case Direction.East:
-        this.animator.play('idle_east')
+        this.animator.play(animation + '_east')
+        this.helmetSlot?.getAnimator().play(animation + '_east')
         break
       case Direction.West:
-        this.animator.play('idle_west')
+        this.animator.play(animation + '_west')
+        this.helmetSlot?.getAnimator().play(animation + '_west')
         break
     }
   }
@@ -191,18 +214,17 @@ class Player extends AnimatedSprite implements Entity {
 
     switch (facing) {
       case Direction.North:
-        this.animator.play('idle_north')
+        this.playAnimation('idle')
         this.pivot.set(0, 8)
-        return
         break
       case Direction.West:
-        this.animator.play('sit_west')
+        this.playAnimation('sit')
         break
       case Direction.East:
-        this.animator.play('sit_east')
+        this.playAnimation('sit')
         break
       case Direction.South:
-        this.animator.play('idle_south')
+        this.playAnimation('idle')
         break
     }
 
@@ -253,6 +275,41 @@ class Player extends AnimatedSprite implements Entity {
   setAnimator(animator: Animator) {
     this.animator = animator
   }
+
+  equip(equipment: Equipment) {
+    switch (equipment.type) {
+      case EquipmentType.Helmet:
+        if (this.helmetSlot) {
+          this.removeChild(this.helmetSlot)
+        }
+
+        this.helmetSlot = equipment
+        break
+      default:
+        return
+    }
+
+    equipment.anchor.set(0, 0.5)
+    this.addChild(equipment)
+  }
+
+  unequip(equipment: Equipment) {
+    switch (equipment.type) {
+      case EquipmentType.Helmet:
+        if (this.helmetSlot?.id === equipment.id) {
+          this.helmetSlot = undefined
+        }
+        break
+      default:
+        return
+    }
+
+    this.removeChild(equipment)
+  }
+
+  getHelmet() {
+    return this.helmetSlot
+  }
 }
 
-export { Player, Direction }
+export { Player, Direction, Equipment, EquipmentType }
