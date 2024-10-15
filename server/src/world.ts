@@ -8,6 +8,7 @@ import { SitTask } from './tasks/sit_task'
 import { ComputerTask } from './tasks/computer_task'
 import { DrinkTask } from './tasks/drink_task'
 import { EquipTempEquipmentTask } from './tasks/equip_temp_equipment_task'
+import { EquipEquipment } from './tasks/equip_equipment_task'
 import * as winston from 'winston'
 
 const loggerFormat = winston.format.printf(({ level, message, timestamp }) => {
@@ -370,6 +371,74 @@ const ITEMS = {
 
 const EQUIPMENTS = [
   {
+    id: 'ladybug_01',
+    type: EquipmentType.Helmet
+  },
+  {
+    id: 'bee_01',
+    type: EquipmentType.Helmet
+  },
+  {
+    id: 'snapback_01',
+    type: EquipmentType.Helmet
+  },
+  {
+    id: 'dino_snapback_01',
+    type: EquipmentType.Helmet
+  },
+  {
+    id: 'policeman_hat_01',
+    type: EquipmentType.Helmet
+  },
+  {
+    id: 'bataclava_01',
+    type: EquipmentType.Helmet
+  },
+  {
+    id: 'detective_hat_01',
+    type: EquipmentType.Helmet
+  },
+  {
+    id: 'zombie_brain_01',
+    type: EquipmentType.Helmet
+  },
+  {
+    id: 'bolt_01',
+    type: EquipmentType.Helmet
+  },
+  {
+    id: 'beanie_01',
+    type: EquipmentType.Helmet
+  },
+  {
+    id: 'mustache_01',
+    type: EquipmentType.Helmet
+  },
+  {
+    id: 'beard_01',
+    type: EquipmentType.Helmet
+  },
+  {
+    id: 'glasses_01',
+    type: EquipmentType.Helmet
+  },
+  {
+    id: 'monocle_01',
+    type: EquipmentType.Helmet
+  },
+  {
+    id: 'medical_mask_01',
+    type: EquipmentType.Helmet
+  },
+  {
+    id: 'chef_01',
+    type: EquipmentType.Helmet
+  },
+  {
+    id: 'party_cone_01',
+    type: EquipmentType.Helmet
+  },
+  {
     id: 'party_cone_04',
     type: EquipmentType.Helmet
   }
@@ -669,6 +738,8 @@ class World {
       this.handleClearMapCommand(socket)
     } else if (command == 'player_speed') {
       this.handlePlayerSpeedCommand(socket, parts)
+    } else if (command.match(/^a\d+$/)) {
+      this.handleEquipItem(socket, command)
     } else {
       this.handlePreset(socket, command)
     }
@@ -841,6 +912,30 @@ class World {
     console.log('[ Server ] Changing player speed to', parts[1])
 
     player.setSpeed(parseInt(parts[1]))
+  }
+
+  private handleEquipItem(socket, command) {
+    const session = this.sessions[socket.sessionId]
+
+    if (!session) {
+      return
+    }
+
+    const player = this.players[session.playerId]
+
+    if (!player) {
+      return
+    }
+
+    const equipmentIndex = parseInt(command.substring(1))
+    const equipmentId = EQUIPMENTS[equipmentIndex].id
+    const equipment = this.createEquipment(equipmentId)
+
+    if (!equipment) {
+      return
+    }
+
+    this.performEquipEquipment(socket, player, equipment)
   }
 
   private handlePlaceItem(socket, data) {
@@ -1177,6 +1272,17 @@ class World {
 
     const equipTempEquipmentTask = new EquipTempEquipmentTask(player, equipment)
     player.addTask(equipTempEquipmentTask)
+  }
+
+  private performEquipEquipment(socket, player, equipment) {
+    logger.info(
+      `[ Server ] Equipping equipment ${equipment.getId()} to player ${player.playerData.name}`
+    )
+
+    player.clearTasks()
+
+    const equipEquipmentTask = new EquipEquipment(player, equipment)
+    player.addTask(equipEquipmentTask)
   }
 
   private notifyMapChange() {

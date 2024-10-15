@@ -60,8 +60,93 @@ export default {
           data: { scaleMode: 'nearest' }
         },
         {
+          alias: 'party_cone_01.png',
+          src: 'resources/images/party_cone_01.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
           alias: 'party_cone_04.png',
           src: 'resources/images/party_cone_04.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
+          alias: 'ladybug_01.png',
+          src: 'resources/images/ladybug_01.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
+          alias: 'bee_01.png',
+          src: 'resources/images/bee_01.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
+          alias: 'snapback_01.png',
+          src: 'resources/images/snapback_01.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
+          alias: 'dino_snapback_01.png',
+          src: 'resources/images/dino_snapback_01.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
+          alias: 'policeman_hat_01.png',
+          src: 'resources/images/policeman_hat_01.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
+          alias: 'bataclava_01.png',
+          src: 'resources/images/bataclava_01.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
+          alias: 'detective_hat_01.png',
+          src: 'resources/images/detective_hat_01.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
+          alias: 'zombie_brain_01.png',
+          src: 'resources/images/zombie_brain_01.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
+          alias: 'bolt_01.png',
+          src: 'resources/images/bolt_01.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
+          alias: 'beanie_01.png',
+          src: 'resources/images/beanie_01.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
+          alias: 'mustache_01.png',
+          src: 'resources/images/mustache_01.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
+          alias: 'chef_01.png',
+          src: 'resources/images/chef_01.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
+          alias: 'beard_01.png',
+          src: 'resources/images/beard_01.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
+          alias: 'glasses_01.png',
+          src: 'resources/images/glasses_01.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
+          alias: 'monocle_01.png',
+          src: 'resources/images/monocle_01.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
+          alias: 'medical_mask_01.png',
+          src: 'resources/images/medical_mask_01.png',
           data: { scaleMode: 'nearest' }
         }
       ]

@@ -41,9 +41,99 @@ const SKINS = [
 
 const EQUIPMENTS = [
   {
+    id: 'bataclava_01',
+    type: EquipmentType.Helmet,
+    sprite: 'bataclava_01.png'
+  },
+  {
+    id: 'beanie_01',
+    type: EquipmentType.Helmet,
+    sprite: 'beanie_01.png'
+  },
+  {
+    id: 'bee_01',
+    type: EquipmentType.Helmet,
+    sprite: 'bee_01.png'
+  },
+  {
+    id: 'bob_16x16',
+    type: EquipmentType.Helmet,
+    sprite: 'Bob_16x16.png'
+  },
+  {
+    id: 'bolt_01',
+    type: EquipmentType.Helmet,
+    sprite: 'bolt_01.png'
+  },
+  {
+    id: 'chef_01',
+    type: EquipmentType.Helmet,
+    sprite: 'chef_01.png'
+  },
+  {
+    id: 'detective_hat_01',
+    type: EquipmentType.Helmet,
+    sprite: 'detective_hat_01.png'
+  },
+  {
+    id: 'dino_snapback_01',
+    type: EquipmentType.Helmet,
+    sprite: 'dino_snapback_01.png'
+  },
+  {
+    id: 'glasses_01',
+    type: EquipmentType.Helmet,
+    sprite: 'glasses_01.png'
+  },
+  {
+    id: 'ladybug_01',
+    type: EquipmentType.Helmet,
+    sprite: 'ladybug_01.png'
+  },
+  {
+    id: 'medical_mask_01',
+    type: EquipmentType.Helmet,
+    sprite: 'medical_mask_01.png'
+  },
+  {
+    id: 'monocle_01',
+    type: EquipmentType.Helmet,
+    sprite: 'monocle_01.png'
+  },
+  {
+    id: 'mustache_01',
+    type: EquipmentType.Helmet,
+    sprite: 'mustache_01.png'
+  },
+  {
+    id: 'beard_01',
+    type: EquipmentType.Helmet,
+    sprite: 'beard_01.png'
+  },
+  {
+    id: 'party_cone_01',
+    type: EquipmentType.Helmet,
+    sprite: 'party_cone_01.png'
+  },
+  {
     id: 'party_cone_04',
     type: EquipmentType.Helmet,
     sprite: 'party_cone_04.png'
+  },
+  {
+    id: 'policeman_hat_01',
+    type: EquipmentType.Helmet,
+    sprite: 'policeman_hat_01.png'
+  },
+  {
+    id: 'snapback_01',
+    type: EquipmentType.Helmet,
+    sprite: 'snapback_01.png'
+  },
+  {
+    id: 'zombie_brain_01',
+    type: EquipmentType.Helmet,
+    sprite: 'zombie_brain_01.png'
   }
 ]
 
@@ -82,6 +172,7 @@ class Playground extends Scene {
     }
 
     EQUIPMENTS.forEach(({ id, type, sprite }) => {
+      console.log('Equipment:', id, type, sprite)
       this.equipmentSpritesheets.set(
         id,
         new Spritesheet(Assets.get(sprite), Assets.get('default_spritesheet.json').data)
