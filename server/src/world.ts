@@ -706,6 +706,8 @@ class World {
       return
     }
 
+    logger.info(`Player ${player.playerData.name} says: ${message}`)
+
     this.io.emit('player:message', {
       playerId: player.playerData.id,
       message: message
@@ -731,7 +733,8 @@ class World {
     }
 
     if (command === 'tp') {
-      this.handleTeleportCommand(socket, parts)
+      logger.warn('Teleport command is disabled')
+      // this.handleTeleportCommand(socket, parts)
     } else if (command == 'tp_player') {
       this.handleTeleportPlayerCommand(socket, parts)
     } else if (command == 'clear_map') {
@@ -928,6 +931,11 @@ class World {
     }
 
     const equipmentIndex = parseInt(command.substring(1))
+
+    if (equipmentIndex < 0 || equipmentIndex >= EQUIPMENTS.length) {
+      return
+    }
+
     const equipmentId = EQUIPMENTS[equipmentIndex].id
     const equipment = this.createEquipment(equipmentId)
 
