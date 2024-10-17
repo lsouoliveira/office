@@ -137,6 +137,8 @@ class Player extends AnimatedSprite implements Entity {
   playIdleAnimation() {
     if (this.isDrinking && this.direction == Direction.South) {
       this.playAnimation('drink')
+
+      return
     }
 
     return this.playAnimation('idle')
