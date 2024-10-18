@@ -131,6 +131,26 @@ const EQUIPMENTS = [
     sprite: 'snapback_01.png'
   },
   {
+    id: 'snapback_02',
+    type: EquipmentType.Helmet,
+    sprite: 'snapback_02.png'
+  },
+  {
+    id: 'snapback_03',
+    type: EquipmentType.Helmet,
+    sprite: 'snapback_03.png'
+  },
+  {
+    id: 'snapback_04',
+    type: EquipmentType.Helmet,
+    sprite: 'snapback_04.png'
+  },
+  {
+    id: 'snapback_05',
+    type: EquipmentType.Helmet,
+    sprite: 'snapback_05.png'
+  },
+  {
     id: 'zombie_brain_01',
     type: EquipmentType.Helmet,
     sprite: 'zombie_brain_01.png'

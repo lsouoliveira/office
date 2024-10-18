@@ -85,6 +85,26 @@ export default {
           data: { scaleMode: 'nearest' }
         },
         {
+          alias: 'snapback_02.png',
+          src: 'resources/images/snapback_02.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
+          alias: 'snapback_03.png',
+          src: 'resources/images/snapback_03.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
+          alias: 'snapback_04.png',
+          src: 'resources/images/snapback_04.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
+          alias: 'snapback_05.png',
+          src: 'resources/images/snapback_05.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
           alias: 'dino_snapback_01.png',
           src: 'resources/images/dino_snapback_01.png',
           data: { scaleMode: 'nearest' }

@@ -383,6 +383,22 @@ const EQUIPMENTS = [
     type: EquipmentType.Helmet
   },
   {
+    id: 'snapback_02',
+    type: EquipmentType.Helmet
+  },
+  {
+    id: 'snapback_03',
+    type: EquipmentType.Helmet
+  },
+  {
+    id: 'snapback_04',
+    type: EquipmentType.Helmet
+  },
+  {
+    id: 'snapback_05',
+    type: EquipmentType.Helmet
+  },
+  {
     id: 'dino_snapback_01',
     type: EquipmentType.Helmet
   },
