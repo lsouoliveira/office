@@ -17,6 +17,10 @@ TILESETS = {
         "id": 20000,
         "path": "resources/maps/Room_Builder_Office_16x16.png",
     },
+    "items": {
+        "id": 30000,
+        "path": "resources/maps/items.png",
+    },
 }
 
 

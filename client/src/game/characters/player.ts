@@ -223,7 +223,7 @@ class Player extends AnimatedSprite implements Entity {
     switch (facing) {
       case Direction.North:
         this.playAnimation('idle')
-        this.pivot.set(0, 4)
+        this.pivot.set(0, 8)
         break
       case Direction.West:
         this.playAnimation('sit')
@@ -237,8 +237,6 @@ class Player extends AnimatedSprite implements Entity {
         break
       case Direction.South:
         this.playAnimation('idle')
-        this.pivot.set(0, 2)
-        this.pivot_offset_y = -2
         break
     }
 

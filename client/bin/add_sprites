@@ -32,7 +32,7 @@ for id in "${ids[@]}"; do
       ;;
     default3)
       echo "Running: python ../scripts/sprites_editor.py --output src/game/data/sprites.json add $id --y 0 --width 1 --height 2 --states $id --tileset $tileset --pivot-x 0 --pivot-y 0"
-      python ../scripts/sprites_editor.py --output src/game/data/sprites.json add "$id" --y 0 --width 1 --height 3 --states "$id" --tileset "$tileset" --pivot-x 0 --pivot-y 2
+      python ../scripts/sprites_editor.py --output src/game/data/sprites.json add "$id" --y 0 --width 1 --height 3 --states "$id" --tileset "$tileset" --pivot-x 0 --pivot-y 1
       ;;
     portrait1)
       echo "Running: python ../scripts/sprites_editor.py --output src/game/data/sprites.json add $id --y 1 --width 1 --height 1 --states $id --tileset $tileset --pivot-x 0 --pivot-y 0"
@@ -40,7 +40,7 @@ for id in "${ids[@]}"; do
       ;;
     portrait2)
       echo "Running: python ../scripts/sprites_editor.py --output src/game/data/sprites.json add $id --y 1 --width 1 --height 2 --states $id --tileset $tileset --pivot-x 0 --pivot-y 1"
-      python ../scripts/sprites_editor.py --output src/game/data/sprites.json add "$id" --y 1 --width 1 --height 2 --states "$id" --tileset "$tileset" --pivot-x 0 --pivot-y 1
+      python ../scripts/sprites_editor.py --output src/game/data/sprites.json add "$id" --y 1 --width 1 --height 2 --states "$id" --tileset "$tileset" --pivot-x 0 --pivot-y 0
       ;;
     *)
       echo "Invalid sprite type: $sprite_type. Use wall, default, portrait1, or portrait2."

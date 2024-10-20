@@ -30,7 +30,7 @@ class Tile {
   }
 
   getTopItemWithAction(): Item | undefined {
-    return this.items.toReversed().find((item) => item.getActionId() !== undefined)
+    return this.items.toReversed().find((item) => item.getActionId())
   }
 
   isEmpty(): boolean {
