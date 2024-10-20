@@ -25,6 +25,14 @@ TILESETS = {
         "id": 40000,
         "path": "resources/maps/animated_glowing_pumpkin.png",
     },
+    "halloween": {
+        "id": 50000,
+        "path": "resources/maps/11_Halloween_Black_Shadow_16x16.png",
+    },
+    "conference_hall": {
+        "id": 60000,
+        "path": "resources/maps/13_Conference_Hall_Black_Shadow_16x16.png",
+    },
 }
 
 

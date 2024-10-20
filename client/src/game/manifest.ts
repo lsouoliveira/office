@@ -23,6 +23,16 @@ export default {
           data: { scaleMode: 'nearest' }
         },
         {
+          alias: '11_Halloween_Black_Shadow_16x16.png',
+          src: 'resources/maps/11_Halloween_Black_Shadow_16x16.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
+          alias: '13_Conference_Hall_Black_Shadow_16x16.png',
+          src: 'resources/maps/13_Conference_Hall_Black_Shadow_16x16.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
           alias: 'Room_Builder_Office_16x16.png',
           src: 'resources/maps/Room_Builder_Office_16x16.png',
           data: { scaleMode: 'nearest' }
