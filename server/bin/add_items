@@ -1,0 +1,40 @@
+#!/bin/bash
+
+# Check if both tile type and IDs are provided
+if [ $# -lt 3 ]; then
+  echo "Usage: $0 <tileset_id> <tile_type> \"id1, id2, id3, ...\""
+  echo "Tile types: ground, walkable, not_walkable"
+  exit 1
+fi
+
+# Assign inputs to variables
+tileset_id=$1
+tile_type=$2
+ids_list=$3
+
+# Split the IDs by comma and space
+IFS=', ' read -r -a ids <<< "$ids_list"
+
+# Loop through the IDs and run the appropriate command based on tile type
+for id in "${ids[@]}"; do
+  id=$(expr $id + $tileset_id)
+
+  case $tile_type in
+    ground)
+      echo "Running: python ../scripts/item_editor.py --output data/items.json add $id --is-ground --is-walkable --tileset-id $tileset_id"
+      python ../scripts/item_editor.py --output data/items.json add "$id" --is-ground --is-walkable --tileset-id "$tileset_id"
+      ;;
+    walkable)
+      echo "Running: python ../scripts/item_editor.py --output data/items.json add $id --is-walkable --tileset-id $tileset_id"
+      python ../scripts/item_editor.py --output data/items.json add "$id" --is-walkable --tileset-id "$tileset_id"
+      ;;
+    not_walkable)
+      echo "Running: python ../scripts/item_editor.py --output data/items.json add $id --tileset-id $tileset_id"
+      python ../scripts/item_editor.py --output data/items.json add "$id" --tileset-id "$tileset_id"
+      ;;
+    *)
+      echo "Invalid tile type: $tile_type. Use ground, walkable, or not_walkable."
+      exit 1
+      ;;
+  esac
+done

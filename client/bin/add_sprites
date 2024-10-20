@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+
+# Check if sprite type, tileset, and IDs are provided
+if [ $# -lt 3 ]; then
+  echo "Usage: $0 <sprite_type> <tileset> \"id1, id2, id3, ...\""
+  echo "Sprite types: wall, default, portrait1, portrait2"
+  exit 1
+fi
+
+# Assign inputs to variables
+sprite_type=$1
+tileset=$2
+ids_list=$3
+
+# Split the IDs by comma and space
+IFS=', ' read -r -a ids <<< "$ids_list"
+
+# Loop through the IDs and run the appropriate command based on sprite type
+for id in "${ids[@]}"; do
+  case $sprite_type in
+    wall)
+      echo "Running: python ../scripts/sprites_editor.py --output src/game/data/sprites.json add $id --y 0 --width 1 --height 2 --states $id --tileset $tileset --pivot-x 0 --pivot-y 1"
+      python ../scripts/sprites_editor.py --output src/game/data/sprites.json add "$id" --y 0 --width 1 --height 2 --states "$id" --tileset "$tileset" --pivot-x 0 --pivot-y 1
+      ;;
+    default)
+      echo "Running: python ../scripts/sprites_editor.py --output src/game/data/sprites.json add $id --y 0 --width 1 --height 1 --states $id --tileset $tileset --pivot-x 0 --pivot-y 0"
+      python ../scripts/sprites_editor.py --output src/game/data/sprites.json add "$id" --y 0 --width 1 --height 1 --states "$id" --tileset "$tileset" --pivot-x 0 --pivot-y 0
+      ;;
+    default2)
+      echo "Running: python ../scripts/sprites_editor.py --output src/game/data/sprites.json add $id --y 0 --width 1 --height 2 --states $id --tileset $tileset --pivot-x 0 --pivot-y 0"
+      python ../scripts/sprites_editor.py --output src/game/data/sprites.json add "$id" --y 0 --width 1 --height 2 --states "$id" --tileset "$tileset" --pivot-x 0 --pivot-y 1
+      ;;
+    default3)
+      echo "Running: python ../scripts/sprites_editor.py --output src/game/data/sprites.json add $id --y 0 --width 1 --height 2 --states $id --tileset $tileset --pivot-x 0 --pivot-y 0"
+      python ../scripts/sprites_editor.py --output src/game/data/sprites.json add "$id" --y 0 --width 1 --height 3 --states "$id" --tileset "$tileset" --pivot-x 0 --pivot-y 2
+      ;;
+    portrait1)
+      echo "Running: python ../scripts/sprites_editor.py --output src/game/data/sprites.json add $id --y 1 --width 1 --height 1 --states $id --tileset $tileset --pivot-x 0 --pivot-y 0"
+      python ../scripts/sprites_editor.py --output src/game/data/sprites.json add "$id" --y 1 --width 1 --height 1 --states "$id" --tileset "$tileset" --pivot-x 0 --pivot-y 0
+      ;;
+    portrait2)
+      echo "Running: python ../scripts/sprites_editor.py --output src/game/data/sprites.json add $id --y 1 --width 1 --height 2 --states $id --tileset $tileset --pivot-x 0 --pivot-y 1"
+      python ../scripts/sprites_editor.py --output src/game/data/sprites.json add "$id" --y 1 --width 1 --height 2 --states "$id" --tileset "$tileset" --pivot-x 0 --pivot-y 1
+      ;;
+    *)
+      echo "Invalid sprite type: $sprite_type. Use wall, default, portrait1, or portrait2."
+      exit 1
+      ;;
+  esac
+done
