@@ -5346,6 +5346,28 @@
       "y": 0
     },
     "tileset_id": 30000
+  },
+  "40000": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "tileset": "resources/maps/animated_glowing_pumpkin.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 40000,
+    "animation_speed": 0.05
   }
 }
 

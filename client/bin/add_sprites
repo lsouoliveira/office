@@ -30,6 +30,10 @@ for id in "${ids[@]}"; do
       echo "Running: python ../scripts/sprites_editor.py --output src/game/data/sprites.json add $id --y 0 --width 1 --height 2 --states $id --tileset $tileset --pivot-x 0 --pivot-y 0"
       python ../scripts/sprites_editor.py --output src/game/data/sprites.json add "$id" --y 0 --width 1 --height 2 --states "$id" --tileset "$tileset" --pivot-x 0 --pivot-y 1
       ;;
+    default2_2)
+      echo "Running: python ../scripts/sprites_editor.py --output src/game/data/sprites.json add $id --y 0 --width 1 --height 2 --states $id --tileset $tileset --pivot-x 0 --pivot-y 0"
+      python ../scripts/sprites_editor.py --output src/game/data/sprites.json add "$id" --y 0 --width 1 --height 2 --states "$id" --tileset "$tileset" --pivot-x 0 --pivot-y 0
+      ;;
     default3)
       echo "Running: python ../scripts/sprites_editor.py --output src/game/data/sprites.json add $id --y 0 --width 1 --height 2 --states $id --tileset $tileset --pivot-x 0 --pivot-y 0"
       python ../scripts/sprites_editor.py --output src/game/data/sprites.json add "$id" --y 0 --width 1 --height 3 --states "$id" --tileset "$tileset" --pivot-x 0 --pivot-y 1

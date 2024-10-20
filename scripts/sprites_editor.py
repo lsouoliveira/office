@@ -21,6 +21,10 @@ TILESETS = {
         "id": 30000,
         "path": "resources/maps/items.png",
     },
+    "animated_glowing_pumpkin": {
+        "id": 40000,
+        "path": "resources/maps/animated_glowing_pumpkin.png",
+    },
 }
 
 
