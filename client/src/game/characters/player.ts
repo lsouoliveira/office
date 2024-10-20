@@ -63,6 +63,7 @@ class Player extends AnimatedSprite implements Entity {
   private direction: Direction
   private isDrinking: boolean
   private helmetSlot?: Equipment
+  private isSitting: boolean
 
   constructor(id: string, spriteSheet: Spritesheet) {
     super(spriteSheet.animations.idle_south)
@@ -135,6 +136,10 @@ class Player extends AnimatedSprite implements Entity {
   }
 
   playIdleAnimation() {
+    if (this.isSitting) {
+      return
+    }
+
     if (this.isDrinking && this.direction == Direction.South) {
       this.playAnimation('drink')
 
@@ -200,6 +205,7 @@ class Player extends AnimatedSprite implements Entity {
     this.direction = data.direction
     this.speed = data.speed
     this.isDrinking = data.isDrinking
+    this.isSitting = data.state == State.Sitting
 
     this.setName(data.name)
 
@@ -217,16 +223,22 @@ class Player extends AnimatedSprite implements Entity {
     switch (facing) {
       case Direction.North:
         this.playAnimation('idle')
-        this.pivot.set(0, 8)
+        this.pivot.set(0, 4)
         break
       case Direction.West:
         this.playAnimation('sit')
+        this.pivot.set(0, 10)
+        this.pivot_offset_y = -10
         break
       case Direction.East:
         this.playAnimation('sit')
+        this.pivot.set(0, 10)
+        this.pivot_offset_y = -10
         break
       case Direction.South:
         this.playAnimation('idle')
+        this.pivot.set(0, 2)
+        this.pivot_offset_y = -2
         break
     }
 
@@ -235,7 +247,9 @@ class Player extends AnimatedSprite implements Entity {
 
   moveTo(x: number, y: number, direction: Direction) {
     this.pivot.set(0, 0)
+    this.pivot_offset_y = 0
     this.targets.push({ x, y, direction })
+    this.isSitting = false
   }
 
   setName(name: string) {

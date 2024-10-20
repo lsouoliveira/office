@@ -9,7 +9,13 @@ export default {
         },
         {
           alias: 'Room_Builder_Office_16x16.json',
-          src: 'resources/maps/Room_Builder_Office_16x16.json'
+          src: 'resources/maps/Room_Builder_Office_16x16.json',
+          data: { scaleMode: 'nearest' }
+        },
+        {
+          alias: 'Room_Builder_16x16.png',
+          src: 'resources/maps/Room_Builder_16x16.png',
+          data: { scaleMode: 'nearest' }
         },
         {
           alias: 'Room_Builder_Office_16x16.png',

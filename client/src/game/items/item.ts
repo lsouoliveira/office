@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js'
 import { ItemType } from './item_type'
-import { SPRITES } from './../data/sprites'
+import spritesData from './../data/sprites.json'
 import { TILE_SIZE } from './../map/tile'
 
 class Item {
@@ -26,7 +26,7 @@ class Item {
   }
 
   render(stage: PIXI.Container, x: number, y: number): void {
-    const spriteData = SPRITES[this.type.getId()]
+    const spriteData = spritesData[this.type.getId()]
 
     if (!spriteData) {
       return

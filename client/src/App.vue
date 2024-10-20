@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, useTemplateRef, reactive, ref, computed } from 'vue'
 import { Game } from './game/game'
-import { SPRITES } from './game/data/sprites'
+import spritesData from './game/data/sprites.json'
 import { OSApplication } from './os/os_application'
 import { Piano } from './piano'
 
@@ -111,8 +111,8 @@ const loadTileset = (tileset) => {
 const loadSprites = async () => {
   const sprites = []
 
-  for (const key in SPRITES) {
-    const { width, height, states, tileset } = SPRITES[key]
+  for (const key in spritesData) {
+    const { width, height, states, tileset } = spritesData[key]
     const tileId = states[0]
 
     try {
@@ -232,7 +232,9 @@ const toggleAudio = () => {
       <div class="text-lg font-bold text-white dark:text-gray-200">Items</div>
       <div class="flex flex-col items-center space-y-2 w-full">
         <div v-for="item in items.data" :key="item.id" class="w-full" @click="handleItem(item)">
-          <button class="w-full hover:bg-gray-200 dark:hover:bg-gray-700 p-2">
+          <button
+            class="flex flex-col items-center justify-center w-full hover:bg-gray-200 dark:hover:bg-gray-700 p-2 gap-2"
+          >
             <div
               :style="{
                 width: `${item.width * 16}px`,
@@ -241,6 +243,9 @@ const toggleAudio = () => {
                 backgroundPosition: `-${item.offsetX}px -${item.offsetY}px`
               }"
             ></div>
+            <div class="flex items-center justify-center text-white">
+              {{ item.id }}
+            </div>
           </button>
         </div>
       </div>

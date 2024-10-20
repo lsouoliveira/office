@@ -10,7 +10,7 @@ import { GameMap } from './../map/game_map'
 import { Tile } from './../map/tile'
 import { ItemType } from './../items/item_type'
 import { Item } from './../items/item'
-import { SPRITES } from './../data/sprites'
+import spritesData from './../data/sprites.json'
 import { Cursor } from './../cursor'
 import { SpriteCursor } from './../sprite_cursor'
 import { Stats } from 'pixi-stats'
@@ -192,7 +192,6 @@ class Playground extends Scene {
     }
 
     EQUIPMENTS.forEach(({ id, type, sprite }) => {
-      console.log('Equipment:', id, type, sprite)
       this.equipmentSpritesheets.set(
         id,
         new Spritesheet(Assets.get(sprite), Assets.get('default_spritesheet.json').data)
@@ -294,7 +293,7 @@ class Playground extends Scene {
           const itemTypeData = itemData.itemType
           let itemId = itemTypeData.id
 
-          if (!SPRITES[itemId]) {
+          if (!spritesData[itemId]) {
             itemId = 'default'
           }
 
@@ -476,8 +475,6 @@ class Playground extends Scene {
   }
 
   private updatePlayerHelmet(player: Player, playerData: any) {
-    console.log('Player helmet:', playerData.helmetSlot)
-
     if (!playerData.helmetSlot && !player.getHelmet()) {
       return
     }
@@ -489,7 +486,6 @@ class Playground extends Scene {
     }
 
     const helmetSpritesheet = this.equipmentSpritesheets.get(playerData.helmetSlot)
-    console.log('Equipped helmet:', playerData.helmetSlot)
 
     if (!helmetSpritesheet) {
       return
@@ -638,7 +634,10 @@ class Playground extends Scene {
 
     nonGroundChildren.sort((a, b) => {
       const diff =
-        a.y - a.height * a.anchor.y - a.pivot.y - (b.y - b.height * b.anchor.y - b.pivot.y)
+        a.y -
+        a.height * a.anchor.y -
+        (a.pivot.y + (a.pivot_offset_y || 0)) -
+        (b.y - b.height * b.anchor.y - (b.pivot.y + (b.pivot_offset_y || 0)))
 
       if (diff == 0) {
         if (a.isPlayer && !b.isPlayer) {

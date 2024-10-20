@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js'
-import { SPRITES } from './data/sprites'
+import spritesData from './data/sprites.json'
 import { TILE_SIZE } from './map/tile'
 import { GameMap } from './map/game_map'
 
@@ -22,10 +22,10 @@ class SpriteCursor extends PIXI.Sprite {
   setSprite(id: string) {
     let spriteData
 
-    if (id in SPRITES) {
-      spriteData = SPRITES[id]
+    if (id in spritesData) {
+      spriteData = spritesData[id]
     } else {
-      spriteData = SPRITES['default']
+      spriteData = spritesData['default']
     }
 
     this.spriteData = spriteData

@@ -9,365 +9,11 @@ import { ComputerTask } from './tasks/computer_task'
 import { DrinkTask } from './tasks/drink_task'
 import { EquipTempEquipmentTask } from './tasks/equip_temp_equipment_task'
 import { EquipEquipment } from './tasks/equip_equipment_task'
-import * as winston from 'winston'
-
-const loggerFormat = winston.format.printf(({ level, message, timestamp }) => {
-  return `${timestamp} ${level}: ${message}`
-})
-
-const logger = winston.createLogger({
-  level: 'info',
-  format: winston.format.json(),
-  transports: [new winston.transports.File({ filename: 'combined.log' })]
-})
-
-logger.add(
-  new winston.transports.Console({
-    format: winston.format.combine(winston.format.timestamp(), loggerFormat)
-  })
-)
+import logger from './logger'
 
 const fs = require('node:fs')
 const crypto = require('crypto')
 const DEFAULT_SKIN = 'Bob'
-
-const ITEMS = {
-  invisible_wall: {
-    isGround: false,
-    isWalkable: false
-  },
-  default: {
-    isGround: true,
-    isWalkable: true
-  },
-  office_floor1: {
-    isGround: true,
-    isWalkable: true
-  },
-  office_floor2: {
-    isGround: true,
-    isWalkable: true
-  },
-  office_chair1: {
-    isGround: false,
-    isWalkable: false,
-    actionId: 'sit',
-    facing: Direction.South
-  },
-  office_chair2: {
-    isGround: false,
-    isWalkable: false,
-    actionId: 'sit',
-    facing: Direction.East
-  },
-  office_chair3: {
-    isGround: false,
-    isWalkable: false,
-    actionId: 'sit',
-    facing: Direction.North
-  },
-  office_chair4: {
-    isGround: false,
-    isWalkable: false,
-    actionId: 'sit',
-    facing: Direction.West
-  },
-  orange_office_chair1: {
-    isGround: false,
-    isWalkable: false,
-    actionId: 'sit',
-    facing: Direction.South
-  },
-  orange_office_chair2: {
-    isGround: false,
-    isWalkable: false,
-    actionId: 'sit',
-    facing: Direction.East
-  },
-  orange_office_chair3: {
-    isGround: false,
-    isWalkable: false,
-    actionId: 'sit',
-    facing: Direction.North
-  },
-  orange_office_chair4: {
-    isGround: false,
-    isWalkable: false,
-    actionId: 'sit',
-    facing: Direction.West
-  },
-  pink_wall: {
-    isGround: false,
-    isWalkable: false
-  },
-  pink_wall_start: {
-    isGround: false,
-    isWalkable: false
-  },
-  pink_wall_end: {
-    isGround: false,
-    isWalkable: false
-  },
-  pink_wall_corner_left: {
-    isGround: false,
-    isWalkable: false
-  },
-  pink_wall_corner_right: {
-    isGround: false,
-    isWalkable: false
-  },
-  pink_wall_left: {
-    isGround: false,
-    isWalkable: false
-  },
-  pink_wall_right: {
-    isGround: false,
-    isWalkable: false
-  },
-  pink_wall_corner_bottom_left: {
-    isGround: false,
-    isWalkable: false
-  },
-  pink_wall_corner_bottom_right: {
-    isGround: false,
-    isWalkable: false
-  },
-  pink_wall_bottom: {
-    isGround: false,
-    isWalkable: false
-  },
-  brick_wall: {
-    isGround: false,
-    isWalkable: false
-  },
-  brick_wall_start: {
-    isGround: false,
-    isWalkable: false
-  },
-  brick_wall_end: {
-    isGround: false,
-    isWalkable: false
-  },
-  right_corner_left: {
-    isGround: false,
-    isWalkable: false
-  },
-  right_corner_right: {
-    isGround: false,
-    isWalkable: false
-  },
-  shadow_corner_left: {
-    isGround: true,
-    isWalkable: true
-  },
-  shadow_left: {
-    isGround: true,
-    isWalkable: true
-  },
-  shadow_middle: {
-    isGround: true,
-    isWalkable: true
-  },
-  shadow_right: {
-    isGround: true,
-    isWalkable: true
-  },
-  money_stack: {
-    isGround: false,
-    isWalkable: true
-  },
-  company_board_left: {
-    isGround: false,
-    isWalkable: false
-  },
-  company_board_right: {
-    isGround: false,
-    isWalkable: false
-  },
-  table1_left: {
-    isGround: false,
-    isWalkable: false
-  },
-  table1_middle: {
-    isGround: false,
-    isWalkable: false
-  },
-  table1_right: {
-    isGround: false,
-    isWalkable: false
-  },
-  coffee_machine_left_top: {
-    isGround: false,
-    isWalkable: false,
-    actionId: 'drink'
-  },
-  coffee_machine_left_bottom: {
-    isGround: false,
-    isWalkable: true
-  },
-  coffee_machine_right: {
-    isGround: false,
-    isWalkable: true
-  },
-  air_conditioner_left: {
-    isGround: false,
-    isWalkable: false
-  },
-  air_conditioner_right: {
-    isGround: false,
-    isWalkable: false
-  },
-  large_table_bottom_corner_left: {
-    isGround: false,
-    isWalkable: false
-  },
-  large_table_bottom_middle_left: {
-    isGround: false,
-    isWalkable: false
-  },
-  large_table_bottom_middle_right: {
-    isGround: false,
-    isWalkable: false
-  },
-  large_table_bottom_corner_right: {
-    isGround: false,
-    isWalkable: false
-  },
-  large_table_top_corner_left: {
-    isGround: false,
-    isWalkable: true
-  },
-  large_table_top_middle: {
-    isGround: false,
-    isWalkable: true
-  },
-  large_table_top_corner_right: {
-    isGround: false,
-    isWalkable: true
-  },
-  large_table_middle: {
-    isGround: false,
-    isWalkable: false
-  },
-  large_table_bottom_middle: {
-    isGround: false,
-    isWalkable: false
-  },
-  cabinet_left: {
-    isGround: false,
-    isWalkable: true
-  },
-  cabinet_right: {
-    isGround: false,
-    isWalkable: true
-  },
-  vending_machine: {
-    isGround: false,
-    isWalkable: true
-  },
-  computer_west_bottom2: {
-    isGround: false,
-    isWalkable: false
-  },
-  computer_west_bottom: {
-    isGround: false,
-    isWalkable: false
-  },
-  computer_west_top: {
-    isGround: false,
-    isWalkable: false,
-    actionId: 'computer'
-  },
-  computer_east_bottom2: {
-    isGround: false,
-    isWalkable: false
-  },
-  computer_east_bottom: {
-    isGround: false,
-    isWalkable: false
-  },
-  computer_east_top: {
-    isGround: false,
-    isWalkable: false,
-    actionId: 'computer'
-  },
-  laptop_top: {
-    isGround: false,
-    isWalkable: false
-  },
-  laptop_bottom: {
-    isGround: false,
-    isWalkable: false,
-    actionId: 'computer'
-  },
-  plant1: {
-    isGround: false,
-    isWalkable: true
-  },
-  plant2: {
-    isGround: false,
-    isWalkable: true
-  },
-  plant3: {
-    isGround: false,
-    isWalkable: true
-  },
-  plasma_tv: {
-    isGround: false,
-    isWalkable: false
-  },
-  corner_table_left_corner: {
-    isGround: false,
-    isWalkable: false
-  },
-  corner_table_top_left: {
-    isGround: false,
-    isWalkable: true
-  },
-  coner_table_right_corner: {
-    isGround: false,
-    isWalkable: false
-  },
-  coner_table_right_top: {
-    isGround: false,
-    isWalkable: false
-  },
-  coner_table_top_right_corner_to_left: {
-    isGround: false,
-    isWalkable: false
-  },
-  coner_table_top_right_corner: {
-    isGround: false,
-    isWalkable: true
-  },
-  coner_table_right_middle: {
-    isGround: false,
-    isWalkable: false
-  },
-  phone_top: {
-    isGround: false,
-    isWalkable: false
-  },
-  phone_bottom: {
-    isGround: false,
-    isWalkable: false
-  },
-  water_cooler_top: {
-    isGround: false,
-    isWalkable: false,
-    actionId: 'drink'
-  },
-  water_cooler_bottom: {
-    isGround: false,
-    isWalkable: false
-  },
-  party_cone_04: {
-    isGround: false,
-    isWalkable: false,
-    actionId: 'equipTempItem',
-    equipmentId: 'party_cone_04'
-  }
-}
 
 const EQUIPMENTS = [
   {
@@ -474,6 +120,7 @@ class World {
   private sessions: Map<string, Session>
   private map: GameMap
   private players: Map<string, Player>
+  private items: object
 
   constructor(io: Server) {
     this.io = io
@@ -482,8 +129,14 @@ class World {
   }
 
   init() {
+    this.loadItems()
     this.setupServer()
-    this.loadMap('./map.json')
+
+    if (fs.existsSync('./map.json')) {
+      this.loadMap('./map.json')
+    } else {
+      this.initMap()
+    }
   }
 
   mainloop() {
@@ -498,6 +151,19 @@ class World {
     setInterval(() => {
       this.mainloop()
     }, TICK_RATE * 1000)
+  }
+
+  private loadItems() {
+    logger.info('Loading items...')
+
+    const data = fs.readFileSync('./data/items.json')
+
+    if (!data) {
+      console.error('Error loading items')
+      return
+    }
+
+    this.items = JSON.parse(data)
   }
 
   private setupServer() {
@@ -701,6 +367,13 @@ class World {
         }
       }
     }
+  }
+
+  private initMap() {
+    logger.info('Initializing map...')
+
+    this.map = new GameMap(100, 100)
+    this.map.init()
   }
 
   private handlePlayerMessage(socket, message) {
@@ -982,8 +655,15 @@ class World {
       return
     }
 
-    const itemTypeData = ITEMS[data.itemId]
-    const itemType = new ItemType(data.itemId, itemTypeData)
+    const itemTypeData = this.items[data.itemId]
+    const itemType = new ItemType(data.itemId, {
+      isGround: itemTypeData.is_ground,
+      isWalkable: itemTypeData.is_walkable,
+      actionId: itemTypeData.action_id,
+      facing: itemTypeData.facing,
+      equipmentId: itemTypeData.equipment_id
+    })
+
     const item = new Item(itemType)
 
     tile.addItem(item)

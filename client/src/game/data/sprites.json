@@ -1,0 +1,1725 @@
+{
+  "385": {
+    "y": 1,
+    "width": 1,
+    "height": 1,
+    "states": [
+      385
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 0
+  },
+  "386": {
+    "y": 1,
+    "width": 1,
+    "height": 1,
+    "states": [
+      386
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 0
+  },
+  "387": {
+    "y": 1,
+    "width": 1,
+    "height": 1,
+    "states": [
+      387
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 0
+  },
+  "388": {
+    "y": 1,
+    "width": 1,
+    "height": 1,
+    "states": [
+      388
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 0
+  },
+  "394": {
+    "y": 1,
+    "width": 1,
+    "height": 1,
+    "states": [
+      394
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 0
+  },
+  "395": {
+    "y": 1,
+    "width": 1,
+    "height": 1,
+    "states": [
+      395
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 0
+  },
+  "396": {
+    "y": 1,
+    "width": 1,
+    "height": 1,
+    "states": [
+      396
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 0
+  },
+  "461": {
+    "y": 1,
+    "width": 1,
+    "height": 1,
+    "states": [
+      461
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 0
+  },
+  "462": {
+    "y": 1,
+    "width": 1,
+    "height": 1,
+    "states": [
+      462
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 0
+  },
+  "463": {
+    "y": 1,
+    "width": 1,
+    "height": 1,
+    "states": [
+      463
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 0
+  },
+  "464": {
+    "y": 1,
+    "width": 1,
+    "height": 1,
+    "states": [
+      464
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 0
+  },
+  "465": {
+    "y": 1,
+    "width": 1,
+    "height": 1,
+    "states": [
+      465
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 0
+  },
+  "466": {
+    "y": 1,
+    "width": 1,
+    "height": 1,
+    "states": [
+      466
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 0
+  },
+  "467": {
+    "y": 1,
+    "width": 1,
+    "height": 1,
+    "states": [
+      467
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 0
+  },
+  "468": {
+    "y": 1,
+    "width": 1,
+    "height": 1,
+    "states": [
+      468
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 0
+  },
+  "469": {
+    "y": 1,
+    "width": 1,
+    "height": 1,
+    "states": [
+      469
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 0
+  },
+  "471": {
+    "y": 1,
+    "width": 1,
+    "height": 1,
+    "states": [
+      471
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 0
+  },
+  "472": {
+    "y": 1,
+    "width": 1,
+    "height": 1,
+    "states": [
+      472
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 0
+  },
+  "537": {
+    "y": 1,
+    "width": 1,
+    "height": 1,
+    "states": [
+      537
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 0
+  },
+  "538": {
+    "y": 1,
+    "width": 1,
+    "height": 1,
+    "states": [
+      538
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 0
+  },
+  "539": {
+    "y": 1,
+    "width": 1,
+    "height": 1,
+    "states": [
+      539
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 0
+  },
+  "540": {
+    "y": 1,
+    "width": 1,
+    "height": 1,
+    "states": [
+      540
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 0
+  },
+  "541": {
+    "y": 1,
+    "width": 1,
+    "height": 1,
+    "states": [
+      541
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 0
+  },
+  "543": {
+    "y": 1,
+    "width": 1,
+    "height": 1,
+    "states": [
+      543
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 0
+  },
+  "545": {
+    "y": 1,
+    "width": 1,
+    "height": 1,
+    "states": [
+      545
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 0
+  },
+  "546": {
+    "y": 1,
+    "width": 1,
+    "height": 1,
+    "states": [
+      546
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 0
+  },
+  "547": {
+    "y": 1,
+    "width": 1,
+    "height": 1,
+    "states": [
+      547
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 0
+  },
+  "548": {
+    "y": 1,
+    "width": 1,
+    "height": 1,
+    "states": [
+      548
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 0
+  },
+  "615": {
+    "y": 1,
+    "width": 1,
+    "height": 1,
+    "states": [
+      615
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 0
+  },
+  "616": {
+    "y": 1,
+    "width": 1,
+    "height": 1,
+    "states": [
+      616
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 0
+  },
+  "617": {
+    "y": 1,
+    "width": 1,
+    "height": 1,
+    "states": [
+      617
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 0
+  },
+  "619": {
+    "y": 1,
+    "width": 1,
+    "height": 1,
+    "states": [
+      619
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 0
+  },
+  "620": {
+    "y": 1,
+    "width": 1,
+    "height": 1,
+    "states": [
+      620
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 0
+  },
+  "621": {
+    "y": 1,
+    "width": 1,
+    "height": 1,
+    "states": [
+      621
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 0
+  },
+  "622": {
+    "y": 1,
+    "width": 1,
+    "height": 1,
+    "states": [
+      622
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 0
+  },
+  "623": {
+    "y": 1,
+    "width": 1,
+    "height": 1,
+    "states": [
+      623
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 0
+  },
+  "836": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      836
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 0
+  },
+  "847": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      847
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 0
+  },
+  "988": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      988
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 0
+  },
+  "999": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      999
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 0
+  },
+  "1140": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      1140
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 0
+  },
+  "1151": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      1151
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 0
+  },
+  "1292": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      1292
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 0
+  },
+  "1303": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      1303
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 0
+  },
+  "1444": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      1444
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 0
+  },
+  "1455": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      1455
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 0
+  },
+  "1596": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      1596
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 0
+  },
+  "1607": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      1607
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 0
+  },
+  "1748": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      1748
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 0
+  },
+  "1759": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      1759
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 0
+  },
+  "1900": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      1900
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 0
+  },
+  "1911": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      1911
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 0
+  },
+  "2052": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      2052
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 0
+  },
+  "2063": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      2063
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 0
+  },
+  "2204": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      2204
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 0
+  },
+  "2215": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      2215
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 0
+  },
+  "2356": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      2356
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 0
+  },
+  "2367": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      2367
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 0
+  },
+  "2508": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      2508
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 0
+  },
+  "2519": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      2519
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 0
+  },
+  "2660": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      2660
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 0
+  },
+  "2671": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      2671
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 0
+  },
+  "2812": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      2812
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 0
+  },
+  "2823": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      2823
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 0
+  },
+  "2964": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      2964
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 0
+  },
+  "2975": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      2975
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 0
+  },
+  "3116": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      3116
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 0
+  },
+  "3127": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      3127
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 0
+  },
+  "3268": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      3268
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 0
+  },
+  "3279": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      3279
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 0
+  },
+  "3420": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      3420
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 0
+  },
+  "3431": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      3431
+    ],
+    "tileset": "resources/maps/Room_Builder_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 0
+  },
+  "10074": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      74
+    ],
+    "tileset": "resources/maps/Modern_Office_Black_Shadow.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 10000
+  },
+  "10075": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      75
+    ],
+    "tileset": "resources/maps/Modern_Office_Black_Shadow.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 10000
+  },
+  "10076": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      76
+    ],
+    "tileset": "resources/maps/Modern_Office_Black_Shadow.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 10000
+  },
+  "10077": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      77
+    ],
+    "tileset": "resources/maps/Modern_Office_Black_Shadow.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 10000
+  },
+  "10078": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      78
+    ],
+    "tileset": "resources/maps/Modern_Office_Black_Shadow.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 10000
+  },
+  "10090": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      90
+    ],
+    "tileset": "resources/maps/Modern_Office_Black_Shadow.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 10000
+  },
+  "10091": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      91
+    ],
+    "tileset": "resources/maps/Modern_Office_Black_Shadow.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 10000
+  },
+  "10092": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      92
+    ],
+    "tileset": "resources/maps/Modern_Office_Black_Shadow.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 10000
+  },
+  "10093": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      93
+    ],
+    "tileset": "resources/maps/Modern_Office_Black_Shadow.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 10000
+  },
+  "10094": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      94
+    ],
+    "tileset": "resources/maps/Modern_Office_Black_Shadow.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 10000
+  },
+  "10118": {
+    "y": 0,
+    "width": 1,
+    "height": 3,
+    "states": [
+      118
+    ],
+    "tileset": "resources/maps/Modern_Office_Black_Shadow.png",
+    "pivot": {
+      "x": 0,
+      "y": 2
+    },
+    "tileset_id": 10000
+  },
+  "10129": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      129
+    ],
+    "tileset": "resources/maps/Modern_Office_Black_Shadow.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 10000
+  },
+  "10130": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      130
+    ],
+    "tileset": "resources/maps/Modern_Office_Black_Shadow.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 10000
+  },
+  "10132": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      132
+    ],
+    "tileset": "resources/maps/Modern_Office_Black_Shadow.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 10000
+  },
+  "10133": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      133
+    ],
+    "tileset": "resources/maps/Modern_Office_Black_Shadow.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 10000
+  },
+  "20080": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      80
+    ],
+    "tileset": "resources/maps/Room_Builder_Office_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 20000
+  },
+  "20081": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      81
+    ],
+    "tileset": "resources/maps/Room_Builder_Office_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 20000
+  },
+  "20082": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      82
+    ],
+    "tileset": "resources/maps/Room_Builder_Office_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 20000
+  },
+  "20083": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      83
+    ],
+    "tileset": "resources/maps/Room_Builder_Office_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 20000
+  },
+  "20087": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      87
+    ],
+    "tileset": "resources/maps/Room_Builder_Office_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 20000
+  },
+  "20088": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      88
+    ],
+    "tileset": "resources/maps/Room_Builder_Office_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 20000
+  },
+  "20089": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      89
+    ],
+    "tileset": "resources/maps/Room_Builder_Office_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 20000
+  },
+  "20107": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      107
+    ],
+    "tileset": "resources/maps/Room_Builder_Office_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 20000
+  },
+  "20108": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      108
+    ],
+    "tileset": "resources/maps/Room_Builder_Office_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 20000
+  },
+  "20112": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      112
+    ],
+    "tileset": "resources/maps/Room_Builder_Office_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 20000
+  },
+  "20113": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      113
+    ],
+    "tileset": "resources/maps/Room_Builder_Office_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 20000
+  },
+  "20114": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      114
+    ],
+    "tileset": "resources/maps/Room_Builder_Office_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 20000
+  },
+  "20115": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      115
+    ],
+    "tileset": "resources/maps/Room_Builder_Office_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 20000
+  },
+  "20119": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      119
+    ],
+    "tileset": "resources/maps/Room_Builder_Office_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 20000
+  },
+  "20120": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      120
+    ],
+    "tileset": "resources/maps/Room_Builder_Office_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 20000
+  },
+  "20121": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      121
+    ],
+    "tileset": "resources/maps/Room_Builder_Office_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 20000
+  },
+  "20139": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      139
+    ],
+    "tileset": "resources/maps/Room_Builder_Office_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 20000
+  },
+  "20140": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      140
+    ],
+    "tileset": "resources/maps/Room_Builder_Office_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 20000
+  },
+  "20144": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      144
+    ],
+    "tileset": "resources/maps/Room_Builder_Office_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 20000
+  },
+  "20145": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      145
+    ],
+    "tileset": "resources/maps/Room_Builder_Office_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 20000
+  },
+  "20146": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      146
+    ],
+    "tileset": "resources/maps/Room_Builder_Office_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 20000
+  },
+  "20147": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      147
+    ],
+    "tileset": "resources/maps/Room_Builder_Office_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 20000
+  },
+  "20151": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      151
+    ],
+    "tileset": "resources/maps/Room_Builder_Office_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 20000
+  },
+  "20152": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      152
+    ],
+    "tileset": "resources/maps/Room_Builder_Office_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 20000
+  },
+  "20153": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      153
+    ],
+    "tileset": "resources/maps/Room_Builder_Office_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 20000
+  },
+  "20171": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      171
+    ],
+    "tileset": "resources/maps/Room_Builder_Office_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 20000
+  },
+  "20172": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      172
+    ],
+    "tileset": "resources/maps/Room_Builder_Office_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 20000
+  },
+  "20176": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      176
+    ],
+    "tileset": "resources/maps/Room_Builder_Office_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 20000
+  },
+  "20177": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      177
+    ],
+    "tileset": "resources/maps/Room_Builder_Office_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 20000
+  },
+  "20178": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      178
+    ],
+    "tileset": "resources/maps/Room_Builder_Office_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 20000
+  },
+  "20179": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      179
+    ],
+    "tileset": "resources/maps/Room_Builder_Office_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 20000
+  },
+  "20183": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      183
+    ],
+    "tileset": "resources/maps/Room_Builder_Office_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 20000
+  },
+  "20184": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      184
+    ],
+    "tileset": "resources/maps/Room_Builder_Office_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 20000
+  },
+  "20185": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      185
+    ],
+    "tileset": "resources/maps/Room_Builder_Office_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 20000
+  },
+  "20203": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      203
+    ],
+    "tileset": "resources/maps/Room_Builder_Office_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 20000
+  },
+  "20204": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      204
+    ],
+    "tileset": "resources/maps/Room_Builder_Office_16x16.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 20000
+  }
+}
+
