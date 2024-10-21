@@ -136,14 +136,20 @@ class Player extends PIXI.Container implements Entity {
   }
 
   updateEntity(dt: number) {
-    this.moveToNextTarget(dt)
+    try {
+      this.moveToNextTarget(dt)
 
-    this.bottomHalf.position.set(this.position.x, this.position.y)
-    this.topHalf.position.set(this.position.x, this.position.y - this.topHalfSprite.height)
-    this.playerName.position.set(
-      this.position.x + this.topHalfSprite.width / 2,
-      this.position.y - this.topHalfSprite.height - 2
-    )
+      this.bottomHalf.position.set(this.position.x, this.position.y)
+
+      this.topHalf.position.set(this.position.x, this.position.y - this.topHalfSprite.height)
+
+      this.playerName.position.set(
+        this.position.x + this.topHalfSprite.width / 2,
+        this.position.y - this.topHalfSprite.height - 2
+      )
+    } catch (e) {
+      console.debug(e)
+    }
   }
 
   moveToNextTarget(dt: number) {
