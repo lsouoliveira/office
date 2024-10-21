@@ -273,7 +273,11 @@ class Player extends PIXI.Container implements Entity {
         this.offsetY = -10
         break
       case Direction.South:
-        this.playAnimation('idle')
+        if (this.isDrinking) {
+          this.playAnimation('drink')
+        } else {
+          this.playAnimation('idle')
+        }
         this.offsetY = -2
         break
     }
