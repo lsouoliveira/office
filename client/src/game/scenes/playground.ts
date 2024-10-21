@@ -517,14 +517,14 @@ class Playground extends Scene {
         return
       }
 
+      this.updatePlayerEquipment(player, playerData)
+
       const topHalfAnimator = this.createAnimator(player.topHalfSprite, spritesheet, 0, 0)
       const bottomHalfAnimator = this.createAnimator(player.bottomHalfSprite, spritesheet, 0, 1)
       const animator = new ComposedAnimator([topHalfAnimator, bottomHalfAnimator])
 
       player.setAnimator(animator)
       player.updateData(playerData)
-
-      this.updatePlayerEquipment(player, playerData)
     }
   }
 
