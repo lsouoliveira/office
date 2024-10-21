@@ -5732,6 +5732,79 @@
       "y": 0
     },
     "tileset_id": 60000
+  },
+  "70000": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      0,
+      3,
+      6,
+      9,
+      12,
+      15,
+      18,
+      21,
+      24,
+      27,
+      30
+    ],
+    "tileset": "resources/maps/cat.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 70000,
+    "animation_speed": 0.05
+  },
+  "70001": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      1,
+      4,
+      7,
+      10,
+      13,
+      16,
+      19,
+      22,
+      25,
+      28,
+      31
+    ],
+    "tileset": "resources/maps/cat.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 70000,
+    "animation_speed": 0.05
+  },
+  "70002": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      2,
+      5,
+      8,
+      11,
+      14,
+      17,
+      20,
+      23,
+      26,
+      29
+    ],
+    "tileset": "resources/maps/cat.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 70000,
+    "animation_speed": 0.05
   }
 }
-

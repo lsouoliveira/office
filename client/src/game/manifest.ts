@@ -18,6 +18,11 @@ export default {
           data: { scaleMode: 'nearest' }
         },
         {
+          alias: 'cat.png',
+          src: 'resources/maps/cat.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
           alias: 'animated_glowing_pumpkin.png',
           src: 'resources/maps/animated_glowing_pumpkin.png',
           data: { scaleMode: 'nearest' }

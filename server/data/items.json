@@ -3424,6 +3424,29 @@
     "facing": null,
     "equipment_id": null,
     "tileset_id": 60000
+  },
+  "70000": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70001": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70002": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
   }
 }
-
