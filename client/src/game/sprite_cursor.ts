@@ -50,7 +50,6 @@ class SpriteCursor extends PIXI.Sprite {
     const texture = new PIXI.Texture({ source: tilesetTexture.source, frame: textureRect })
 
     this.texture = texture
-    this.anchor.set(pivot.x / spriteData.width, pivot.y / spriteData.height)
   }
 
   getSpriteId(): string | undefined {
@@ -70,7 +69,7 @@ class SpriteCursor extends PIXI.Sprite {
     const tileY = Math.floor(y / TILE_SIZE)
 
     this.visible = true
-    this.position.set(tileX * TILE_SIZE, tileY * TILE_SIZE - this.spriteData.y * TILE_SIZE)
+    this.position.set(tileX * TILE_SIZE, tileY * TILE_SIZE)
   }
 }
 

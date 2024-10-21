@@ -3,7 +3,7 @@ import { Assets, Sprite, Spritesheet, AnimatedSprite } from 'pixi.js'
 import { Scene } from './scene'
 import { Camera } from './../camera'
 import { Client } from './../client'
-import { Animator } from './../animation/animator'
+import { type Animator, BaseAnimator, ComposedAnimator } from './../animation/animator'
 import { Animation } from './../animation/animation'
 import { Player, Direction } from './../characters/player'
 import { GameMap } from './../map/game_map'
@@ -16,6 +16,7 @@ import { SpriteCursor } from './../sprite_cursor'
 import { Stats } from 'pixi-stats'
 import { Chat } from './../entities/chat'
 import { Equipment, EquipmentType } from './../characters/player'
+import { SpritesheetSplitter, ComposedSpritesheet } from './../animation/spritesheet'
 
 const TILE_SIZE = 16
 const DEFAULT_SKIN = 'Bob'
@@ -165,30 +166,32 @@ class Playground extends Scene {
   private playerSpritesheet: Spritesheet
   private entities: any[] = []
   private map: GameMap
-  private entitiesLayer: PIXI.Container = new PIXI.Container()
   private uiLayer: PIXI.Container = new PIXI.Container()
   private cursor: Cursor
   private spriteCursor: SpriteCursor
   private isPlacingItem: boolean = false
   private ctrlPressed: boolean = false
   private chat: Chat
-  private spritesheets: Map<string, Spritesheet> = new Map()
+  private playerSkins: Map<string, ComposedSpritesheet> = new Map()
   private equipmentSpritesheets: Map<string, Spritesheet> = new Map()
+  private layers: PIXI.Container[] = []
 
   async onStart() {
     // const stats = new Stats(this.app.renderer)
 
-    this.entitiesLayer.sortableChildren = true
+    for (let i = 0; i < SKINS.length; i++) {
+      const { name, sprite } = SKINS[i]
 
-    SKINS.forEach(({ name, sprite }) => {
-      this.spritesheets.set(
-        name,
-        new Spritesheet(Assets.get(sprite), Assets.get('default_spritesheet.json').data)
+      const spritesheet = new Spritesheet(
+        Assets.get(sprite),
+        Assets.get('default_spritesheet.json').data
       )
-    })
-
-    for (const spritesheet of this.spritesheets.values()) {
       await spritesheet.parse()
+
+      const splitter = new SpritesheetSplitter(spritesheet)
+      const composedSpritesheet = splitter.split(16, 32, 16)
+
+      this.playerSkins.set(name, composedSpritesheet)
     }
 
     EQUIPMENTS.forEach(({ id, type, sprite }) => {
@@ -208,6 +211,16 @@ class Playground extends Scene {
       window.innerHeight / (TILE_SIZE * 18)
     )
 
+    for (let i = 0; i < 10; i++) {
+      const layer = new PIXI.Container()
+
+      layer.sortableChildren = true
+      layer.zIndex = i
+
+      this.layers.push(layer)
+      this.addChild(layer)
+    }
+
     this.connectToServer()
   }
 
@@ -224,8 +237,6 @@ class Playground extends Scene {
     }
 
     this.camera.update()
-
-    this.reorderEntitiesLayer()
   }
 
   setupMapBuilder() {
@@ -258,7 +269,7 @@ class Playground extends Scene {
   }
 
   setupScene() {
-    this.addChild(this.entitiesLayer)
+    this.uiLayer.zIndex = 999
     this.addChild(this.uiLayer)
 
     this.app.stage.on('pointermove', this.onMouseMove.bind(this))
@@ -300,6 +311,7 @@ class Playground extends Scene {
           const itemType = new ItemType(itemId, {
             isGround: itemTypeData.isGround,
             isWalkable: itemTypeData.isWalkable,
+            isWall: itemTypeData.isWall,
             actionId: itemTypeData.actionId,
             facing: itemTypeData.facing
           })
@@ -312,7 +324,7 @@ class Playground extends Scene {
       }
     }
 
-    this.map.render(this.entitiesLayer, 0, 0)
+    this.map.render(this.layers, 0, 0)
 
     this.cursor = new Cursor(TILE_SIZE, TILE_SIZE, this.map)
     this.uiLayer.addChild(this.cursor)
@@ -320,20 +332,47 @@ class Playground extends Scene {
     this.setupMapBuilder()
   }
 
-  private createPlayer(id: string, spritesheet: Spritesheet) {
-    const player = new Player(id, spritesheet)
+  private createPlayer(id: string, composedSpritesheet: ComposedSpritesheet) {
+    const player = new Player(id, composedSpritesheet, this.layers)
 
-    const animator = this.createAnimator(player as AnimatedSprite, spritesheet)
+    const topHalfAnimator = this.createAnimator(player.topHalfSprite, composedSpritesheet, 0, 0)
+    const bottomHalfAnimator = this.createAnimator(
+      player.bottomHalfSprite,
+      composedSpritesheet,
+      0,
+      1
+    )
+    const animator = new ComposedAnimator([topHalfAnimator, bottomHalfAnimator])
 
     player.init(animator)
     player.zIndex = 1
-    player.isPlayer = true
 
     return player
   }
 
-  private createAnimator(player: AnimatedSprite, spritesheet: Spritesheet) {
-    return new Animator(player, [
+  private createAnimator(
+    sprite: AnimatedSprite,
+    composedSpritesheet: ComposedSpritesheet,
+    x: number,
+    y: number
+  ) {
+    return new BaseAnimator(sprite, [
+      new Animation('idle_north', composedSpritesheet.getTextures('idle_north', x, y), 0.025),
+      new Animation('idle_south', composedSpritesheet.getTextures('idle_south', x, y), 0.025),
+      new Animation('idle_east', composedSpritesheet.getTextures('idle_east', x, y), 0.025),
+      new Animation('idle_west', composedSpritesheet.getTextures('idle_west', x, y), 0.025),
+      new Animation('walk_north', composedSpritesheet.getTextures('walk_north', x, y), 0.2),
+      new Animation('walk_south', composedSpritesheet.getTextures('walk_south', x, y), 0.2),
+      new Animation('walk_east', composedSpritesheet.getTextures('walk_east', x, y), 0.2),
+      new Animation('walk_west', composedSpritesheet.getTextures('walk_west', x, y), 0.2),
+      new Animation('sit_west', composedSpritesheet.getTextures('sit_west', x, y), 0.025),
+      new Animation('sit_east', composedSpritesheet.getTextures('sit_east', x, y), 0.025),
+      new Animation('drink_south', composedSpritesheet.getTextures('drink_south', x, y), 0.025)
+    ])
+  }
+
+  private createBaseAnimator(player: AnimatedSprite, spritesheet: Spritesheet) {
+    return new BaseAnimator(player, [
       new Animation('idle_north', spritesheet.animations.idle_north, 0.025),
       new Animation('idle_north', spritesheet.animations.idle_north, 0.025),
       new Animation('idle_south', spritesheet.animations.idle_south, 0.025),
@@ -356,17 +395,23 @@ class Playground extends Scene {
 
     localStorage.setItem('sessionId', sessionId)
 
-    this.player = this.createPlayer(
-      playerData.id,
-      this.spritesheets.get(playerData.skin || DEFAULT_SKIN)
-    )
+    const skin = this.playerSkins.get(playerData.skin || DEFAULT_SKIN)
+
+    if (!skin) {
+      return
+    }
+
+    this.player = this.createPlayer(playerData.id, skin)
     this.player.onStart()
     this.player.position.set(playerData.position.x, playerData.position.y)
     this.players[playerData.id] = this.player
 
     this.updatePlayerEquipment(this.player, playerData)
 
-    this.entitiesLayer.addChild(this.player)
+    this.layers[2].addChild(this.player.topHalf)
+    this.layers[1].addChild(this.player.bottomHalf)
+    this.uiLayer.addChild(this.player.playerName)
+
     this.addEntity(this.player)
   }
 
@@ -400,16 +445,24 @@ class Playground extends Scene {
   }
 
   private addPlayer(playerData: any) {
-    const player = this.createPlayer(
-      playerData.id,
-      this.spritesheets.get(playerData.skin || DEFAULT_SKIN)
-    )
+    const skin = this.playerSkins.get(playerData.skin || DEFAULT_SKIN)
+
+    if (!skin) {
+      return
+    }
+
+    const player = this.createPlayer(playerData.id, skin)
+
     player.onStart()
     player.updateData(playerData)
     this.updatePlayerEquipment(player, playerData)
 
     this.players[playerData.id] = player
-    this.entitiesLayer.addChild(player)
+
+    this.layers[2].addChild(player.topHalf)
+    this.layers[1].addChild(player.bottomHalf)
+    this.uiLayer.addChild(player.playerName)
+
     this.addEntity(player)
   }
 
@@ -457,14 +510,19 @@ class Playground extends Scene {
     if (this.players[playerData.id]) {
       const player = this.players[playerData.id]
 
-      player.updateData(playerData)
-
       const skin = playerData.skin || DEFAULT_SKIN
-      const spritesheet = this.spritesheets.get(skin)
+      const spritesheet = this.playerSkins.get(skin)
 
-      const animator = this.createAnimator(player as AnimatedSprite, spritesheet)
+      if (!spritesheet) {
+        return
+      }
+
+      const topHalfAnimator = this.createAnimator(player.topHalfSprite, spritesheet, 0, 0)
+      const bottomHalfAnimator = this.createAnimator(player.bottomHalfSprite, spritesheet, 0, 1)
+      const animator = new ComposedAnimator([topHalfAnimator, bottomHalfAnimator])
 
       player.setAnimator(animator)
+      player.updateData(playerData)
 
       this.updatePlayerEquipment(player, playerData)
     }
@@ -492,7 +550,7 @@ class Playground extends Scene {
     }
 
     const helmet = new Equipment(playerData.helmetSlot, EquipmentType.Helmet, helmetSpritesheet)
-    const animator = this.createAnimator(helmet as AnimatedSprite, helmetSpritesheet)
+    const animator = this.createBaseAnimator(helmet as AnimatedSprite, helmetSpritesheet)
     helmet.init(animator)
 
     player.equip(helmet)
@@ -606,13 +664,14 @@ class Playground extends Scene {
       new ItemType(itemType.id, {
         isGround: itemType.isGround,
         isWalkable: itemType.isWalkable,
+        isWall: itemType.isWall,
         actionId: itemType.actionId,
         facing: itemType.facing
       })
     )
 
     tile.addItem(item)
-    item.render(this.entitiesLayer, x * TILE_SIZE, y * TILE_SIZE)
+    item.render(this.layers, x * TILE_SIZE, y * TILE_SIZE, tile.getItemHeight(item))
   }
 
   private handleItemRemoved({ id, x, y }) {
@@ -627,38 +686,6 @@ class Playground extends Scene {
     entity.on('destroy', () => {
       this.entities.splice(this.entities.indexOf(entity), 1)
     })
-  }
-
-  reorderEntitiesLayer() {
-    const nonGroundChildren = this.entitiesLayer.children.filter((child) => child.zIndex !== 0)
-
-    nonGroundChildren.sort((a, b) => {
-      const diff =
-        a.y -
-        a.height * a.anchor.y -
-        (a.pivot.y + (a.pivot_offset_y || 0)) -
-        (b.y - b.height * b.anchor.y - (b.pivot.y + (b.pivot_offset_y || 0)))
-
-      if (diff == 0) {
-        if (a.isPlayer && !b.isPlayer) {
-          return 1
-        }
-
-        if (!a.isPlayer && b.isPlayer) {
-          return -1
-        }
-
-        return diff
-      }
-
-      return diff
-    })
-
-    let zIndex = 1
-
-    for (const child of nonGroundChildren) {
-      child.zIndex = zIndex++
-    }
   }
 }
 

@@ -25,6 +25,7 @@ const showPianoModal = ref(false)
 const osApplication = ref(null)
 const piano = ref(null)
 const isAudioEnabled = ref(false)
+const itemsSearch = ref('')
 
 const osRoot = useTemplateRef('osRoot')
 
@@ -194,6 +195,10 @@ const toggleAudio = () => {
     })
   }
 }
+
+const filteredItems = computed(() => {
+  return items.data.filter((item) => item.id.includes(itemsSearch.value))
+})
 </script>
 <template>
   <config-modal @close="showConfigModal = false" v-model="showConfigModal" v-if="showConfigModal" />
@@ -230,8 +235,11 @@ const toggleAudio = () => {
   >
     <div class="flex flex-col items-center space-y-4">
       <div class="text-lg font-bold text-white dark:text-gray-200">Items</div>
+      <div>
+        <b-input v-model="itemsSearch" placeholder="Search..." class="w-full" />
+      </div>
       <div class="flex flex-col items-center space-y-2 w-full">
-        <div v-for="item in items.data" :key="item.id" class="w-full" @click="handleItem(item)">
+        <div v-for="item in filteredItems" :key="item.id" class="w-full" @click="handleItem(item)">
           <button
             class="flex flex-col items-center justify-center w-full hover:bg-gray-200 dark:hover:bg-gray-700 p-2 gap-2"
           >

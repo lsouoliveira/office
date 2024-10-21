@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js'
 import { AnimatedSprite, Spritesheet } from 'pixi.js'
-import { Animator } from './../animation/animator'
+import { ComposedSpritesheet } from './../animation/spritesheet'
+import { type Animator } from './../animation/animator'
 import { PlayerMessage } from './../entities/player_message'
 import { type Entity } from './../entities/entity'
 
@@ -52,12 +53,11 @@ class Equipment extends AnimatedSprite {
   }
 }
 
-class Player extends AnimatedSprite implements Entity {
+class Player extends PIXI.Container implements Entity {
   public readonly id: string
   private animator: Animator
   private lastMessage: PlayerMessage
   private name: string
-  public playerName: PIXI.Text
   private targets: Target[] = []
   private speed = 1
   private direction: Direction
@@ -65,12 +65,41 @@ class Player extends AnimatedSprite implements Entity {
   private helmetSlot?: Equipment
   private isSitting: boolean
 
-  constructor(id: string, spriteSheet: Spritesheet) {
-    super(spriteSheet.animations.idle_south)
+  public playerName: PIXI.Text
 
-    this.sortableChildren = true
+  public topHalf: PIXI.Container
+  public bottomHalf: PIXI.Container
+
+  public topHalfSprite: PIXI.AnimatedSprite
+  public bottomHalfSprite: PIXI.AnimatedSprite
+
+  private offsetX: number = 0
+  private offsetY: number = 0
+
+  private layers: PIXI.Container[]
+  private movedUp: boolean = false
+
+  constructor(id: string, composedSpritesheet: ComposedSpritesheet, layers: PIXI.Container[]) {
+    super()
 
     this.id = id
+    this.layers = layers
+
+    this.topHalf = new PIXI.Container()
+    this.topHalf.zIndex = 1
+    this.topHalf.sortableChildren = true
+
+    this.bottomHalf = new PIXI.Container()
+    this.bottomHalf.zIndex = 1
+    this.bottomHalf.sortableChildren = true
+
+    this.topHalfSprite = new PIXI.AnimatedSprite(
+      composedSpritesheet.getTextures('idle_south', 0, 0) || []
+    )
+    this.bottomHalfSprite = new PIXI.AnimatedSprite(
+      composedSpritesheet.getTextures('idle_south', 0, 0) || []
+    )
+
     this.playerName = new PIXI.Text('', {
       fontFamily: 'Arial',
       fontSize: 256,
@@ -79,23 +108,18 @@ class Player extends AnimatedSprite implements Entity {
       strokeThickness: 32
     })
     this.playerName.scale.set(8 / 256)
-    this.playerName.anchor.set(0.5, 1)
-    this.playerName.position.set(8, -8)
-    this.playerName.zIndex = 10
+    this.playerName.anchor.set(0.5, 0)
+    this.playerName.zIndex = 1
 
-    this.addChild(this.playerName)
+    this.topHalf.addChild(this.topHalfSprite)
+    this.bottomHalf.addChild(this.bottomHalfSprite)
   }
 
   init(animator: Animator) {
     this.animator = animator
   }
 
-  onStart() {
-    this.position.set(64, 48)
-    this.anchor.set(0, 0.5)
-
-    this.animator.play('idle_south')
-  }
+  onStart() {}
 
   getName() {
     return this.name
@@ -113,6 +137,13 @@ class Player extends AnimatedSprite implements Entity {
 
   updateEntity(dt: number) {
     this.moveToNextTarget(dt)
+
+    this.bottomHalf.position.set(this.position.x, this.position.y)
+    this.topHalf.position.set(this.position.x, this.position.y - this.topHalfSprite.height)
+    this.playerName.position.set(
+      this.position.x + this.topHalfSprite.width / 2,
+      this.position.y - this.topHalfSprite.height - 2
+    )
   }
 
   moveToNextTarget(dt: number) {
@@ -200,6 +231,8 @@ class Player extends AnimatedSprite implements Entity {
       this.clearTargets()
       this.position.set(data.position.x, data.position.y)
       this.pivot.set(0, 0)
+      this.moveDown()
+      this.show()
     }
 
     this.direction = data.direction
@@ -223,29 +256,64 @@ class Player extends AnimatedSprite implements Entity {
     switch (facing) {
       case Direction.North:
         this.playAnimation('idle')
-        this.pivot.set(0, 8)
+        this.hide()
         break
       case Direction.West:
         this.playAnimation('sit')
-        this.pivot.set(0, 10)
-        this.pivot_offset_y = -10
+        this.offsetY = -10
         break
       case Direction.East:
         this.playAnimation('sit')
-        this.pivot.set(0, 10)
-        this.pivot_offset_y = -10
+        this.offsetY = -10
         break
       case Direction.South:
         this.playAnimation('idle')
+        this.offsetY = -2
         break
     }
 
-    this.position.set(x, y)
+    this.position.set(x + this.offsetX, y + this.offsetY)
+    this.moveUp()
+  }
+
+  moveUp() {
+    if (this.movedUp) {
+      return
+    }
+
+    this.layers[1].removeChild(this.bottomHalf)
+    this.layers[2].addChild(this.bottomHalf)
+    this.movedUp = true
+  }
+
+  moveDown() {
+    if (!this.movedUp) {
+      return
+    }
+
+    this.layers[2].removeChild(this.bottomHalf)
+    this.layers[1].addChild(this.bottomHalf)
+    this.movedUp = false
+  }
+
+  show() {
+    this.topHalfSprite.visible = true
+    this.bottomHalf.visible = true
+  }
+
+  hide() {
+    this.topHalfSprite.visible = false
+    this.bottomHalf.visible = false
   }
 
   moveTo(x: number, y: number, direction: Direction) {
-    this.pivot.set(0, 0)
-    this.pivot_offset_y = 0
+    this.position.set(this.position.x - this.offsetX, this.position.y - this.offsetY)
+    this.offsetX = 0
+    this.offsetY = 0
+
+    this.show()
+    this.moveDown()
+
     this.targets.push({ x, y, direction })
     this.isSitting = false
   }
@@ -284,6 +352,8 @@ class Player extends AnimatedSprite implements Entity {
 
   clear() {
     this.playerName.destroy()
+    this.topHalf.destroy()
+    this.bottomHalf.destroy()
   }
 
   setAnimator(animator: Animator) {
@@ -294,7 +364,7 @@ class Player extends AnimatedSprite implements Entity {
     switch (equipment.type) {
       case EquipmentType.Helmet:
         if (this.helmetSlot) {
-          this.removeChild(this.helmetSlot)
+          this.topHalf.removeChild(this.helmetSlot)
         }
 
         this.helmetSlot = equipment
@@ -303,8 +373,7 @@ class Player extends AnimatedSprite implements Entity {
         return
     }
 
-    equipment.anchor.set(0, 0.5)
-    this.addChild(equipment)
+    this.topHalf.addChild(equipment)
   }
 
   unequip(equipment: Equipment) {
@@ -318,7 +387,7 @@ class Player extends AnimatedSprite implements Entity {
         return
     }
 
-    this.removeChild(equipment)
+    this.topHalf.removeChild(equipment)
   }
 
   getHelmet() {

@@ -56,7 +56,7 @@
     "tileset_id": 0
   },
   "433": {
-    "is_ground": false,
+    "is_ground": true,
     "is_walkable": true,
     "action_id": null,
     "facing": null,
@@ -64,7 +64,7 @@
     "tileset_id": 0
   },
   "434": {
-    "is_ground": false,
+    "is_ground": true,
     "is_walkable": true,
     "action_id": null,
     "facing": null,
@@ -72,7 +72,7 @@
     "tileset_id": 0
   },
   "435": {
-    "is_ground": false,
+    "is_ground": true,
     "is_walkable": true,
     "action_id": null,
     "facing": null,
@@ -168,7 +168,7 @@
     "tileset_id": 0
   },
   "509": {
-    "is_ground": false,
+    "is_ground": true,
     "is_walkable": true,
     "action_id": null,
     "facing": null,
@@ -176,7 +176,7 @@
     "tileset_id": 0
   },
   "510": {
-    "is_ground": false,
+    "is_ground": true,
     "is_walkable": true,
     "action_id": null,
     "facing": null,
@@ -1970,6 +1970,7 @@
   "3421": {
     "is_ground": false,
     "is_walkable": false,
+    "is_wall": true,
     "action_id": null,
     "facing": null,
     "equipment_id": null,
@@ -2273,7 +2274,7 @@
   },
   "10118": {
     "is_ground": false,
-    "is_walkable": false,
+    "is_walkable": true,
     "action_id": null,
     "facing": null,
     "equipment_id": null,
@@ -2377,7 +2378,7 @@
   },
   "10187": {
     "is_ground": false,
-    "is_walkable": false,
+    "is_walkable": true,
     "action_id": null,
     "facing": null,
     "equipment_id": null,
@@ -2385,7 +2386,7 @@
   },
   "10188": {
     "is_ground": false,
-    "is_walkable": false,
+    "is_walkable": true,
     "action_id": null,
     "facing": null,
     "equipment_id": null,
@@ -2393,7 +2394,7 @@
   },
   "10198": {
     "is_ground": false,
-    "is_walkable": false,
+    "is_walkable": true,
     "action_id": null,
     "facing": null,
     "equipment_id": null,
@@ -2401,7 +2402,7 @@
   },
   "10199": {
     "is_ground": false,
-    "is_walkable": false,
+    "is_walkable": true,
     "action_id": null,
     "facing": null,
     "equipment_id": null,
@@ -2409,7 +2410,7 @@
   },
   "10200": {
     "is_ground": false,
-    "is_walkable": false,
+    "is_walkable": true,
     "action_id": null,
     "facing": null,
     "equipment_id": null,
@@ -2527,6 +2528,22 @@
     "equipment_id": null,
     "tileset_id": 10000
   },
+  "10310": {
+    "is_ground": false,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 10000
+  },
+  "10311": {
+    "is_ground": false,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 10000
+  },
   "10312": {
     "is_ground": false,
     "is_walkable": false,
@@ -2561,7 +2578,7 @@
   },
   "10370": {
     "is_ground": false,
-    "is_walkable": false,
+    "is_walkable": true,
     "action_id": null,
     "facing": null,
     "equipment_id": null,
@@ -2569,7 +2586,7 @@
   },
   "10371": {
     "is_ground": false,
-    "is_walkable": false,
+    "is_walkable": true,
     "action_id": null,
     "facing": null,
     "equipment_id": null,
@@ -2593,7 +2610,7 @@
   },
   "10416": {
     "is_ground": false,
-    "is_walkable": false,
+    "is_walkable": true,
     "action_id": null,
     "facing": null,
     "equipment_id": null,
@@ -2625,7 +2642,7 @@
   },
   "10422": {
     "is_ground": false,
-    "is_walkable": false,
+    "is_walkable": true,
     "action_id": null,
     "facing": null,
     "equipment_id": null,
@@ -3258,6 +3275,7 @@
   "20177": {
     "is_ground": false,
     "is_walkable": false,
+    "is_wall": true,
     "action_id": null,
     "facing": null,
     "equipment_id": null,

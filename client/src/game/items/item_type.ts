@@ -1,6 +1,7 @@
 interface ItemTypeOptions {
   isGround: boolean
   isWalkable: boolean
+  isWall?: boolean
   actionId?: string
   facing?: string
 }
@@ -9,15 +10,17 @@ class ItemType {
   private id: string
   private _isGround: boolean
   private _isWalkable: boolean
+  private _isWall: boolean
   private _actionId?: string
   private _facing?: string
 
   constructor(id: string, options: ItemTypeOptions) {
-    const { isGround, isWalkable, actionId, facing } = options
+    const { isGround, isWalkable, actionId, facing, isWall } = options
 
     this.id = id
     this._isGround = isGround
     this._isWalkable = isWalkable
+    this._isWall = isWall || false
     this._actionId = actionId
     this._facing = facing
   }
@@ -28,6 +31,10 @@ class ItemType {
 
   isGround(): boolean {
     return this._isGround
+  }
+
+  isWall(): boolean {
+    return this._isWall
   }
 
   isWalkable(): boolean {

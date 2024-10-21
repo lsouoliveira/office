@@ -49,10 +49,16 @@ class Tile {
     return this.items.every((item) => item.isWalkable())
   }
 
-  render(stage: PIXI.Container, x: number, y: number): void {
+  render(layers: PIXI.Container[], x: number, y: number): void {
     this.items.forEach((item) => {
-      item.render(stage, x + this.x * TILE_SIZE, y + this.y * TILE_SIZE)
+      item.render(layers, x + this.x * TILE_SIZE, y + this.y * TILE_SIZE, this.getItemHeight(item))
     })
+  }
+
+  getItemHeight(item: Item) {
+    const nonGroundItems = this.items.filter((item) => !item.isGround() && !item.isWall())
+
+    return nonGroundItems.indexOf(item)
   }
 }
 

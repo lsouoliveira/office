@@ -44,10 +44,10 @@ class GameMap {
     this.tiles[y][x] = tile
   }
 
-  render(stage: PIXI.Container, x: number, y: number): void {
+  render(layers: PIXI.Container[], x: number, y: number): void {
     this.tiles.forEach((row) => {
       row.forEach((tile) => {
-        tile.render(stage, x, y)
+        tile.render(layers, x, y)
       })
     })
   }

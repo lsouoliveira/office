@@ -6,7 +6,7 @@ import { TILE_SIZE } from './../map/tile'
 class Item {
   private id: string
   private type: ItemType
-  private sprite?: PIXI.Sprite
+  private sprites: PIXI.Sprite[] = []
 
   constructor(id: string, type: ItemType) {
     this.id = id
@@ -17,6 +17,10 @@ class Item {
     return this.type.isGround()
   }
 
+  isWall(): boolean {
+    return this.type.isWall()
+  }
+
   isWalkable(): boolean {
     return this.type.isWalkable()
   }
@@ -25,36 +29,55 @@ class Item {
     return this.id
   }
 
-  render(stage: PIXI.Container, x: number, y: number): void {
+  render(layers: PIXI.Container[], x: number, y: number, index: number): void {
     const spriteData = spritesData[this.type.getId()]
 
     if (!spriteData) {
       return
     }
 
-    const tilesetTexture = PIXI.Assets.get(spriteData.tileset)
-    const pivot = spriteData.pivot || { x: 0, y: 0 }
+    for (let i = 0; i < spriteData.height; i++) {
+      for (let j = 0; j < spriteData.width; j++) {
+        const tilesetTexture = PIXI.Assets.get(spriteData.tileset)
 
-    const tileId = spriteData.states[0]
-    const tilesWidth = tilesetTexture.width / TILE_SIZE
+        const tileId = spriteData.states[0]
+        const tilesWidth = tilesetTexture.width / TILE_SIZE
 
-    const tilesetX = tileId % tilesWidth
-    const tilesetY = Math.floor(tileId / tilesWidth)
+        const tilesetX = tileId % tilesWidth
+        const tilesetY = Math.floor(tileId / tilesWidth)
 
-    const textures = this.extractTextures(tilesetTexture.baseTexture, spriteData)
-    const spriteX = x
-    const spriteY = y - spriteData.y * TILE_SIZE
+        const textures = this.extractTextures(tilesetTexture.baseTexture, spriteData, j, i)
+        const spriteX = x
+        const spriteY = y + i * TILE_SIZE - spriteData.height * TILE_SIZE + TILE_SIZE
 
-    if (textures.length > 1) {
-      this.sprite = this.createAnimatedSprite(textures, spriteX, spriteY, pivot, spriteData)
-    } else {
-      this.sprite = this.createSprite(textures[0], spriteX, spriteY, pivot, spriteData)
+        let sprite
+
+        if (spriteData.states.length > 1) {
+          sprite = this.createAnimatedSprite(textures, spriteX, spriteY, spriteData)
+        } else {
+          sprite = this.createSprite(textures[0], spriteX, spriteY, spriteData)
+        }
+
+        sprite.anchor.set(0, 0)
+        sprite.zIndex = 0
+
+        if (this.type.isGround()) {
+          layers[0].addChild(sprite)
+        } else {
+          layers[spriteData.height - i + spriteData.y + index].addChild(sprite)
+        }
+
+        this.sprites.push(sprite)
+      }
     }
-
-    stage.addChild(this.sprite)
   }
 
-  private extractTextures(source: PIXI.BaseTexture, spriteData: any): PIXI.Texture[] {
+  private extractTextures(
+    source: PIXI.BaseTexture,
+    spriteData: any,
+    x: number,
+    y: number
+  ): PIXI.Texture[] {
     const textures: PIXI.Texture[] = []
     const tilesWidth = source.width / TILE_SIZE
 
@@ -63,10 +86,10 @@ class Item {
       const tilesetY = Math.floor(state / tilesWidth)
 
       const textureRect = new PIXI.Rectangle(
-        tilesetX * TILE_SIZE,
-        tilesetY * TILE_SIZE,
-        spriteData.width * TILE_SIZE,
-        spriteData.height * TILE_SIZE
+        (tilesetX + x) * TILE_SIZE,
+        (tilesetY + y) * TILE_SIZE,
+        TILE_SIZE,
+        TILE_SIZE
       )
       const texture = new PIXI.Texture({ source: source.source, frame: textureRect })
       textures.push(texture)
@@ -75,22 +98,10 @@ class Item {
     return textures
   }
 
-  private getZIndex(): number {
-    return this.type.isGround() ? 0 : 1
-  }
-
-  private createSprite(
-    texture: PIXI.Texture,
-    x: number,
-    y: number,
-    pivot: { x: number; y: number },
-    spriteData: any
-  ): PIXI.Sprite {
+  private createSprite(texture: PIXI.Texture, x: number, y: number, spriteData: any): PIXI.Sprite {
     const sprite = new PIXI.Sprite(texture)
 
-    sprite.zIndex = this.getZIndex()
     sprite.position.set(x, y)
-    sprite.anchor.set(pivot.x / spriteData.width, pivot.y / spriteData.height)
 
     return sprite
   }
@@ -99,14 +110,11 @@ class Item {
     textures: PIXI.Texture[],
     x: number,
     y: number,
-    pivot: { x: number; y: number },
     spriteData: any
   ): PIXI.AnimatedSprite {
     const sprite = new PIXI.AnimatedSprite(textures)
 
-    sprite.zIndex = this.getZIndex()
     sprite.position.set(x, y)
-    sprite.anchor.set(pivot.x / spriteData.width, pivot.y / spriteData.height)
     sprite.animationSpeed = spriteData.animation_speed || 0.1
     sprite.play()
 
@@ -114,8 +122,8 @@ class Item {
   }
 
   destroy(): void {
-    if (this.sprite) {
-      this.sprite.destroy()
+    for (const sprite of this.sprites) {
+      sprite.destroy()
     }
   }
 }

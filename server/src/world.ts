@@ -659,6 +659,7 @@ class World {
     const itemType = new ItemType(data.itemId, {
       isGround: itemTypeData.is_ground,
       isWalkable: itemTypeData.is_walkable,
+      isWall: itemTypeData.is_wall,
       actionId: itemTypeData.action_id,
       facing: itemTypeData.facing,
       equipmentId: itemTypeData.equipment_id
