@@ -425,7 +425,7 @@ class World {
       logger.warn('Teleport command is disabled')
       // this.handleTeleportCommand(socket, parts)
     } else if (command == 'tp_player') {
-      this.handleTeleportPlayerCommand(socket, parts)
+      // this.handleTeleportPlayerCommand(socket, parts)
     } else if (command == 'clear_map') {
       this.handleClearMapCommand(socket)
     } else if (command == 'player_speed') {
@@ -601,9 +601,13 @@ class World {
       return
     }
 
-    console.log('[ Server ] Changing player speed to', parts[1])
+    logger.info(`Setting player speed to ${parts[1]}`)
 
-    player.setSpeed(parseInt(parts[1]))
+    try {
+      player.setSpeed(parseInt(parts[1]))
+    } catch (e) {
+      logger.error(`Error setting player speed: ${e}`)
+    }
   }
 
   private handleEquipItem(socket, command) {
