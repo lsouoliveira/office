@@ -462,6 +462,7 @@ class Playground extends Scene {
     this.layers[2].addChild(player.topHalf)
     this.layers[1].addChild(player.bottomHalf)
     this.uiLayer.addChild(player.playerName)
+    this.layers[0].addChild(player)
 
     this.addEntity(player)
   }
@@ -563,6 +564,8 @@ class Playground extends Scene {
 
     player.clear()
     player.destroy()
+
+    this.destroyEntity(player)
 
     delete this.players[playerData.id]
   }
@@ -686,6 +689,10 @@ class Playground extends Scene {
     entity.on('destroy', () => {
       this.entities.splice(this.entities.indexOf(entity), 1)
     })
+  }
+
+  destroyEntity(entity: any) {
+    this.entities.splice(this.entities.indexOf(entity), 1)
   }
 }
 
