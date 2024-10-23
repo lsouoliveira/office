@@ -86,7 +86,7 @@ class Player extends PIXI.Container implements Entity {
     this.layers = layers
 
     this.topHalf = new PIXI.Container()
-    this.topHalf.zIndex = 1
+    this.topHalf.zIndex = 2
     this.topHalf.sortableChildren = true
 
     this.bottomHalf = new PIXI.Container()

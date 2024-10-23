@@ -455,8 +455,8 @@ class Playground extends Scene {
     const player = this.createPlayer(playerData.id, skin)
 
     player.onStart()
-    player.updateData(playerData)
     this.updatePlayerEquipment(player, playerData)
+    player.updateData(playerData)
 
     this.players[playerData.id] = player
 
@@ -489,7 +489,7 @@ class Playground extends Scene {
 
     if (this.isPlacingItem) {
       this.handlePlaceItem(tileX, tileY)
-    } else if (tile.isEmpty() || tile.isWalkable()) {
+    } else if ((tile.isEmpty() || tile.isWalkable()) && !e.ctrlKey) {
       this.client.moveTo(x, y)
     } else if (!tile.isEmpty()) {
       this.client.use(x, y)
