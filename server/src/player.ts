@@ -300,8 +300,10 @@ class Player extends EventEmitter {
   }
 
   update(dt: number) {
-    this.performNextTask()
-    this.movement.update(dt)
+    try {
+      this.performNextTask()
+      this.movement.update(dt)
+    } catch (e) {}
   }
 
   performNextTask() {

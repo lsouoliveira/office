@@ -234,6 +234,8 @@ class World {
         this.handleReleaseNote(socket, note)
       })
       socket.on('disconnect', async () => {
+        logger.info(`Player ${player?.playerData?.name} disconnected`)
+
         const matchingSockets = await this.io.in(socket.sessionId).allSockets()
         const isDisconnected = matchingSockets.size === 0
 
@@ -314,7 +316,7 @@ class World {
     }
   }
 
-  handlePlayerMove(socket, data) {
+  async handlePlayerMove(socket, data) {
     const session = this.sessions[socket.sessionId]
 
     if (!session) {
@@ -376,7 +378,7 @@ class World {
     this.map.init()
   }
 
-  private handlePlayerMessage(socket, message) {
+  private async handlePlayerMessage(socket, message) {
     if (message.startsWith('/')) {
       this.handleCommand(socket, message)
 
@@ -639,7 +641,7 @@ class World {
     this.performEquipEquipment(socket, player, equipment)
   }
 
-  private handlePlaceItem(socket, data) {
+  private async handlePlaceItem(socket, data) {
     console.log('[ Server ] Placing item at', data.x, data.y)
 
     if (!this.isAdmin(socket)) {
@@ -682,7 +684,7 @@ class World {
     this.notifyMapChange()
   }
 
-  private handleRemoveItem(socket, data) {
+  private async handleRemoveItem(socket, data) {
     console.log('[ Server ] Removing item at', data.x, data.y)
 
     if (!this.isAdmin(socket)) {
@@ -712,7 +714,7 @@ class World {
     this.notifyMapChange()
   }
 
-  private handlePlayerChangeName(socket, name) {
+  private async handlePlayerChangeName(socket, name) {
     console.log('[ Server ] Changing player name to', name)
 
     const session = this.sessions[socket.sessionId]
@@ -733,7 +735,7 @@ class World {
     this.io.emit('player:change', player.getPlayerData())
   }
 
-  private handlePlayerChangeSkin(socket, skin) {
+  private async handlePlayerChangeSkin(socket, skin) {
     console.log('[ Server ] Changing player skin to', skin)
 
     const session = this.sessions[socket.sessionId]
@@ -751,7 +753,7 @@ class World {
     player.setSkin(skin)
   }
 
-  private handleUse(socket, data) {
+  private async handleUse(socket, data) {
     console.log('[ Server ] Using item at', data.x, data.y)
 
     const session = this.sessions[socket.sessionId]
@@ -788,7 +790,7 @@ class World {
     this.handleItemUse(socket, player, tile, item)
   }
 
-  private handlePlayNote(socket, note) {
+  private async handlePlayNote(socket, note) {
     const session = this.sessions[socket.sessionId]
 
     if (!session) {
@@ -809,7 +811,7 @@ class World {
     })
   }
 
-  private handleReleaseNote(socket, note) {
+  private async handleReleaseNote(socket, note) {
     const session = this.sessions[socket.sessionId]
 
     if (!session) {
@@ -830,7 +832,7 @@ class World {
     })
   }
 
-  private handlePlayerDisconnect(socket, player) {
+  private async handlePlayerDisconnect(socket, player) {
     if (player.isOccupyingItem()) {
       const item = player.getOccupiedItem()
 
