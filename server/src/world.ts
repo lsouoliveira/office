@@ -7,6 +7,7 @@ import { MoveTask } from './tasks/move_task'
 import { SitTask } from './tasks/sit_task'
 import { ComputerTask } from './tasks/computer_task'
 import { DrinkTask } from './tasks/drink_task'
+import { ReplaceItemTask } from './tasks/replace_item_task'
 import { EquipTempEquipmentTask } from './tasks/equip_temp_equipment_task'
 import { EquipEquipment } from './tasks/equip_equipment_task'
 import logger from './logger'
@@ -668,7 +669,8 @@ class World {
       isWall: itemTypeData.is_wall,
       actionId: itemTypeData.action_id,
       facing: itemTypeData.facing,
-      equipmentId: itemTypeData.equipment_id
+      equipmentId: itemTypeData.equipment_id,
+      nextItemId: itemTypeData.next_item_id
     })
 
     const item = new Item(itemType)
@@ -854,6 +856,8 @@ class World {
       this.performComputerAction(socket, player, tile)
     } else if (item.getActionId() == 'drink') {
       this.performDrinkAction(socket, player, tile)
+    } else if (item.getActionId() == 'replaceItem') {
+      this.performReplaceItemAction(socket, player, tile, item)
     } else if (item.getActionId() == 'equipTempItem') {
       logger.info(
         `[ Server ] Equipping temporary item ${item.getType().getId()} to player ${player.playerData.name}`
@@ -961,6 +965,44 @@ class World {
 
     const drinkTask = new DrinkTask(player)
     player.addTask(drinkTask)
+  }
+
+  private performReplaceItemAction(socket, player, tile, item) {
+    player.clearTasks()
+
+    if (!player.movement.isNeighbour(tile.getX(), tile.getY())) {
+      const target = this.findAvailableNeighbourTile(player, tile)
+
+      if (!target) {
+        return
+      }
+
+      const moveTask = new MoveTask(player, [target[0], target[1]])
+      player.addTask(moveTask)
+    }
+
+    const itemData = this.items[item.getNextItemId()]
+
+    if (!itemData) {
+      logger.error(`[ Server ] Item ${item.getNextItemId()} not found`)
+
+      return
+    }
+
+    const itemType = new ItemType(item.getNextItemId(), {
+      isGround: itemData.is_ground,
+      isWalkable: itemData.is_walkable,
+      isWall: itemData.is_wall,
+      actionId: itemData.action_id,
+      facing: itemData.facing,
+      equipmentId: itemData.equipment_id,
+      nextItemId: itemData.next_item_id
+    })
+
+    const newItem = new Item(itemType)
+
+    const replaceItemTask = new ReplaceItemTask(socket, player, item, tile, newItem)
+    player.addTask(replaceItemTask)
   }
 
   private performEquipTempEquipment(socket, player, tile, equipment) {

@@ -33,6 +33,10 @@ TILESETS = {
         "id": 60000,
         "path": "resources/maps/13_Conference_Hall_Black_Shadow_16x16.png",
     },
+    "bathroom": {
+        "id": 70000,
+        "path": "resources/maps/bathroom.png",
+    },
 }
 
 

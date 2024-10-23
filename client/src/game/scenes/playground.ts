@@ -264,6 +264,7 @@ class Playground extends Scene {
       this.client.socket.on('computer:open', this.handleComputerOpen.bind(this))
       this.client.socket.on('item:added', this.handleItemAdded.bind(this))
       this.client.socket.on('item:removed', this.handleItemRemoved.bind(this))
+      this.client.socket.on('item:replaced', this.handleItemReplaced.bind(this))
       this.client.socket.on('gameState', this.handleGameState.bind(this))
     })
   }
@@ -681,6 +682,33 @@ class Playground extends Scene {
     const tile = this.map.getTile(x, y)
 
     tile.removeItem(id)
+  }
+
+  private handleItemReplaced({ tile: { x, y }, item, newItem }) {
+    if (!this.map.contains(x, y)) {
+      return
+    }
+
+    const tile = this.map.getTile(x, y)
+
+    const itemType = new ItemType(newItem.itemType.id, {
+      isGround: newItem.itemType.isGround,
+      isWalkable: newItem.itemType.isWalkable,
+      isWall: newItem.itemType.isWall,
+      actionId: newItem.itemType.actionId,
+      facing: newItem.itemType.facing
+    })
+
+    const itemToAdd = new Item(newItem.id, itemType)
+    const oldItem = tile.getItem(item.id)
+
+    if (!oldItem) {
+      return
+    }
+
+    tile.replaceItem(item.id, itemToAdd)
+    itemToAdd.render(this.layers, x * TILE_SIZE, y * TILE_SIZE, tile.getItemHeight(itemToAdd))
+    oldItem.destroy()
   }
 
   addEntity(entity: any) {

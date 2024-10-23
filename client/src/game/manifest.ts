@@ -18,6 +18,11 @@ export default {
           data: { scaleMode: 'nearest' }
         },
         {
+          alias: 'bathroom.png',
+          src: 'resources/maps/bathroom.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
           alias: 'cat.png',
           src: 'resources/maps/cat.png',
           data: { scaleMode: 'nearest' }

@@ -3448,5 +3448,1087 @@
     "facing": null,
     "equipment_id": null,
     "tileset_id": 70000
+  },
+  "70003": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70016": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70017": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70019": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70035": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70169": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70185": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70376": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "next_item_id": "70424",
+    "tileset_id": 70000
+  },
+  "70377": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": "replaceItem",
+    "facing": null,
+    "equipment_id": null,
+    "next_item_id": "70425",
+    "tileset_id": 70000
+  },
+  "70378": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": "replaceItem",
+    "facing": null,
+    "equipment_id": null,
+    "next_item_id": "70426",
+    "tileset_id": 70000
+  },
+  "70379": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": "replaceItem",
+    "facing": null,
+    "equipment_id": null,
+    "next_item_id": "70427",
+    "tileset_id": 70000
+  },
+  "70380": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": "replaceItem",
+    "facing": null,
+    "equipment_id": null,
+    "next_item_id": "70428",
+    "tileset_id": 70000
+  },
+  "70381": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": "replaceItem",
+    "facing": null,
+    "equipment_id": null,
+    "next_item_id": "70429",
+    "tileset_id": 70000
+  },
+  "70382": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70383": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70384": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70385": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70386": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70387": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70388": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70389": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70390": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70391": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70398": {
+    "is_ground": false,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70399": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70401": {
+    "is_ground": false,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70402": {
+    "is_ground": false,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70403": {
+    "is_ground": false,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70416": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70417": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70418": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70419": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70420": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70421": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70422": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70423": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70424": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": "replaceItem",
+    "facing": null,
+    "equipment_id": null,
+    "next_item_id": "70376",
+    "tileset_id": 70000
+  },
+  "70425": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": "replaceItem",
+    "facing": null,
+    "equipment_id": null,
+    "next_item_id": "70377",
+    "tileset_id": 70000
+  },
+  "70426": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": "replaceItem",
+    "facing": null,
+    "equipment_id": null,
+    "next_item_id": "70378",
+    "tileset_id": 70000
+  },
+  "70427": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": "replaceItem",
+    "facing": null,
+    "equipment_id": null,
+    "next_item_id": "70379",
+    "tileset_id": 70000
+  },
+  "70428": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": "replaceItem",
+    "facing": null,
+    "equipment_id": null,
+    "next_item_id": "70380",
+    "tileset_id": 70000
+  },
+  "70429": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": "replaceItem",
+    "facing": null,
+    "equipment_id": null,
+    "next_item_id": "70381",
+    "tileset_id": 70000
+  },
+  "70430": {
+    "is_ground": false,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70431": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70432": {
+    "is_ground": false,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70433": {
+    "is_ground": false,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70434": {
+    "is_ground": false,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70435": {
+    "is_ground": false,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70448": {
+    "is_ground": true,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70449": {
+    "is_ground": true,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70450": {
+    "is_ground": true,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70451": {
+    "is_ground": true,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70452": {
+    "is_ground": true,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70453": {
+    "is_ground": true,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70454": {
+    "is_ground": true,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70455": {
+    "is_ground": true,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70464": {
+    "is_ground": true,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70465": {
+    "is_ground": true,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70466": {
+    "is_ground": true,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70467": {
+    "is_ground": true,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70468": {
+    "is_ground": true,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70469": {
+    "is_ground": true,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70470": {
+    "is_ground": true,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70471": {
+    "is_ground": true,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70480": {
+    "is_ground": true,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70481": {
+    "is_ground": true,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70482": {
+    "is_ground": true,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70483": {
+    "is_ground": true,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70484": {
+    "is_ground": true,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70485": {
+    "is_ground": true,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70486": {
+    "is_ground": true,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70487": {
+    "is_ground": true,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70492": {
+    "is_ground": false,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70493": {
+    "is_ground": false,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70494": {
+    "is_ground": false,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70495": {
+    "is_ground": false,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70496": {
+    "is_ground": true,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70497": {
+    "is_ground": true,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70498": {
+    "is_ground": true,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70499": {
+    "is_ground": true,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70500": {
+    "is_ground": true,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70501": {
+    "is_ground": true,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70502": {
+    "is_ground": true,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70503": {
+    "is_ground": true,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70506": {
+    "is_ground": false,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70507": {
+    "is_ground": false,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70512": {
+    "is_ground": false,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70513": {
+    "is_ground": false,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70514": {
+    "is_ground": false,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70515": {
+    "is_ground": false,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70534": {
+    "is_ground": false,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70539": {
+    "is_ground": false,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70540": {
+    "is_ground": false,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70543": {
+    "is_ground": false,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70566": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70567": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70568": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70571": {
+    "is_ground": false,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70572": {
+    "is_ground": false,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70575": {
+    "is_ground": false,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70584": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70634": {
+    "is_ground": false,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70635": {
+    "is_ground": false,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70636": {
+    "is_ground": false,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70637": {
+    "is_ground": false,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70638": {
+    "is_ground": false,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70639": {
+    "is_ground": false,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70647": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70648": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70669": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70677": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70678": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70679": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70698": {
+    "is_ground": false,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70699": {
+    "is_ground": false,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70700": {
+    "is_ground": false,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70743": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70760": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 70000
+  },
+  "70784": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": "replaceItem",
+    "facing": null,
+    "equipment_id": null,
+    "next_item_id": "70832",
+    "tileset_id": 70000
+  },
+  "70785": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": "replaceItem",
+    "facing": null,
+    "equipment_id": null,
+    "next_item_id": "70833",
+    "tileset_id": 70000
+  },
+  "70786": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": "replaceItem",
+    "facing": null,
+    "equipment_id": null,
+    "next_item_id": "70834",
+    "tileset_id": 70000
+  },
+  "70787": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": "replaceItem",
+    "facing": null,
+    "equipment_id": null,
+    "next_item_id": "70835",
+    "tileset_id": 70000
+  },
+  "70788": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": "replaceItem",
+    "facing": null,
+    "equipment_id": null,
+    "next_item_id": "70836",
+    "tileset_id": 70000
+  },
+  "70789": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": "replaceItem",
+    "facing": null,
+    "equipment_id": null,
+    "next_item_id": "70837",
+    "tileset_id": 70000
+  },
+  "70790": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": "replaceItem",
+    "facing": null,
+    "equipment_id": null,
+    "next_item_id": "70838",
+    "tileset_id": 70000
+  },
+  "70832": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": "replaceItem",
+    "facing": null,
+    "equipment_id": null,
+    "next_item_id": "70784",
+    "tileset_id": 70000
+  },
+  "70833": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": "replaceItem",
+    "facing": null,
+    "equipment_id": null,
+    "next_item_id": "70785",
+    "tileset_id": 70000
+  },
+  "70834": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": "replaceItem",
+    "facing": null,
+    "equipment_id": null,
+    "next_item_id": "70786",
+    "tileset_id": 70000
+  },
+  "70835": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": "replaceItem",
+    "facing": null,
+    "equipment_id": null,
+    "next_item_id": "70787",
+    "tileset_id": 70000
+  },
+  "70836": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": "replaceItem",
+    "facing": null,
+    "equipment_id": null,
+    "next_item_id": "70788",
+    "tileset_id": 70000
+  },
+  "70837": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": "replaceItem",
+    "facing": null,
+    "equipment_id": null,
+    "next_item_id": "70789",
+    "tileset_id": 70000
+  },
+  "70838": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": "replaceItem",
+    "facing": null,
+    "equipment_id": null,
+    "next_item_id": "70790",
+    "tileset_id": 70000
   }
 }

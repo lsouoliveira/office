@@ -45,6 +45,16 @@ class Tile {
     return this.items.every((item) => item.isWalkable())
   }
 
+  replaceItem(item: Item, newItem: Item): void {
+    const index = this.items.indexOf(item)
+
+    if (index === -1) {
+      throw new Error('Item not found')
+    }
+
+    this.items[index] = newItem
+  }
+
   toData() {
     return {
       x: this.x,

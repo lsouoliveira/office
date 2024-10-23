@@ -60,6 +60,20 @@ class Tile {
 
     return nonGroundItems.indexOf(item)
   }
+
+  getItem(id: string): Item | undefined {
+    return this.items.find((item) => item.getId() === id)
+  }
+
+  replaceItem(oldId: string, newItem: Item): void {
+    const index = this.items.findIndex((item) => item.getId() === oldId)
+
+    if (index === -1) {
+      return
+    }
+
+    this.items[index] = newItem
+  }
 }
 
 export { Tile, TILE_SIZE }

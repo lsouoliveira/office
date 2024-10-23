@@ -5,6 +5,7 @@ interface ItemTypeOptions {
   actionId?: string
   facing?: string
   equipmentId?: string
+  nextItemId?: string
 }
 
 class ItemType {
@@ -15,9 +16,10 @@ class ItemType {
   private actionId?: string
   private facing?: string
   private equipmentId?: string
+  private nextItemId?: string
 
   constructor(id: string, options: ItemTypeOptions) {
-    const { isGround, isWalkable, actionId, facing, equipmentId, isWall } = options
+    const { isGround, isWalkable, actionId, facing, equipmentId, isWall, nextItemId } = options
 
     this.id = id
     this._isGround = isGround
@@ -26,6 +28,7 @@ class ItemType {
     this.actionId = actionId
     this.facing = facing
     this.equipmentId = equipmentId
+    this.nextItemId = nextItemId
   }
 
   getId(): string {
@@ -56,6 +59,10 @@ class ItemType {
     return this.equipmentId
   }
 
+  getNextItemId(): string | undefined {
+    return this.nextItemId
+  }
+
   toData() {
     return {
       id: this.id,
@@ -64,7 +71,8 @@ class ItemType {
       isWall: this._isWall,
       actionId: this.actionId,
       facing: this.facing,
-      equipmentId: this.equipmentId
+      equipmentId: this.equipmentId,
+      nextItemId: this.nextItemId
     }
   }
 }
