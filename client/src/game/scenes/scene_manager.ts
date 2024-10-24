@@ -11,9 +11,17 @@ class SceneManager {
   }
 
   async load(sceneName: string) {
-    this.currentScene = new this.scenes[sceneName]()
+    const currentScene = this.currentScene
+
+    if (currentScene) {
+      await currentScene.onDestroy()
+      currentScene.destroy()
+    }
 
     this.app.stage.removeChildren()
+
+    this.currentScene = new this.scenes[sceneName]()
+
     this.app.stage.addChild(this.currentScene)
 
     this.currentScene.init(this.app, this)
@@ -25,7 +33,7 @@ class SceneManager {
   }
 
   update(dt: number) {
-    this.currentScene.update(dt)
+    this.currentScene?.update(dt)
   }
 }
 

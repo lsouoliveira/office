@@ -16,7 +16,9 @@ class Scene extends Container {
 
   async onStart() {}
 
-  update() {}
+  async onDestroy() {}
+
+  update(_: number) {}
 }
 
 export { Scene }

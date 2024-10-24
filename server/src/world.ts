@@ -185,7 +185,7 @@ class World {
         next(new Error('No username'))
       }
 
-      socket.sessionId = crypto.randomUUID()
+      socket.sessionId = sessionId || crypto.randomUUID()
       socket.username = username
 
       next()
@@ -1001,7 +1001,7 @@ class World {
 
     const newItem = new Item(itemType)
 
-    const replaceItemTask = new ReplaceItemTask(socket, player, item, tile, newItem)
+    const replaceItemTask = new ReplaceItemTask(this.io, player, item, tile, newItem)
     player.addTask(replaceItemTask)
   }
 
@@ -1043,7 +1043,7 @@ class World {
   }
 
   private persistMap() {
-    console.log('[ Server ] Persisting map...')
+    console.log('[ Server a] Persisting map...')
 
     const data = this.map.toData()
     const json = JSON.stringify(data)

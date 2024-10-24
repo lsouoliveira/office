@@ -175,6 +175,7 @@ class Playground extends Scene {
   private playerSkins: Map<string, ComposedSpritesheet> = new Map()
   private equipmentSpritesheets: Map<string, Spritesheet> = new Map()
   private layers: PIXI.Container[] = []
+  private isConnected: boolean = false
 
   async onStart() {
     // const stats = new Stats(this.app.renderer)
@@ -246,6 +247,8 @@ class Playground extends Scene {
   }
 
   connectToServer() {
+    console.log('connecting to server')
+
     const credentials = {
       username: (localStorage.getItem('username') || 'Sem nome').substring(0, 32),
       sessionId: localStorage.getItem('sessionId')
@@ -290,6 +293,22 @@ class Playground extends Scene {
 
     this.app.stage.addChild(this.chat)
     this.addEntity(this.chat)
+  }
+
+  async onDestroy() {
+    this.app.stage.off('pointermove', this.onMouseMove.bind(this))
+    this.app.stage.off('click', this.onClick.bind(this))
+
+    window.removeEventListener('ui:send_message', this.handleSendMessage.bind(this))
+    window.removeEventListener('ui:select_item', this.handleSelectItem.bind(this))
+    window.removeEventListener('ui:clear_selection', this.handleClearSelection.bind(this))
+    window.removeEventListener('ui:config', this.handleConfig.bind(this))
+    window.removeEventListener('ui:note_press', this.handleNotePress.bind(this))
+    window.removeEventListener('ui:note_release', this.handleNoteRelease.bind(this))
+    window.removeEventListener('keydown', this.handleKeyDown.bind(this))
+    window.removeEventListener('keyup', this.handleKeyUp.bind(this))
+
+    this.client.socket.disconnect()
   }
 
   setupMap(mapData) {
@@ -392,6 +411,11 @@ class Playground extends Scene {
   private handleSession(session: any) {
     const { sessionId, playerData } = session
 
+    if (this.isConnected) {
+      this.sceneManager.load('playground')
+      return
+    }
+
     this.setupScene()
 
     localStorage.setItem('sessionId', sessionId)
@@ -414,12 +438,14 @@ class Playground extends Scene {
     this.uiLayer.addChild(this.player.playerName)
 
     this.addEntity(this.player)
+
+    this.isConnected = true
   }
 
   private handlePlayerConnected(playerData: any) {
     console.log('Player connected:', playerData.id)
 
-    if (this.player.id === playerData.id) {
+    if (this.player?.id === playerData.id) {
       return
     }
 
