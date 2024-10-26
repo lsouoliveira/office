@@ -7,6 +7,7 @@ import { Piano } from './piano'
 
 import ConfigModal from './components/config_modal.vue'
 import PianoModal from './components/piano_modal.vue'
+import TennisModal from './components/tennis_modal.vue'
 
 const gameRoot = useTemplateRef('gameRoot')
 const chatMessageInput = useTemplateRef('chatMessageInput')
@@ -20,6 +21,7 @@ const items = reactive({
 })
 
 const showConfigModal = ref(false)
+const showTennisModal = ref(false)
 const showOs = ref(false)
 const showPianoModal = ref(false)
 const osApplication = ref(null)
@@ -55,7 +57,7 @@ onMounted(async () => {
 
     switch (e.key) {
       case 'Enter':
-        if (!showConfigModal.value) {
+        if (!showConfigModal.value && !showTennisModal.value) {
           chatMessage.show = true
           setTimeout(() => {
             chatMessageInput.value.focus()
@@ -91,6 +93,8 @@ const handleChatMessage = ({ target: { value } }) => {
 
   if (message === '/piano') {
     showPianoModal.value = true
+  } else if (message === '/tennis') {
+    showTennisModal.value = true
   } else {
     window.dispatchEvent(new CustomEvent('ui:send_message', { detail: { message } }))
   }
@@ -202,6 +206,7 @@ const filteredItems = computed(() => {
 </script>
 <template>
   <config-modal @close="showConfigModal = false" v-model="showConfigModal" v-if="showConfigModal" />
+  <tennis-modal @close="showTennisModal = false" v-model="showTennisModal" v-if="showTennisModal" />
 
   <div class="fixed top-0 left-0 w-full">
     <div class="flex items-center justify-end p-4 gap-2">
