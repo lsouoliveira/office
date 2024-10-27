@@ -265,6 +265,7 @@ class Playground extends Scene {
       this.client.socket.on('player:notePlayed', this.handleNotePlayed.bind(this))
       this.client.socket.on('player:noteReleased', this.handleNoteReleased.bind(this))
       this.client.socket.on('computer:open', this.handleComputerOpen.bind(this))
+      this.client.socket.on('ping_pong:open', this.handlePingPongOpen.bind(this))
       this.client.socket.on('item:added', this.handleItemAdded.bind(this))
       this.client.socket.on('item:removed', this.handleItemRemoved.bind(this))
       this.client.socket.on('item:replaced', this.handleItemReplaced.bind(this))
@@ -685,6 +686,10 @@ class Playground extends Scene {
 
   private handleComputerOpen() {
     window.dispatchEvent(new CustomEvent('ui:show_os'))
+  }
+
+  private handlePingPongOpen() {
+    window.dispatchEvent(new CustomEvent('ui:show_ping_pong'))
   }
 
   private handleItemAdded({ x, y, item: { id, itemType } }) {

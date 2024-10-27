@@ -50,6 +50,10 @@ onMounted(async () => {
     }, 0)
   })
 
+  window.addEventListener('ui:show_ping_pong', () => {
+    showTennisModal.value = true
+  })
+
   window.addEventListener('keydown', (e) => {
     if (showOs.value) {
       return

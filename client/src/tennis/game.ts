@@ -270,11 +270,13 @@ class TennisGame {
   private onPadMove: (x: number) => void
   private onUpdate: (dt: number) => void
   private isRunning: boolean = true
+  private hitSound: HTMLAudioElement
 
   constructor(root: HTMLElement, onPadMove: (x: number) => void, onUpdate: (dt: number) => void) {
     this.root = root
     this.onPadMove = onPadMove
     this.onUpdate = onUpdate
+    this.hitSound = new Audio('resources/hit.mp3')
   }
 
   init() {
@@ -347,9 +349,8 @@ class TennisGame {
   }
 
   playHitSound() {
-    const hitSound = new Audio('resources/hit.mp3')
-    hitSound.currentTime = 0
-    hitSound.play()
+    this.hitSound.currentTime = 0
+    this.hitSound.play()
   }
 
   destroy() {

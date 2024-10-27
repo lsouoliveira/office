@@ -6,6 +6,7 @@ import { ItemType } from './items/item_type'
 import { MoveTask } from './tasks/move_task'
 import { SitTask } from './tasks/sit_task'
 import { ComputerTask } from './tasks/computer_task'
+import { PingPongTask } from './tasks/ping_pong_task'
 import { DrinkTask } from './tasks/drink_task'
 import { ReplaceItemTask } from './tasks/replace_item_task'
 import { EquipTempEquipmentTask } from './tasks/equip_temp_equipment_task'
@@ -854,6 +855,8 @@ class World {
       this.performSitAction(socket, player, tile, item)
     } else if (item.getActionId() == 'computer') {
       this.performComputerAction(socket, player, tile)
+    } else if (item.getActionId() == 'ping_pong') {
+      this.performPingPongAction(socket, player, tile)
     } else if (item.getActionId() == 'drink') {
       this.performDrinkAction(socket, player, tile)
     } else if (item.getActionId() == 'replaceItem') {
@@ -947,6 +950,24 @@ class World {
 
     const computerTask = new ComputerTask(socket)
     player.addTask(computerTask)
+  }
+
+  private performPingPongAction(socket, player, tile) {
+    player.clearTasks()
+
+    if (!player.movement.isNeighbour(tile.getX(), tile.getY())) {
+      const target = this.findAvailableNeighbourTile(player, tile)
+
+      if (!target) {
+        return
+      }
+
+      const moveTask = new MoveTask(player, [target[0], target[1]])
+      player.addTask(moveTask)
+    }
+
+    const pingPongTask = new PingPongTask(socket)
+    player.addTask(pingPongTask)
   }
 
   private performDrinkAction(socket, player, tile) {

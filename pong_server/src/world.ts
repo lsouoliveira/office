@@ -234,7 +234,7 @@ class World {
       y: this.ball.getPos().y + this.ball.getDirection()[1] * this.ball.getSpeed() * dt
     }
 
-    let checkCollision = false
+    let wallCollision = false
 
     if (newBallPos.x - BALL_RADIUS < 0 || newBallPos.x + BALL_RADIUS > GAME_WIDTH) {
       this.ball.setDirection(-this.ball.getDirection()[0], this.ball.getDirection()[1])
@@ -245,7 +245,7 @@ class World {
         newBallPos.x = GAME_WIDTH - BALL_RADIUS
       }
 
-      checkCollision = true
+      wallCollision = true
     }
 
     let checkPadCollision = false
@@ -269,8 +269,6 @@ class World {
     }
 
     if (checkPadCollision) {
-      checkCollision = true
-
       if (this.ball.getSpeed() < BALL_SPEED) {
         this.ball.setSpeed(BALL_SPEED)
       } else {
@@ -278,9 +276,11 @@ class World {
       }
     }
 
-    if (this.canScore()) {
+    if (wallCollision || checkPadCollision) {
       this.io.emit('game:hit')
+    }
 
+    if (this.canScore()) {
       if (this.canPad1Score()) {
         this.score[0]++
       }
@@ -293,10 +293,6 @@ class World {
 
       return
     } else {
-      if (checkCollision) {
-        this.io.emit('game:hit')
-      }
-
       this.ball.setPos(newBallPos.x, newBallPos.y)
     }
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineModel, defineEmits, ref, onMounted, computed, useTemplateRef } from 'vue'
+import { defineModel, ref, onMounted, computed, useTemplateRef } from 'vue'
 import { TennisClient } from '../tennis/client'
 import { TennisGame, StageType, WIDTH, HEIGHT, PAD_WIDTH } from '../tennis/game'
 
@@ -9,7 +9,6 @@ enum State {
   WAITING_FOR_REMATCH = 2
 }
 
-const TICK_RATE = 60
 const model = defineModel()
 const tennisClient = ref(null)
 const isLoading = ref(false)
@@ -28,6 +27,7 @@ const rematchSent = ref(false)
 const messages = ref([])
 const message = ref('')
 const chat = useTemplateRef('chat')
+const isAudioEnabled = ref(false)
 
 onMounted(() => {
   username.value = localStorage.getItem('username') || 'Sem nome'
@@ -50,13 +50,8 @@ onMounted(() => {
     users.value = roomState.users
     score.value = roomState.score
 
-    if (roomState.pad1) {
-      pad1.value = roomState.pad1
-    }
-
-    if (roomState.pad2) {
-      pad2.value = roomState.pad2
-    }
+    pad1.value = roomState.pad1
+    pad2.value = roomState.pad2
 
     state.value = roomState.state
     rematchSent.value = false
@@ -104,6 +99,10 @@ onMounted(() => {
   })
 
   tennisClient.value.on('game:hit', () => {
+    if (!isAudioEnabled.value) {
+      return
+    }
+
     game.value?.playHitSound()
   })
 
@@ -189,6 +188,10 @@ const handleUpdate = () => {
   }
 
   const playerPad = getPlayerPad()
+
+  if (!playerPad) {
+    return
+  }
 
   if (playerPad.userId === pad1.value.userId) {
     tennisClient.value.movePad(playerPad.userId, WIDTH - lastPlayerMove.value - PAD_WIDTH)
@@ -277,7 +280,7 @@ const topScore = computed(() => {
   const playerPad = getPlayerPad()
 
   if (playerPad) {
-    if (playerPad.userId === pad1.value.userId) {
+    if (playerPad.userId === pad1.value?.userId) {
       return score.value[0]
     }
 
@@ -291,7 +294,7 @@ const bottomScore = computed(() => {
   const playerPad = getPlayerPad()
 
   if (playerPad) {
-    if (playerPad.userId === pad1.value.userId) {
+    if (playerPad.userId === pad1.value?.userId) {
       return score.value[1]
     }
 
@@ -383,7 +386,7 @@ const sendMessage = () => {
           ref="gameRoot"
         ></div>
 
-        <div class="flex items-start w-full px-4" v-if="!isLoading">
+        <div class="flex flex-col items-start w-full px-4 gap-4" v-if="!isLoading">
           <div class="flex flex-col w-full max-w-sm bg-white rounded-lg">
             <div class="p-4 border-b">
               <div class="text-xl font-bold" v-if="hasOpponent">
@@ -414,6 +417,16 @@ const sendMessage = () => {
                   >Jogar novamente</b-button
                 >
               </div>
+            </div>
+          </div>
+
+          <div class="flex flex-col w-full max-w-sm">
+            <div class="flex justify-end w-full">
+              <b-button
+                :icon-left="isAudioEnabled ? 'volume-high' : 'volume-mute'"
+                type="is-info"
+                @click="isAudioEnabled = !isAudioEnabled"
+              />
             </div>
           </div>
         </div>

@@ -23,6 +23,11 @@ export default {
           data: { scaleMode: 'nearest' }
         },
         {
+          alias: 'basement.png',
+          src: 'resources/maps/basement.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
           alias: 'cat.png',
           src: 'resources/maps/cat.png',
           data: { scaleMode: 'nearest' }

@@ -37,6 +37,10 @@ TILESETS = {
         "id": 70000,
         "path": "resources/maps/bathroom.png",
     },
+    "basement": {
+        "id": 80000,
+        "path": "resources/maps/basement.png",
+    },
 }
 
 
