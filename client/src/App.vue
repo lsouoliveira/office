@@ -21,7 +21,7 @@ const items = reactive({
 })
 
 const showConfigModal = ref(false)
-const showTennisModal = ref(true)
+const showTennisModal = ref(false)
 const showOs = ref(false)
 const showPianoModal = ref(false)
 const osApplication = ref(null)
