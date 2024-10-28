@@ -7,6 +7,7 @@ const PAD_HEIGHT = 12
 const PAD1_OFFSET_Y = OUTSIDE_BORDER_WIDTH + 10
 const PAD2_OFFSET_Y = HEIGHT - OUTSIDE_BORDER_WIDTH - PAD_HEIGHT - 10
 const BALL_RADIUS = 8
+const BALL_START_SPEED = 350
 
 enum StageType {
   WAITING_FOR_PLAYERS,
@@ -128,16 +129,40 @@ class Ball {
   private x: number
   private y: number
   private radius: number
+  private direction: number[]
+  private speed: number
 
   constructor(x: number, y: number, radius: number) {
     this.x = x
     this.y = y
     this.radius = radius
+    this.direction = [0, 0]
+    this.speed = BALL_START_SPEED
+  }
+
+  getPosition() {
+    return { x: this.x, y: this.y }
   }
 
   setPosition(x: number, y: number) {
     this.x = x
     this.y = y
+  }
+
+  setDirection(direction: number[]) {
+    this.direction = direction
+  }
+
+  getDirection() {
+    return this.direction
+  }
+
+  getSpeed() {
+    return this.speed
+  }
+
+  setSpeed(speed: number) {
+    this.speed = speed
   }
 
   draw(ctx: CanvasRenderingContext2D) {
@@ -180,6 +205,12 @@ class RematchStage implements Stage {
   destroy() {}
 }
 
+interface Target {
+  x: number
+  y: number
+  speed: number
+}
+
 class PlayingStage implements Stage {
   private pad1: Pad
   private pad2: Pad
@@ -197,7 +228,58 @@ class PlayingStage implements Stage {
     this.onPadMove = onPadMove
   }
 
-  update(dt: number) {}
+  update(dt: number) {
+    const newPosition = {
+      x: this.ball.getPosition().x + this.ball.getDirection()[0] * this.ball.getSpeed() * dt,
+      y: this.ball.getPosition().y + this.ball.getDirection()[1] * this.ball.getSpeed() * dt
+    }
+
+    if (newPosition.x - BALL_RADIUS < 0) {
+      newPosition.x = BALL_RADIUS
+    }
+
+    if (newPosition.x + BALL_RADIUS > WIDTH) {
+      newPosition.x = WIDTH - BALL_RADIUS
+    }
+
+    if (this.checkPadCollision(newPosition.x, newPosition.y, this.pad1)) {
+      newPosition.y = this.pad1.getPosition().y + PAD_HEIGHT + BALL_RADIUS
+      this.ball.setDirection(this.getBallDirection(this.pad1, newPosition))
+    }
+
+    if (this.checkPadCollision(newPosition.x, newPosition.y, this.pad2)) {
+      newPosition.y = this.pad2.getPosition().y - BALL_RADIUS
+      this.ball.setDirection(this.getBallDirection(this.pad2, newPosition))
+    }
+
+    this.ball.setPosition(newPosition.x, newPosition.y)
+  }
+
+  checkPadCollision(x: number, y: number, pad: Pad) {
+    return (
+      x >= pad.getPosition().x &&
+      x <= pad.getPosition().x + PAD_WIDTH &&
+      y >= pad.getPosition().y &&
+      y <= pad.getPosition().y + PAD_HEIGHT
+    )
+  }
+
+  getBallDirection(pad: Pad, newBallPos: { x: number; y: number }) {
+    let dx = ((newBallPos.x - pad.getPosition().x) / PAD_WIDTH) * 2 - 1
+
+    if (dx < -1) {
+      dx = -1
+    }
+
+    if (dx > 1) {
+      dx = 1
+    }
+
+    const angle = 45 * dx - 90
+    const dy = pad.getPosition().y < HEIGHT / 2 ? -1 : 1
+
+    return [Math.cos((angle * Math.PI) / 180), dy * Math.sin((angle * Math.PI) / 180)]
+  }
 
   draw(ctx: CanvasRenderingContext2D) {
     Renderer.drawCourt(ctx, 0, 0, WIDTH, HEIGHT)
@@ -209,8 +291,10 @@ class PlayingStage implements Stage {
 
   destroy() {}
 
-  setBallPosition(x: number, y: number) {
+  updateBallData(x: number, y: number, direction: number[], speed: number) {
     this.ball.setPosition(x, y)
+    this.ball.setDirection(direction)
+    this.ball.setSpeed(speed)
   }
 
   setPadPosition(padIndex: number, x: number) {
@@ -271,6 +355,7 @@ class TennisGame {
   private onUpdate: (dt: number) => void
   private isRunning: boolean = true
   private hitSound: HTMLAudioElement
+  private mainloopInterval?: NodeJS.Timeout
 
   constructor(root: HTMLElement, onPadMove: (x: number) => void, onUpdate: (dt: number) => void) {
     this.root = root
@@ -305,7 +390,9 @@ class TennisGame {
   }
 
   start() {
-    window.requestAnimationFrame(this.mainloop.bind(this))
+    this.mainloopInterval = setInterval(() => {
+      this.mainloop()
+    }, 1000 / 60)
   }
 
   setStage(stage: StageType) {
@@ -324,9 +411,9 @@ class TennisGame {
     }
   }
 
-  setBallPosition(x: number, y: number) {
+  updateBallData(x: number, y: number, direction: number[], speed: number) {
     if (this.stage instanceof PlayingStage) {
-      this.stage.setBallPosition(x, y)
+      this.stage.updateBallData(x, y, direction, speed)
     }
   }
 
@@ -362,6 +449,8 @@ class TennisGame {
     this.stage?.destroy?.()
     this.stage = undefined
     this.isRunning = false
+
+    clearInterval(this.mainloopInterval!)
   }
 
   private update(dt: number) {
@@ -373,21 +462,23 @@ class TennisGame {
       return
     }
 
-    this.surfaceCtx.clearRect(0, 0, WIDTH, HEIGHT)
+    this.surfaceCtx.fillStyle = 'black'
+    this.surfaceCtx.fillRect(0, 0, WIDTH, HEIGHT)
+
     this.stage?.update(dt)
     this.stage?.draw(this.surfaceCtx)
 
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
+    this.ctx.fillStyle = 'black'
+    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
+
     this.ctx.drawImage(this.surfaceCanvas, 0, 0, this.canvas.width, this.canvas.height)
   }
 
   private mainloop() {
-    const dt = this.getDeltaTime()
+    const dt = 1 / 60
 
     this.update(dt)
     this.onUpdate(dt)
-
-    window.requestAnimationFrame(this.mainloop.bind(this))
   }
 
   private getDeltaTime() {

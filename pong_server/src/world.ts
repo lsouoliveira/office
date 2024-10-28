@@ -134,7 +134,9 @@ class Ball {
   serialize() {
     return {
       x: this.x,
-      y: this.y
+      y: this.y,
+      direction: this.direction,
+      speed: this.speed
     }
   }
 }
@@ -346,11 +348,14 @@ class World {
   nextTurn() {
     if (this.score[0] >= MAX_SCORE || this.score[1] >= MAX_SCORE) {
       this.state = GameState.WAITING_FOR_REMATCH
+
       this.pad1?.setReady(false)
       this.pad2?.setReady(false)
       this.resetGame()
+
       this.io.emit('room', this.getRoomState())
-      return
+
+      return false
     }
 
     this.turn = this.turn === 0 ? 1 : 0
@@ -358,6 +363,8 @@ class World {
     this.setBallDirection()
     this.ball.setPos(GAME_WIDTH / 2, GAME_HEIGHT / 2)
     this.ball.setSpeed(BALL_START_SPEED)
+
+    return true
   }
 
   start() {

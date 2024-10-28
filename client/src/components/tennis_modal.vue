@@ -73,20 +73,30 @@ onMounted(() => {
 
     if (playerPad) {
       if (pad1.value?.userId === playerPad.userId) {
-        game.value?.setBallPosition(WIDTH - state.ball.x, HEIGHT - state.ball.y)
+        game.value?.updateBallData(
+          WIDTH - state.ball.x,
+          HEIGHT - state.ball.y,
+          [state.ball.direction[0] * -1, state.ball.direction[1] * -1],
+          state.ball.speed
+        )
 
         if (pad2.value) {
           game.value?.setPadPosition(1, WIDTH - state.pad2?.x - PAD_WIDTH)
         }
       } else {
-        game.value?.setBallPosition(state.ball.x, state.ball.y)
+        game.value?.updateBallData(
+          state.ball.x,
+          state.ball.y,
+          state.ball.direction,
+          state.ball.speed
+        )
 
         if (pad1.value) {
           game.value?.setPadPosition(1, state.pad1?.x)
         }
       }
     } else {
-      game.value?.setBallPosition(state.ball.x, state.ball.y)
+      game.value?.updateBallData(state.ball.x, state.ball.y, state.ball.direction, state.ball.speed)
 
       if (pad1.value) {
         game.value?.setPadPosition(1, state.pad1?.x)
@@ -243,7 +253,11 @@ const getPlayerPad = () => {
     return pad1.value
   }
 
-  return pad2.value
+  if (pad2.value?.userId === userId.value) {
+    return pad2.value
+  }
+
+  return null
 }
 
 const getUser = (userId: string) => {
