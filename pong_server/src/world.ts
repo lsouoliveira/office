@@ -11,7 +11,7 @@ const BALL_START_SPEED = 350
 const BALL_SPEED = 500
 const BALL_SPEED_INCREASE = 10
 const BALL_RADIUS = 8
-const MAX_SCORE = 10
+const MAX_SCORE = 5
 const PAD_OFFSET_Y = 10
 
 interface User {
@@ -363,6 +363,7 @@ class World {
     this.setBallDirection()
     this.ball.setPos(GAME_WIDTH / 2, GAME_HEIGHT / 2)
     this.ball.setSpeed(BALL_START_SPEED)
+    this.io.emit('game:nextTurn', this.getGameState())
 
     return true
   }

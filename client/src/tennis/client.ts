@@ -30,6 +30,7 @@ class TennisClient extends EventEmitter {
         'room',
         'game:state',
         'game:hit',
+        'game:nextTurn',
         'user:connected',
         'user:disconnected',
         'user:message'

@@ -8,6 +8,7 @@ const PAD1_OFFSET_Y = OUTSIDE_BORDER_WIDTH + 10
 const PAD2_OFFSET_Y = HEIGHT - OUTSIDE_BORDER_WIDTH - PAD_HEIGHT - 10
 const BALL_RADIUS = 8
 const BALL_START_SPEED = 350
+const PAD_INTERPOLATION_SPEED = 25
 
 enum StageType {
   WAITING_FOR_PLAYERS,
@@ -97,17 +98,39 @@ class Renderer {
   }
 }
 
+const lerp = (a: number, b: number, t: number) => {
+  return a + (b - a) * t
+}
+
 class Pad {
   private x: number
   private y: number
   private width: number
   private height: number
+  private targetPositionX: number
+  private interpolatePosition: boolean
 
   constructor(x: number, y: number, width: number, height: number) {
     this.x = x
     this.y = y
     this.width = width
     this.height = height
+    this.targetPositionX = x
+  }
+
+  update(dt: number) {
+    if (!this.interpolatePosition) {
+      return
+    }
+
+    const distance = Math.abs(this.targetPositionX - this.x)
+
+    if (distance < 1) {
+      this.x = this.targetPositionX
+      return
+    }
+
+    this.x = lerp(this.x, this.targetPositionX, dt * PAD_INTERPOLATION_SPEED)
   }
 
   draw(ctx: CanvasRenderingContext2D) {
@@ -122,6 +145,14 @@ class Pad {
   setPosition(x: number, y: number) {
     this.x = x
     this.y = y
+  }
+
+  setTargetPosition(x: number, y: number) {
+    this.targetPositionX = x
+  }
+
+  setInterpolatePosition(interpolate: boolean) {
+    this.interpolatePosition = interpolate
   }
 }
 
@@ -229,6 +260,9 @@ class PlayingStage implements Stage {
   }
 
   update(dt: number) {
+    this.pad1.update(dt)
+    this.pad2.update(dt)
+
     const newPosition = {
       x: this.ball.getPosition().x + this.ball.getDirection()[0] * this.ball.getSpeed() * dt,
       y: this.ball.getPosition().y + this.ball.getDirection()[1] * this.ball.getSpeed() * dt
@@ -253,6 +287,12 @@ class PlayingStage implements Stage {
     }
 
     this.ball.setPosition(newPosition.x, newPosition.y)
+  }
+
+  reset() {
+    this.ball.setPosition(WIDTH / 2, HEIGHT / 2)
+    this.ball.setDirection([0, 0])
+    this.ball.setSpeed(BALL_START_SPEED)
   }
 
   checkPadCollision(x: number, y: number, pad: Pad) {
@@ -299,9 +339,9 @@ class PlayingStage implements Stage {
 
   setPadPosition(padIndex: number, x: number) {
     if (padIndex === 1) {
-      this.pad1.setPosition(x, this.pad1.getPosition().y)
+      this.pad1.setTargetPosition(x, this.pad1.getPosition().y)
     } else {
-      this.pad2.setPosition(x, this.pad2.getPosition().y)
+      this.pad2.setTargetPosition(x, this.pad2.getPosition().y)
     }
   }
 
@@ -310,8 +350,10 @@ class PlayingStage implements Stage {
 
     if (enabled) {
       this.setupPlayerControls()
+      this.pad1.setInterpolatePosition(true)
     } else {
       this.teardownPlayerControls()
+      this.pad1.setInterpolatePosition(false)
     }
   }
 
@@ -438,6 +480,12 @@ class TennisGame {
   playHitSound() {
     this.hitSound.currentTime = 0
     this.hitSound.play()
+  }
+
+  reset() {
+    if (this.stage instanceof PlayingStage) {
+      this.stage.reset()
+    }
   }
 
   destroy() {

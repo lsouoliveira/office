@@ -108,6 +108,10 @@ onMounted(() => {
     }
   })
 
+  tennisClient.value.on('game:nextTurn', () => {
+    game.value?.reset()
+  })
+
   tennisClient.value.on('game:hit', () => {
     if (!isAudioEnabled.value) {
       return
