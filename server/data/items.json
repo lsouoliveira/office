@@ -4722,7 +4722,7 @@
   },
   "90000": {
     "is_ground": false,
-    "is_walkable": true,
+    "is_walkable": false,
     "action_id": "ping_pong",
     "facing": null,
     "equipment_id": null,
