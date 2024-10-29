@@ -438,7 +438,7 @@ class World {
   }
 
   private setBallDirection() {
-    const random = Math.random()
+    const random = 1
     let directionX = 0
 
     if (random < 0.33) {
