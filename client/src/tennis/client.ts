@@ -16,7 +16,7 @@ class TennisClient extends EventEmitter {
   }
 
   connect() {
-    this.io = io(this.host)
+    this.io = io(this.host, { transports: ['websocket'] })
     this.io.auth = {
       userId: this.userId,
       username: this.username

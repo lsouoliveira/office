@@ -4,7 +4,7 @@ class Client {
   public socket: Socket
 
   constructor(url: string, credentials: any) {
-    this.socket = io(url)
+    this.socket = io(url, { transports: ['websocket'] })
     this.socket.auth = {
       username: credentials.username,
       sessionId: credentials.sessionId
