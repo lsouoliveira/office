@@ -176,9 +176,20 @@ class Playground extends Scene {
   private equipmentSpritesheets: Map<string, Spritesheet> = new Map()
   private layers: PIXI.Container[] = []
   private isConnected: boolean = false
+  private isConnectingText: PIXI.Text
+  private isLoading: boolean = true
 
   async onStart() {
     // const stats = new Stats(this.app.renderer)
+
+    this.isConnectingText = new PIXI.Text('Conectando...', {
+      fontFamily: 'Arial',
+      fontSize: 24,
+      fill: 0xffff00
+    })
+    this.isConnectingText.position.set(window.innerWidth / 2, window.innerHeight / 2)
+    this.isConnectingText.anchor.set(0.5)
+    this.addChild(this.isConnectingText)
 
     for (let i = 0; i < SKINS.length; i++) {
       const { name, sprite } = SKINS[i]
@@ -226,6 +237,10 @@ class Playground extends Scene {
   }
 
   update() {
+    if (this.isLoading) {
+      return
+    }
+
     for (const entity of this.entities) {
       entity.updateEntity(this.app.ticker.deltaMS / 1000)
     }
@@ -417,8 +432,6 @@ class Playground extends Scene {
       return
     }
 
-    this.setupScene()
-
     localStorage.setItem('sessionId', sessionId)
 
     const skin = this.playerSkins.get(playerData.skin || DEFAULT_SKIN)
@@ -433,12 +446,6 @@ class Playground extends Scene {
     this.players[playerData.id] = this.player
 
     this.updatePlayerEquipment(this.player, playerData)
-
-    this.layers[2].addChild(this.player.topHalf)
-    this.layers[1].addChild(this.player.bottomHalf)
-    this.uiLayer.addChild(this.player.playerName)
-
-    this.addEntity(this.player)
 
     this.isConnected = true
   }
@@ -459,9 +466,14 @@ class Playground extends Scene {
   }
 
   private handleGameState(gameState: any) {
-    console.log('Game state received:', gameState)
-
+    this.setupScene()
     this.setupMap(gameState.map)
+
+    this.layers[2].addChild(this.player.topHalf)
+    this.layers[1].addChild(this.player.bottomHalf)
+    this.uiLayer.addChild(this.player.playerName)
+
+    this.addEntity(this.player)
 
     gameState.players.forEach((playerData) => {
       if (this.players[playerData.id]) {
@@ -470,6 +482,9 @@ class Playground extends Scene {
         this.addPlayer(playerData)
       }
     })
+
+    this.isLoading = false
+    this.isConnectingText.destroy()
   }
 
   private addPlayer(playerData: any) {
