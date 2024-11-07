@@ -8,6 +8,7 @@ import { Piano } from './piano'
 import ConfigModal from './components/config_modal.vue'
 import PianoModal from './components/piano_modal.vue'
 import TennisModal from './components/tennis_modal.vue'
+import FoosballModal from './components/foosball_modal.vue'
 
 const gameRoot = useTemplateRef('gameRoot')
 const chatMessageInput = useTemplateRef('chatMessageInput')
@@ -22,6 +23,7 @@ const items = reactive({
 
 const showConfigModal = ref(false)
 const showTennisModal = ref(false)
+const showFoosballModal = ref(false)
 const showOs = ref(false)
 const showPianoModal = ref(false)
 const osApplication = ref(null)
@@ -32,8 +34,12 @@ const itemsSearch = ref('')
 const osRoot = useTemplateRef('osRoot')
 
 onMounted(async () => {
-  const game = new Game(gameRoot.value)
-  game.init()
+  // const game = new Game(gameRoot.value)
+  // game.init()
+
+  setTimeout(() => {
+    showFoosballModal.value = true
+  }, 0)
 
   loadSprites().then((sprites) => {
     items.data = sprites
@@ -52,6 +58,10 @@ onMounted(async () => {
 
   window.addEventListener('ui:show_ping_pong', () => {
     showTennisModal.value = true
+  })
+
+  window.addEventListener('ui:foosball', () => {
+    showFoosballModal.value = true
   })
 
   window.addEventListener('keydown', (e) => {
@@ -211,6 +221,11 @@ const filteredItems = computed(() => {
 <template>
   <config-modal @close="showConfigModal = false" v-model="showConfigModal" v-if="showConfigModal" />
   <tennis-modal @close="showTennisModal = false" v-model="showTennisModal" v-if="showTennisModal" />
+  <foosball-modal
+    @close="showFoosballModal = false"
+    v-model="showFoosballModal"
+    v-if="showFoosballModal"
+  />
 
   <div class="fixed top-0 left-0 w-full">
     <div class="flex items-center justify-end p-4 gap-2">
