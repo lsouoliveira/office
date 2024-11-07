@@ -56,6 +56,8 @@ class Chat extends Container implements Entity {
       fill: 0xffff00,
       fontFamily: 'Arial',
       fontSize: 16,
+      stroke: 0x000000,
+      strokeThickness: 4,
       wordWrap: true,
       wordWrapWidth: window.innerWidth * 0.3,
       breakWords: true,
