@@ -9,6 +9,8 @@ import ConfigModal from './components/config_modal.vue'
 import PianoModal from './components/piano_modal.vue'
 import TennisModal from './components/tennis_modal.vue'
 
+const EMOTES = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', '=']
+
 const gameRoot = useTemplateRef('gameRoot')
 const chatMessageInput = useTemplateRef('chatMessageInput')
 const chatMessage = reactive({
@@ -28,6 +30,7 @@ const osApplication = ref(null)
 const piano = ref(null)
 const isAudioEnabled = ref(false)
 const itemsSearch = ref('')
+const canEmote = ref(true)
 
 const osRoot = useTemplateRef('osRoot')
 
@@ -79,11 +82,23 @@ onMounted(async () => {
 
         break
     }
+
+    if (canEmote.value && !e.ctrlKey && EMOTES.includes(e.key)) {
+      canEmote.value = false
+      window.dispatchEvent(new CustomEvent('ui:emote', { detail: { id: e.key } }))
+    }
+  })
+
+  window.addEventListener('keyup', (e) => {
+    if (EMOTES.includes(e.key)) {
+      canEmote.value = true
+    }
   })
 })
 
 onUnmounted(() => {
   window.removeEventListener('keydown', () => {})
+  window.removeEventListener('keyup', () => {})
 })
 
 const handleChatMessage = ({ target: { value } }) => {

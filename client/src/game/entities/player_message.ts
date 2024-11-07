@@ -39,6 +39,11 @@ class PlayerMessage extends Text implements Entity {
 
     return playerMessage
   }
+
+  destroy() {
+    this.emit('destroy')
+    super.destroy()
+  }
 }
 
 export { PlayerMessage }

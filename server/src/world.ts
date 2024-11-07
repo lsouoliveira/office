@@ -235,6 +235,9 @@ class World {
       socket.on('player:releaseNote', (note) => {
         this.handleReleaseNote(socket, note)
       })
+      socket.on('player:playEmote', (emoteId: string) => {
+        this.handlePlayEmote(socket, emoteId)
+      })
       socket.on('disconnect', async () => {
         logger.info(`Player ${player?.playerData?.name} disconnected`)
 
@@ -832,6 +835,27 @@ class World {
     this.io.emit('player:noteReleased', {
       playerId: player.playerData.id,
       note: note
+    })
+  }
+
+  private async handlePlayEmote(socket, emoteId) {
+    const session = this.sessions[socket.sessionId]
+
+    if (!session) {
+      return
+    }
+
+    const player = this.players[session.playerId]
+
+    if (!player) {
+      return
+    }
+
+    console.log('[ Server ] Playing emoteId', emoteId)
+
+    this.io.emit('player:emotePlayed', {
+      playerId: player.playerData.id,
+      emoteId: emoteId
     })
   }
 

@@ -3,6 +3,7 @@ import { AnimatedSprite, Spritesheet } from 'pixi.js'
 import { ComposedSpritesheet } from './../animation/spritesheet'
 import { type Animator } from './../animation/animator'
 import { PlayerMessage } from './../entities/player_message'
+import { Emote } from './../entities/emote'
 import { type Entity } from './../entities/entity'
 
 enum Direction {
@@ -79,6 +80,8 @@ class Player extends PIXI.Container implements Entity {
   private layers: PIXI.Container[]
   private movedUp: boolean = false
 
+  private lastEmote?: Emote
+
   constructor(id: string, composedSpritesheet: ComposedSpritesheet, layers: PIXI.Container[]) {
     super()
 
@@ -146,6 +149,11 @@ class Player extends PIXI.Container implements Entity {
       this.playerName.position.set(
         this.position.x + this.topHalfSprite.width / 2,
         this.position.y - this.topHalfSprite.height - 2
+      )
+
+      this.lastEmote?.position?.set(
+        this.position.x + this.topHalfSprite.width / 2 - 8,
+        this.position.y - this.topHalfSprite.height - 16
       )
     } catch (e) {
       console.debug(e)
@@ -402,6 +410,17 @@ class Player extends PIXI.Container implements Entity {
 
   getHelmet() {
     return this.helmetSlot
+  }
+
+  emote(emote: Emote) {
+    this.lastEmote?.destroy()
+
+    this.lastEmote = emote
+    this.lastEmote.zIndex = 2
+  }
+
+  canEmote(id: string) {
+    return this.lastEmote?.getID() != id
   }
 }
 

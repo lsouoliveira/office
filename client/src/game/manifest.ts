@@ -33,6 +33,11 @@ export default {
           data: { scaleMode: 'nearest' }
         },
         {
+          alias: 'ui_16x16.png',
+          src: 'resources/images/ui_16x16.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
           alias: 'animated_glowing_pumpkin.png',
           src: 'resources/maps/animated_glowing_pumpkin.png',
           data: { scaleMode: 'nearest' }

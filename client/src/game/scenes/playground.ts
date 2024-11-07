@@ -15,6 +15,7 @@ import { Cursor } from './../cursor'
 import { SpriteCursor } from './../sprite_cursor'
 import { Stats } from 'pixi-stats'
 import { Chat } from './../entities/chat'
+import { Emote } from './../entities/emote'
 import { Equipment, EquipmentType } from './../characters/player'
 import { SpritesheetSplitter, ComposedSpritesheet } from './../animation/spritesheet'
 
@@ -178,6 +179,7 @@ class Playground extends Scene {
   private isConnected: boolean = false
   private isConnectingText: PIXI.Text
   private isLoading: boolean = true
+  private emoteSpritesheet: PIXI.Texture
 
   async onStart() {
     // const stats = new Stats(this.app.renderer)
@@ -216,6 +218,8 @@ class Playground extends Scene {
     for (const spritesheet of this.equipmentSpritesheets.values()) {
       await spritesheet.parse()
     }
+
+    this.emoteSpritesheet = Assets.get('ui_16x16.png')
 
     this.camera = new Camera(this)
     this.camera.scale = Math.min(
@@ -279,6 +283,7 @@ class Playground extends Scene {
       this.client.socket.on('player:move', this.handlePlayerMove.bind(this))
       this.client.socket.on('player:notePlayed', this.handleNotePlayed.bind(this))
       this.client.socket.on('player:noteReleased', this.handleNoteReleased.bind(this))
+      this.client.socket.on('player:emotePlayed', this.handlePlayEmote.bind(this))
       this.client.socket.on('computer:open', this.handleComputerOpen.bind(this))
       this.client.socket.on('ping_pong:open', this.handlePingPongOpen.bind(this))
       this.client.socket.on('item:added', this.handleItemAdded.bind(this))
@@ -301,6 +306,7 @@ class Playground extends Scene {
     window.addEventListener('ui:config', this.handleConfig.bind(this))
     window.addEventListener('ui:note_press', this.handleNotePress.bind(this))
     window.addEventListener('ui:note_release', this.handleNoteRelease.bind(this))
+    window.addEventListener('ui:emote', this.handleEmote.bind(this))
     window.addEventListener('keydown', this.handleKeyDown.bind(this))
     window.addEventListener('keyup', this.handleKeyUp.bind(this))
 
@@ -321,6 +327,7 @@ class Playground extends Scene {
     window.removeEventListener('ui:config', this.handleConfig.bind(this))
     window.removeEventListener('ui:note_press', this.handleNotePress.bind(this))
     window.removeEventListener('ui:note_release', this.handleNoteRelease.bind(this))
+    window.removeEventListener('ui:emote', this.handleEmote.bind(this))
     window.removeEventListener('keydown', this.handleKeyDown.bind(this))
     window.removeEventListener('keyup', this.handleKeyUp.bind(this))
 
@@ -642,6 +649,33 @@ class Playground extends Scene {
     this.client.releaseNote(note)
   }
 
+  private handleEmote({ detail: { id } }) {
+    this.client.playEmote(id)
+  }
+
+  private handlePlayEmote({ playerId, emoteId }: { playerId: string; emoteId: string }) {
+    const player = this.players[playerId]
+
+    if (!player) {
+      return
+    }
+
+    if (!player.canEmote(emoteId)) {
+      return
+    }
+
+    const emote = Emote.create(emoteId, this.emoteSpritesheet)
+
+    if (!emote) {
+      return
+    }
+
+    player.emote(emote)
+
+    this.addEntity(emote)
+    this.uiLayer.addChild(emote)
+  }
+
   private handleKeyDown(e) {
     this.ctrlPressed = e.ctrlKey
   }
@@ -761,6 +795,10 @@ class Playground extends Scene {
     this.entities.push(entity)
 
     entity.on('destroy', () => {
+      if (entity.parent) {
+        entity.parent.removeChild(entity)
+      }
+
       this.entities.splice(this.entities.indexOf(entity), 1)
     })
   }

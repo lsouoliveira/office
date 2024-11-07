@@ -46,6 +46,10 @@ class Client {
   releaseNote(note: string) {
     this.socket.emit('player:releaseNote', note)
   }
+
+  playEmote(emoteId: string) {
+    this.socket.emit('player:playEmote', emoteId)
+  }
 }
 
 export { Client }
