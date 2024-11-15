@@ -19,7 +19,8 @@
     "pixi.js": "^8.4.1",
     "socket.io-client": "^4.8.0",
     "tone": "^15.0.4",
-    "vue": "^3.4.29"
+    "vue": "^3.4.29",
+    "vue-router": "^4.4.5"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.8.0",

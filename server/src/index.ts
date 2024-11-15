@@ -2,12 +2,15 @@ import express from 'express'
 import { Server } from 'socket.io'
 import cors from 'cors'
 import { World } from './world'
+import sessionRoutes from './routes/session_routes'
 
 const app = express()
 
 app.use(cors())
+app.use(express.json())
 
 app.use(express.static('../client/dist'))
+app.use('/api/users', sessionRoutes)
 
 const httpServer = app.listen(3000, () => {
   console.log('Listening at port 3000')
