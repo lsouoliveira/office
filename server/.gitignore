@@ -3,3 +3,4 @@ dist
 combined.log
 main.db
 .env
+server.json

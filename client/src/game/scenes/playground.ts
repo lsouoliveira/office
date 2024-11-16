@@ -19,6 +19,7 @@ import { Emote } from './../entities/emote'
 import { Equipment, EquipmentType } from './../characters/player'
 import { SpritesheetSplitter, ComposedSpritesheet } from './../animation/spritesheet'
 import { MoneyDisplay } from './../entities/money_display'
+import { Announcement } from './../entities/announcement'
 
 const TILE_SIZE = 16
 const DEFAULT_SKIN = 'Bob'
@@ -182,6 +183,7 @@ class Playground extends Scene {
   private isLoading: boolean = true
   private emoteSpritesheet: PIXI.Texture
   private moneyDisplay: MoneyDisplay
+  private announcement: Announcement
 
   async onStart() {
     // const stats = new Stats(this.app.renderer)
@@ -194,6 +196,11 @@ class Playground extends Scene {
     this.isConnectingText.position.set(window.innerWidth / 2, window.innerHeight / 2)
     this.isConnectingText.anchor.set(0.5)
     this.addChild(this.isConnectingText)
+
+    this.announcement = new Announcement()
+    this.announcement.position.set(window.innerWidth / 2, 8)
+    this.app.stage.addChild(this.announcement)
+    this.addEntity(this.announcement)
 
     for (let i = 0; i < SKINS.length; i++) {
       const { name, sprite } = SKINS[i]
@@ -287,6 +294,7 @@ class Playground extends Scene {
       this.client.socket.on('player:noteReleased', this.handleNoteReleased.bind(this))
       this.client.socket.on('player:emotePlayed', this.handlePlayEmote.bind(this))
       this.client.socket.on('computer:open', this.handleComputerOpen.bind(this))
+      this.client.socket.on('world:announcement', this.handleWorldAnnouncement.bind(this))
       this.client.socket.on('ping_pong:open', this.handlePingPongOpen.bind(this))
       this.client.socket.on('item:added', this.handleItemAdded.bind(this))
       this.client.socket.on('item:removed', this.handleItemRemoved.bind(this))
@@ -755,6 +763,10 @@ class Playground extends Scene {
 
   private handleComputerOpen() {
     window.dispatchEvent(new CustomEvent('ui:show_os'))
+  }
+
+  private async handleWorldAnnouncement({ message, level }: { message: string; level: number }) {
+    this.announcement.show(message, level)
   }
 
   private handlePingPongOpen() {

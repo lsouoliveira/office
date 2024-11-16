@@ -1,2 +1,2 @@
-web: nodemon --ignore map.json dist/main.js
+web: nodemon --ignore map.json --ignore server.json dist/main.js
 js: npm run build --watch

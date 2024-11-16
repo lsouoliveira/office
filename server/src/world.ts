@@ -11,6 +11,7 @@ import { DrinkTask } from './tasks/drink_task'
 import { ReplaceItemTask } from './tasks/replace_item_task'
 import { EquipTempEquipmentTask } from './tasks/equip_temp_equipment_task'
 import { EquipEquipment } from './tasks/equip_equipment_task'
+import { Inventory } from './inventory/inventory'
 import logger from './logger'
 import * as cron from 'node-cron'
 
@@ -23,6 +24,12 @@ const fs = require('node:fs')
 const crypto = require('crypto')
 const DEFAULT_SKIN = 'Bob'
 const REWARD_AMOUNT = 10
+
+enum Level {
+  INFO,
+  WARNING,
+  DANGER
+}
 
 const EQUIPMENTS = [
   {
@@ -164,6 +171,13 @@ class World {
     setInterval(() => {
       this.mainloop()
     }, TICK_RATE * 1000)
+  }
+
+  private sendAnnounment(level: Level, message: string) {
+    this.io.emit('world:announcement', {
+      message,
+      level
+    })
   }
 
   private scheduleServerSave() {
@@ -409,7 +423,8 @@ class World {
       name: user.name,
       skin: DEFAULT_SKIN,
       userId: user.id,
-      money: 0
+      money: 0,
+      inventory: new Inventory()
     })
 
     const playerMovement = new PlayerMovement(player, this.map)

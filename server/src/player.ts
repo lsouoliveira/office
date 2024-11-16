@@ -3,6 +3,7 @@ import { Grid, AStarFinder } from 'pathfinding'
 import { GameMap } from './map'
 import { Task } from './tasks/task'
 import { Item } from './items/item'
+import { Inventory } from './/inventory/inventory'
 
 interface Position {
   x: number
@@ -35,6 +36,7 @@ interface PlayerData {
   helmetSlot?: Equipment
   userId: number
   money: number
+  inventory: Inventory
 }
 
 enum EquipmentType {
@@ -402,19 +404,7 @@ class Player extends EventEmitter {
   }
 
   notifyChange() {
-    this.emit('change', {
-      id: this.playerData.id,
-      position: this.playerData.position,
-      direction: this.playerData.direction,
-      state: this.playerData.state,
-      speed: this.playerData.speed,
-      name: this.playerData.name,
-      isDrinking: this.playerData.isDrinking,
-      isAdmin: this.playerData.isAdmin,
-      skin: this.playerData.skin,
-      helmetSlot: this.playerData.helmetSlot?.getId(),
-      money: this.playerData.money
-    })
+    this.emit('change', this.getPlayerData())
   }
 
   equip(eq: Equipment) {
@@ -455,6 +445,11 @@ class Player extends EventEmitter {
     this.notifyChange()
   }
 
+  addItem(item: Item) {
+    this.playerData.inventory.addItem(item)
+    this.notifyChange()
+  }
+
   getPlayerData() {
     return {
       id: this.playerData.id,
@@ -468,7 +463,8 @@ class Player extends EventEmitter {
       skin: this.playerData.skin,
       helmetSlot: this.playerData.helmetSlot?.getId(),
       userId: this.playerData.userId,
-      money: this.playerData.money
+      money: this.playerData.money,
+      inventory: this.playerData.inventory.serialize()
     }
   }
 }
