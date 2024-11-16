@@ -12,6 +12,7 @@ import { ReplaceItemTask } from './tasks/replace_item_task'
 import { EquipTempEquipmentTask } from './tasks/equip_temp_equipment_task'
 import { EquipEquipment } from './tasks/equip_equipment_task'
 import logger from './logger'
+import * as cron from 'node-cron'
 
 import jsonwebtoken from 'jsonwebtoken'
 import { db } from './db'
@@ -21,6 +22,7 @@ import { eq } from 'drizzle-orm'
 const fs = require('node:fs')
 const crypto = require('crypto')
 const DEFAULT_SKIN = 'Bob'
+const REWARD_AMOUNT = 10
 
 const EQUIPMENTS = [
   {
@@ -147,6 +149,7 @@ class World {
 
     this.loadServer()
     this.scheduleServerSave()
+    this.scheduleRecurrentTasks()
   }
 
   mainloop() {
@@ -170,6 +173,22 @@ class World {
       },
       15 * 60 * 1000
     )
+  }
+
+  private scheduleRecurrentTasks() {
+    cron.schedule('*/10 * * * *', () => {
+      this.giveMoneyToPlayers()
+    })
+  }
+
+  private async giveMoneyToPlayers() {
+    const activeSessions = Object.values(this.sessions).filter((session) => session.connected)
+    const players = activeSessions.map((session) => this.players[session.playerId])
+    const uniquePlayers = [...new Set(players)]
+
+    for (const player of uniquePlayers) {
+      player.addMoney(REWARD_AMOUNT)
+    }
   }
 
   private async saveServer() {
@@ -389,7 +408,8 @@ class World {
       speed: 50,
       name: user.name,
       skin: DEFAULT_SKIN,
-      userId: user.id
+      userId: user.id,
+      money: 0
     })
 
     const playerMovement = new PlayerMovement(player, this.map)

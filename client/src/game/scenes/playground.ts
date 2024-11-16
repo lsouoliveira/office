@@ -18,6 +18,7 @@ import { Chat } from './../entities/chat'
 import { Emote } from './../entities/emote'
 import { Equipment, EquipmentType } from './../characters/player'
 import { SpritesheetSplitter, ComposedSpritesheet } from './../animation/spritesheet'
+import { MoneyDisplay } from './../entities/money_display'
 
 const TILE_SIZE = 16
 const DEFAULT_SKIN = 'Bob'
@@ -180,6 +181,7 @@ class Playground extends Scene {
   private isConnectingText: PIXI.Text
   private isLoading: boolean = true
   private emoteSpritesheet: PIXI.Texture
+  private moneyDisplay: MoneyDisplay
 
   async onStart() {
     // const stats = new Stats(this.app.renderer)
@@ -311,13 +313,14 @@ class Playground extends Scene {
     window.addEventListener('keyup', this.handleKeyUp.bind(this))
 
     this.chat = new Chat({ maxMessages: 15 })
-    this.chat.position.set(8, 8)
+    this.chat.position.set(8, window.innerHeight - 24)
 
     this.app.stage.addChild(this.chat)
     this.addEntity(this.chat)
   }
 
   async onDestroy() {
+    console.log('destroying playground')
     this.app.stage.off('pointermove', this.onMouseMove.bind(this))
     this.app.stage.off('click', this.onClick.bind(this))
 
@@ -435,6 +438,7 @@ class Playground extends Scene {
     const { sessionId, playerData } = session
 
     if (this.isConnected) {
+      this.isConnected = false
       this.sceneManager.load('playground')
       return
     }
@@ -453,6 +457,12 @@ class Playground extends Scene {
     this.players[playerData.id] = this.player
 
     this.updatePlayerEquipment(this.player, playerData)
+
+    this.moneyDisplay = new MoneyDisplay()
+    this.moneyDisplay.position.set(8, 8)
+    this.moneyDisplay.setAmount(playerData.money)
+    this.app.stage.addChild(this.moneyDisplay)
+    this.addEntity(this.moneyDisplay)
 
     this.isConnected = true
   }
@@ -473,6 +483,10 @@ class Playground extends Scene {
   }
 
   private handleGameState(gameState: any) {
+    if (!this.isConnected) {
+      return
+    }
+
     this.setupScene()
     this.setupMap(gameState.map)
 
@@ -576,6 +590,11 @@ class Playground extends Scene {
 
       player.setAnimator(animator)
       player.updateData(playerData)
+
+      if (playerData.id === this.player.id) {
+        const diff = playerData.money - this.moneyDisplay.getAmount()
+        this.moneyDisplay.changeAmount(diff)
+      }
     }
   }
 
@@ -621,6 +640,7 @@ class Playground extends Scene {
   }
 
   private handleSendMessage({ detail: { message } }) {
+    console.log('sending message:', message)
     this.client.sendMessage(message.substring(0, 100))
   }
 

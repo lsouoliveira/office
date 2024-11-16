@@ -34,6 +34,7 @@ interface PlayerData {
   skin: string
   helmetSlot?: Equipment
   userId: number
+  money: number
 }
 
 enum EquipmentType {
@@ -411,7 +412,8 @@ class Player extends EventEmitter {
       isDrinking: this.playerData.isDrinking,
       isAdmin: this.playerData.isAdmin,
       skin: this.playerData.skin,
-      helmetSlot: this.playerData.helmetSlot?.getId()
+      helmetSlot: this.playerData.helmetSlot?.getId(),
+      money: this.playerData.money
     })
   }
 
@@ -448,6 +450,11 @@ class Player extends EventEmitter {
     }
   }
 
+  addMoney(amount: number) {
+    this.playerData.money += amount
+    this.notifyChange()
+  }
+
   getPlayerData() {
     return {
       id: this.playerData.id,
@@ -460,7 +467,8 @@ class Player extends EventEmitter {
       isAdmin: this.playerData.isAdmin,
       skin: this.playerData.skin,
       helmetSlot: this.playerData.helmetSlot?.getId(),
-      userId: this.playerData.userId
+      userId: this.playerData.userId,
+      money: this.playerData.money
     }
   }
 }

@@ -1,0 +1,19 @@
+{
+  "players": [
+    {
+      "id": "f5cb60c6-2ed6-47be-8007-7283ceafb84d",
+      "position": {
+        "x": 96,
+        "y": 128
+      },
+      "direction": 1,
+      "state": 0,
+      "speed": 50,
+      "name": "teste",
+      "skin": "Bob",
+      "userId": 1,
+      "money": 0
+    }
+  ]
+}
+

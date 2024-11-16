@@ -45,6 +45,8 @@ class Chat extends Container implements Entity {
 
       y += textMetrics.lines.length * textMetrics.lineHeight
     })
+
+    this.position.set(this.position.x, window.innerHeight - 8 - y)
   }
 
   createMessage(playerName: string, message: string) {
