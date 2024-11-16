@@ -30,8 +30,12 @@ class Inventory {
     return [...this.items]
   }
 
-  serialize(): string {
-    return JSON.stringify(this.items.map((item) => item.serialize()))
+  getItemByID(id: string): InventoryItem | undefined {
+    return this.items.find((inventoryItem) => inventoryItem.getItemID() === id)
+  }
+
+  serialize() {
+    return this.items.map((item) => item.serialize())
   }
 }
 

@@ -417,6 +417,10 @@ class Player extends PIXI.Container implements Entity {
 
     this.lastEmote = emote
     this.lastEmote.zIndex = 2
+
+    emote.on('destroy', () => {
+      this.lastEmote = undefined
+    })
   }
 
   canEmote(id: string) {

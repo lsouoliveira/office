@@ -301,6 +301,8 @@ class Playground extends Scene {
       this.client.socket.on('item:replaced', this.handleItemReplaced.bind(this))
       this.client.socket.on('gameState', this.handleGameState.bind(this))
     })
+
+    window.gameClient = this.client
   }
 
   setupScene() {
@@ -621,13 +623,13 @@ class Playground extends Scene {
       return
     }
 
-    const helmetSpritesheet = this.equipmentSpritesheets.get(playerData.helmetSlot)
+    const helmetSpritesheet = this.equipmentSpritesheets.get(playerData.helmetSlot.itemType.equipmentId)
 
     if (!helmetSpritesheet) {
       return
     }
 
-    const helmet = new Equipment(playerData.helmetSlot, EquipmentType.Helmet, helmetSpritesheet)
+    const helmet = new Equipment(playerData.helmetSlot.itemType.equipmentId, EquipmentType.Helmet, helmetSpritesheet)
     const animator = this.createBaseAnimator(helmet as AnimatedSprite, helmetSpritesheet)
     helmet.init(animator)
 
@@ -648,7 +650,6 @@ class Playground extends Scene {
   }
 
   private handleSendMessage({ detail: { message } }) {
-    console.log('sending message:', message)
     this.client.sendMessage(message.substring(0, 100))
   }
 

@@ -1,10 +1,11 @@
+import { Equipment, EquipmentType } from './../player'
+
 interface ItemTypeOptions {
   isGround: boolean
   isWalkable: boolean
   isWall?: boolean
   actionId?: string
   facing?: string
-  equipmentId?: string
   nextItemId?: string
 }
 
@@ -15,11 +16,11 @@ class ItemType {
   private _isWall: boolean
   private actionId?: string
   private facing?: string
-  private equipmentId?: string
   private nextItemId?: string
+  private equipment?: Equipment
 
-  constructor(id: string, options: ItemTypeOptions) {
-    const { isGround, isWalkable, actionId, facing, equipmentId, isWall, nextItemId } = options
+  constructor(id: string, options: ItemTypeOptions, equipment?: Equipment) {
+    const { isGround, isWalkable, actionId, facing, isWall, nextItemId } = options
 
     this.id = id
     this._isGround = isGround
@@ -27,7 +28,7 @@ class ItemType {
     this._isWall = isWall || false
     this.actionId = actionId
     this.facing = facing
-    this.equipmentId = equipmentId
+    this.equipment = equipment
     this.nextItemId = nextItemId
   }
 
@@ -56,7 +57,11 @@ class ItemType {
   }
 
   getEquipmentId(): string | undefined {
-    return this.equipmentId
+    return this.equipment?.getId()
+  }
+
+  getEquipmentType(): EquipmentType | undefined {
+    return this.equipment?.getType()
   }
 
   getNextItemId(): string | undefined {
@@ -71,7 +76,7 @@ class ItemType {
       isWall: this._isWall,
       actionId: this.actionId,
       facing: this.facing,
-      equipmentId: this.equipmentId,
+      equipmentId: this.equipment?.getId(),
       nextItemId: this.nextItemId
     }
   }

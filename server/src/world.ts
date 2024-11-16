@@ -14,6 +14,11 @@ import { EquipEquipment } from './tasks/equip_equipment_task'
 import { Inventory } from './inventory/inventory'
 import logger from './logger'
 import * as cron from 'node-cron'
+import { HelloWorldAction } from './actions/hello_world_action'
+import { GetPlayerInventoryAction } from './actions/get_player_inventory_action'
+import { GetPlayerAction } from './actions/get_player_action'
+import { EquipItemAction } from './actions/equip_item_action'
+import { UnequipItemAction } from './actions/unequip_item_action'
 
 import jsonwebtoken from 'jsonwebtoken'
 import { db } from './db'
@@ -122,6 +127,14 @@ const EQUIPMENTS = [
   }
 ]
 
+const ACTION_HANDLER = {
+  helloWorld: HelloWorldAction,
+  getPlayerInventory: GetPlayerInventoryAction,
+  getPlayer: GetPlayerAction,
+  equipItem: EquipItemAction,
+  unequipItem: UnequipItemAction
+}
+
 const TICK_RATE = 1.0 / 60.0
 
 interface Session {
@@ -171,6 +184,20 @@ class World {
     setInterval(() => {
       this.mainloop()
     }, TICK_RATE * 1000)
+  }
+
+  getPlayers() {
+    return this.players
+  }
+
+  getPlayerBySessionId(sessionId: string) {
+    const session = this.sessions[sessionId]
+
+    if (!session) {
+      return
+    }
+
+    return this.players[session.playerId]
   }
 
   private sendAnnounment(level: Level, message: string) {
@@ -341,6 +368,9 @@ class World {
       })
       socket.on('player:playEmote', (emoteId: string) => {
         this.handlePlayEmote(socket, emoteId)
+      })
+      socket.on('actionCall', ({ requestId, action, data }) => {
+        this.handleActionCall(socket, requestId, action, data)
       })
       socket.on('disconnect', async () => {
         logger.info(`Player ${player?.playerData?.name} disconnected`)
@@ -520,7 +550,8 @@ class World {
         for (const itemData of tileData.items) {
           let itemTypeData = itemData.itemType
 
-          const itemType = new ItemType(itemTypeData.id, itemTypeData)
+          const equipment = this.createEquipment(itemTypeData.equipmentId)
+          const itemType = new ItemType(itemTypeData.id, itemTypeData, equipment)
           const item = new Item(itemType)
 
           tile.addItem(item)
@@ -591,7 +622,7 @@ class World {
     } else if (command == 'player_speed') {
       this.handlePlayerSpeedCommand(socket, parts)
     } else if (command.match(/^a\d+$/)) {
-      this.handleEquipItem(socket, command)
+      // this.handleEquipItem(socket, command)
     } else {
       this.handlePreset(socket, command)
     }
@@ -820,15 +851,19 @@ class World {
     }
 
     const itemTypeData = this.items[data.itemId]
-    const itemType = new ItemType(data.itemId, {
-      isGround: itemTypeData.is_ground,
-      isWalkable: itemTypeData.is_walkable,
-      isWall: itemTypeData.is_wall,
-      actionId: itemTypeData.action_id,
-      facing: itemTypeData.facing,
-      equipmentId: itemTypeData.equipment_id,
-      nextItemId: itemTypeData.next_item_id
-    })
+    const equipment = this.createEquipment(itemTypeData.equipment_id)
+    const itemType = new ItemType(
+      data.itemId,
+      {
+        isGround: itemTypeData.is_ground,
+        isWalkable: itemTypeData.is_walkable,
+        isWall: itemTypeData.is_wall,
+        actionId: itemTypeData.action_id,
+        facing: itemTypeData.facing,
+        nextItemId: itemTypeData.next_item_id
+      },
+      equipment
+    )
 
     const item = new Item(itemType)
 
@@ -1012,6 +1047,48 @@ class World {
     })
   }
 
+  private async handleActionCall(socket, requestId, action, data) {
+    const response = await this.performAction(socket, action, data)
+
+    socket.emit('actionResponse', {
+      requestId,
+      response
+    })
+  }
+
+  private async performAction(socket, action, data) {
+    logger.info(`[ Server ] Performing action ${action}`)
+
+    const actionHandlerClass = ACTION_HANDLER[action]
+
+    if (!actionHandlerClass) {
+      logger.error(`[ Server ] Action ${action} not found`)
+
+      return {
+        status: 404,
+        body: 'Action not found'
+      }
+    }
+
+    const actionHandler = new actionHandlerClass(this, socket, data)
+
+    try {
+      logger.info(`[ Server ] Handling action ${action}`)
+      logger.info(`[ Server ] Data: ${JSON.stringify(data)}`)
+
+      const response = await actionHandler.handle()
+
+      return response
+    } catch (e) {
+      logger.error(`[ Server ] Error handling action ${action}: ${e.message}`)
+
+      return {
+        status: 500,
+        body: e.message
+      }
+    }
+  }
+
   private async handlePlayerDisconnect(socket, player) {
     if (player.isOccupyingItem()) {
       const item = player.getOccupiedItem()
@@ -1049,12 +1126,25 @@ class World {
       }
 
       const equipment = this.createEquipment(item.getEquipmentId())
+      const itemType = new ItemType(
+        item.getType().getId(),
+        {
+          isGround: item.getType().isGround(),
+          isWalkable: item.getType().isWalkable(),
+          isWall: item.getType().isWall(),
+          actionId: item.getType().getActionId(),
+          facing: item.getType().getFacing(),
+          nextItemId: item.getType().getNextItemId()
+        },
+        equipment
+      )
+      const newItem = new Item(itemType)
 
       if (!equipment) {
         return
       }
 
-      this.performEquipTempEquipment(socket, player, tile, equipment)
+      this.performEquipTempEquipment(socket, player, tile, item)
     }
   }
 
@@ -1187,15 +1277,19 @@ class World {
       return
     }
 
-    const itemType = new ItemType(item.getNextItemId(), {
-      isGround: itemData.is_ground,
-      isWalkable: itemData.is_walkable,
-      isWall: itemData.is_wall,
-      actionId: itemData.action_id,
-      facing: itemData.facing,
-      equipmentId: itemData.equipment_id,
-      nextItemId: itemData.next_item_id
-    })
+    const equipment = this.createEquipment(itemData.equipment_id)
+    const itemType = new ItemType(
+      item.getNextItemId(),
+      {
+        isGround: itemData.is_ground,
+        isWalkable: itemData.is_walkable,
+        isWall: itemData.is_wall,
+        actionId: itemData.action_id,
+        facing: itemData.facing,
+        nextItemId: itemData.next_item_id
+      },
+      equipment
+    )
 
     const newItem = new Item(itemType)
 
@@ -1203,9 +1297,9 @@ class World {
     player.addTask(replaceItemTask)
   }
 
-  private performEquipTempEquipment(socket, player, tile, equipment) {
+  private performEquipTempEquipment(socket, player, tile, item) {
     logger.info(
-      `[ Server ] Equipping temporary equipment ${equipment.getId()} to player ${player.playerData.name}`
+      `[ Server ] Equipping temporary equipment ${item.getEquipmentId()} to player ${player.playerData.name}`
     )
 
     player.clearTasks()
@@ -1221,7 +1315,7 @@ class World {
       player.addTask(moveTask)
     }
 
-    const equipTempEquipmentTask = new EquipTempEquipmentTask(player, equipment)
+    const equipTempEquipmentTask = new EquipTempEquipmentTask(player, item)
     player.addTask(equipTempEquipmentTask)
   }
 
@@ -1274,6 +1368,10 @@ class World {
   }
 
   createEquipment(equipmentId) {
+    if (!equipmentId) {
+      return
+    }
+
     const equipmentData = EQUIPMENTS.find((equipment) => equipment.id === equipmentId)
 
     if (!equipmentData) {

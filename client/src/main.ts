@@ -28,6 +28,9 @@ const i18n = createI18n({
             must_match: 'As senhas devem ser iguais.'
           }
         }
+      },
+      items: {
+        '100000': 'Boné vermelho'
       }
     }
   }

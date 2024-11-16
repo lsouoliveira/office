@@ -1,5 +1,5 @@
 import { ItemType } from './item_type'
-import { Player } from './../player'
+import { Player, EquipmentType } from './../player'
 
 const crypto = require('crypto')
 
@@ -51,6 +51,10 @@ class Item {
 
   getEquipmentId(): string | undefined {
     return this.type.getEquipmentId()
+  }
+
+  getEquipmentType(): EquipmentType | undefined {
+    return this.type.getEquipmentType()
   }
 
   getNextItemId(): string | undefined {

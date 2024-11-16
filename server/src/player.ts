@@ -3,7 +3,7 @@ import { Grid, AStarFinder } from 'pathfinding'
 import { GameMap } from './map'
 import { Task } from './tasks/task'
 import { Item } from './items/item'
-import { Inventory } from './/inventory/inventory'
+import { Inventory } from './inventory/inventory'
 
 interface Position {
   x: number
@@ -33,10 +33,9 @@ interface PlayerData {
   isDrinking: boolean
   isAdmin: boolean
   skin: string
-  helmetSlot?: Equipment
+  helmetSlot?: Item
   userId: number
   money: number
-  inventory: Inventory
 }
 
 enum EquipmentType {
@@ -292,6 +291,7 @@ class Player extends EventEmitter {
   private tasks: Task[] = []
   private occupiedItem: Item
   private drinkingTimeout: NodeJS.Timeout
+  private inventory: Inventory = new Inventory()
 
   constructor(playerData: PlayerData) {
     super()
@@ -407,8 +407,8 @@ class Player extends EventEmitter {
     this.emit('change', this.getPlayerData())
   }
 
-  equip(eq: Equipment) {
-    switch (eq.getType()) {
+  equip(eq: Item) {
+    switch (eq.getEquipmentType()) {
       case EquipmentType.Helmet:
         if (this.playerData.helmetSlot) {
           this.unequip(this.playerData.helmetSlot)
@@ -421,10 +421,10 @@ class Player extends EventEmitter {
     this.notifyChange()
   }
 
-  unequip(equipment: Equipment) {
-    switch (equipment.getType()) {
+  unequip(item: Item) {
+    switch (item.getEquipmentType()) {
       case EquipmentType.Helmet:
-        if (this.playerData.helmetSlot?.getId() === equipment.getId()) {
+        if (this.playerData.helmetSlot?.getId() === item.getId()) {
           this.playerData.helmetSlot = undefined
         }
         break
@@ -446,8 +446,12 @@ class Player extends EventEmitter {
   }
 
   addItem(item: Item) {
-    this.playerData.inventory.addItem(item)
+    this.inventory.addItem(item)
     this.notifyChange()
+  }
+
+  getInventory() {
+    return this.inventory
   }
 
   getPlayerData() {
@@ -461,10 +465,9 @@ class Player extends EventEmitter {
       isDrinking: this.playerData.isDrinking,
       isAdmin: this.playerData.isAdmin,
       skin: this.playerData.skin,
-      helmetSlot: this.playerData.helmetSlot?.getId(),
+      helmetSlot: this.playerData.helmetSlot?.toData(),
       userId: this.playerData.userId,
-      money: this.playerData.money,
-      inventory: this.playerData.inventory.serialize()
+      money: this.playerData.money
     }
   }
 }

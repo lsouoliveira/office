@@ -1,26 +1,33 @@
 import { Task } from './task'
 import { Player, Equipment } from './../player'
+import { Item } from './../items/item'
 
 class EquipTempEquipmentTask extends Task {
   private player: Player
-  private equipment: Equipment
+  private item: Item
 
-  constructor(player: Player, equipment: Equipment) {
+  constructor(player: Player, item: Item) {
     super()
 
     this.player = player
-    this.equipment = equipment
+    this.item = item
   }
 
   _perform() {
-    this.player.equip(this.equipment)
+    this.player.equip(this.item)
 
     setTimeout(
       () => {
-        const equipment = this.player.getEquipment(this.equipment.getType())
+        const equipmentType = this.item.getEquipmentType()
 
-        if (equipment == this.equipment) {
-          this.player.unequip(this.equipment)
+        if (!equipmentType) {
+          return
+        }
+
+        const item = this.player.getEquipment(equipmentType)
+
+        if (item == this.item) {
+          this.player.unequip(this.item)
         }
       },
       5 * 60 * 1000

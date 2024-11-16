@@ -8,6 +8,7 @@ import { Piano } from './../piano'
 import ConfigModal from './config_modal.vue'
 import PianoModal from './piano_modal.vue'
 import TennisModal from './tennis_modal.vue'
+import InventoryModal from './inventory_modal.vue'
 
 const EMOTES = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', '=']
 
@@ -24,13 +25,13 @@ const items = reactive({
 
 const showConfigModal = ref(false)
 const showTennisModal = ref(false)
+const showInventoryModal = ref(false)
 const showOs = ref(false)
 const showPianoModal = ref(false)
 const osApplication = ref(null)
 const piano = ref(null)
 const isAudioEnabled = ref(false)
 const itemsSearch = ref('')
-const canEmote = ref(true)
 
 const osRoot = useTemplateRef('osRoot')
 
@@ -83,15 +84,8 @@ onMounted(async () => {
         break
     }
 
-    if (canEmote.value && !e.ctrlKey && EMOTES.includes(e.key)) {
-      canEmote.value = false
+    if (!e.ctrlKey && EMOTES.includes(e.key) && !chatMessage.show) {
       window.dispatchEvent(new CustomEvent('ui:emote', { detail: { id: e.key } }))
-    }
-  })
-
-  window.addEventListener('keyup', (e) => {
-    if (EMOTES.includes(e.key)) {
-      canEmote.value = true
     }
   })
 })
@@ -226,9 +220,16 @@ const filteredItems = computed(() => {
 <template>
   <config-modal @close="showConfigModal = false" v-model="showConfigModal" v-if="showConfigModal" />
   <tennis-modal @close="showTennisModal = false" v-model="showTennisModal" v-if="showTennisModal" />
+  <inventory-modal @close="showInventoryModal = false" v-model="showInventoryModal" v-if="showInventoryModal" />
 
   <div class="fixed top-0 left-0 w-full">
     <div class="flex items-center justify-end p-4 gap-2">
+      <b-button
+        icon-left="bag-personal"
+        type="is-info"
+        @click="showInventoryModal = true"
+      />
+
       <b-button
         :icon-left="isAudioEnabled ? 'volume-high' : 'volume-mute'"
         type="is-info"
