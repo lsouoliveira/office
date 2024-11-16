@@ -269,8 +269,8 @@ class Playground extends Scene {
     console.log('connecting to server')
 
     const credentials = {
-      username: (localStorage.getItem('username') || 'Sem nome').substring(0, 32),
-      sessionId: localStorage.getItem('sessionId')
+      sessionId: localStorage.getItem('sessionId'),
+      token: localStorage.getItem('token')
     }
 
     this.client = new Client('ws://localhost:3000', credentials)

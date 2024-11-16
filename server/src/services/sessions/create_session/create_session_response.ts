@@ -1,5 +1,5 @@
 interface CreateSessionResponse {
-  accessToken: string
+  access_token: string
 }
 
 export default CreateSessionResponse

@@ -33,6 +33,7 @@ interface PlayerData {
   isAdmin: boolean
   skin: string
   helmetSlot?: Equipment
+  userId: number
 }
 
 enum EquipmentType {
@@ -395,6 +396,10 @@ class Player extends EventEmitter {
     this.notifyChange()
   }
 
+  getUserId() {
+    return this.playerData.userId
+  }
+
   notifyChange() {
     this.emit('change', {
       id: this.playerData.id,
@@ -454,7 +459,8 @@ class Player extends EventEmitter {
       isDrinking: this.playerData.isDrinking,
       isAdmin: this.playerData.isAdmin,
       skin: this.playerData.skin,
-      helmetSlot: this.playerData.helmetSlot?.getId()
+      helmetSlot: this.playerData.helmetSlot?.getId(),
+      userId: this.playerData.userId
     }
   }
 }

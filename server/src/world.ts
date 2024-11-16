@@ -13,6 +13,11 @@ import { EquipTempEquipmentTask } from './tasks/equip_temp_equipment_task'
 import { EquipEquipment } from './tasks/equip_equipment_task'
 import logger from './logger'
 
+import jsonwebtoken from 'jsonwebtoken'
+import { db } from './db'
+import { usersTable } from './db/schema'
+import { eq } from 'drizzle-orm'
+
 const fs = require('node:fs')
 const crypto = require('crypto')
 const DEFAULT_SKIN = 'Bob'
@@ -139,6 +144,9 @@ class World {
     } else {
       this.initMap()
     }
+
+    this.loadServer()
+    this.scheduleServerSave()
   }
 
   mainloop() {
@@ -153,6 +161,71 @@ class World {
     setInterval(() => {
       this.mainloop()
     }, TICK_RATE * 1000)
+  }
+
+  private scheduleServerSave() {
+    setInterval(
+      () => {
+        this.saveServer()
+      },
+      15 * 60 * 1000
+    )
+  }
+
+  private async saveServer() {
+    logger.info('Saving server...')
+
+    const data = {
+      players: Object.values(this.players).map((player) => player.getPlayerData())
+    }
+
+    const json = JSON.stringify(data)
+
+    fs.writeFile('./server.json', json, (err) => {
+      if (err) {
+        console.error('Error saving server:', err)
+      }
+    })
+  }
+
+  private loadServer() {
+    logger.info('Loading server...')
+
+    if (!fs.existsSync('./server.json')) {
+      return
+    }
+
+    const data = fs.readFileSync('./server.json')
+
+    if (!data) {
+      console.error('Error loading server')
+      return
+    }
+
+    const serverData = JSON.parse(data)
+
+    for (const playerData of serverData.players) {
+      const player = new Player(playerData)
+
+      const playerMovement = new PlayerMovement(player, this.map)
+
+      player.init(playerMovement)
+
+      player.on('change', (playerData) => {
+        this.io.emit('player:change', playerData)
+      })
+
+      player.on('move', ({ x, y, direction }) => {
+        this.io.emit('player:move', {
+          playerId: player.playerData.id,
+          x,
+          y,
+          direction
+        })
+      })
+
+      this.players[player.playerData.id] = player
+    }
   }
 
   private loadItems() {
@@ -170,30 +243,28 @@ class World {
 
   private setupServer() {
     this.io.use(async (socket, next) => {
-      const sessionId = socket.handshake.auth.sessionId
+      const accessToken = socket.handshake.auth.token
 
-      if (sessionId) {
-        if (this.sessions[sessionId]) {
-          socket.sessionId = sessionId
-
-          return next()
-        }
+      if (!accessToken) {
+        return next(new Error('No token'))
       }
 
-      const username = socket.handshake.auth.username
+      try {
+        const { id } = jsonwebtoken.decode(accessToken) as { id: number }
 
-      if (!username) {
-        next(new Error('No username'))
+        const sessionId = socket.handshake.auth.sessionId
+
+        socket.sessionId = sessionId || crypto.randomUUID()
+        socket.userId = id
+
+        next()
+      } catch (error) {
+        return next(new Error('Invalid token'))
       }
-
-      socket.sessionId = sessionId || crypto.randomUUID()
-      socket.username = username
-
-      next()
     })
 
-    this.io.on('connection', (socket) => {
-      const session = this.createOrUpdateSession(socket)
+    this.io.on('connection', async (socket) => {
+      const session = await this.createOrUpdateSession(socket)
       const player = this.players[session.playerId]
 
       logger.info(`Player ${player?.playerData?.name} connected`)
@@ -259,13 +330,52 @@ class World {
     })
   }
 
-  createOrUpdateSession(socket) {
+  async createOrUpdateSession(socket) {
     const session = this.sessions[socket.sessionId]
 
     if (session) {
       session.connected = true
 
       return session
+    }
+
+    const user = await this.getUser(socket)
+
+    if (!user) {
+      logger.error(`User ${socket.userId} not found`)
+
+      const players = Object.values(this.players).filter(
+        (player) => player.playerData.userId === socket.userId
+      )
+
+      delete this.sessions[socket.sessionId]
+
+      player.forEach((player) => {
+        delete this.players[player.playerData.id]
+      })
+
+      throw new Error('User not found')
+    }
+
+    const player = this.findOrCreatePlayerByUser(user)
+
+    this.sessions[socket.sessionId] = {
+      id: socket.sessionId,
+      playerId: player.playerData.id,
+      username: player.playerData.name,
+      connected: true
+    }
+
+    return this.sessions[socket.sessionId]
+  }
+
+  findOrCreatePlayerByUser(user) {
+    const foundPlayer = Object.values(this.players).find(
+      (player) => player.playerData.userId === user.id
+    )
+
+    if (foundPlayer) {
+      return foundPlayer
     }
 
     const player = new Player({
@@ -277,8 +387,9 @@ class World {
       direction: Direction.South,
       state: PlayerState.Idle,
       speed: 50,
-      name: socket.username,
-      skin: DEFAULT_SKIN
+      name: user.name,
+      skin: DEFAULT_SKIN,
+      userId: user.id
     })
 
     const playerMovement = new PlayerMovement(player, this.map)
@@ -300,14 +411,21 @@ class World {
 
     this.players[player.playerData.id] = player
 
-    this.sessions[socket.sessionId] = {
-      id: socket.sessionId,
-      playerId: player.playerData.id,
-      username: socket.username,
-      connected: true
+    return player
+  }
+
+  async getUser(socket) {
+    const user = await db
+      .select()
+      .from(usersTable)
+      .where(eq(usersTable.id, socket.userId))
+      .execute()
+
+    if (!user.length) {
+      return null
     }
 
-    return this.sessions[socket.sessionId]
+    return user[0]
   }
 
   getGameState(socket) {

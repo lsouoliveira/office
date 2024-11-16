@@ -30,3 +30,6 @@ coverage
 
 public/resources
 dist/resources
+
+.env
+main.db
