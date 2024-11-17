@@ -11,6 +11,10 @@ class InventoryItem {
     return this.item.getId()
   }
 
+  getItem() {
+    return this.item
+  }
+
   serialize() {
     return {
       item: this.item.toData()

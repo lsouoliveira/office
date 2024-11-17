@@ -94,6 +94,14 @@ class Client {
     return this.sendAction('unequipItem', { itemId })
   }
 
+  getShop() {
+    return this.sendAction('getShop', {})
+  }
+
+  buyItem(itemTypeId: string) {
+    return this.sendAction('buyItem', { itemTypeId })
+  }
+
   private sendAction(action: string, data: any): Promise<any> {
     return new Promise((resolve, reject) => {
       const requestId = Math.random().toString(36).substring(7)

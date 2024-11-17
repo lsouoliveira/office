@@ -445,6 +445,10 @@ class Player extends EventEmitter {
     this.notifyChange()
   }
 
+  getMoney() {
+    return this.playerData.money
+  }
+
   addItem(item: Item) {
     this.inventory.addItem(item)
     this.notifyChange()

@@ -1,0 +1,9 @@
+{
+    "products": [
+        {
+            "itemTypeId": "100000",
+            "name": "Boné Vermelho",
+            "price": 10
+        }
+    ]
+}

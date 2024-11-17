@@ -9,6 +9,7 @@ import ConfigModal from './config_modal.vue'
 import PianoModal from './piano_modal.vue'
 import TennisModal from './tennis_modal.vue'
 import InventoryModal from './inventory_modal.vue'
+import ShopModal from './shop_modal.vue'
 
 const EMOTES = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', '=']
 
@@ -26,6 +27,7 @@ const items = reactive({
 const showConfigModal = ref(false)
 const showTennisModal = ref(false)
 const showInventoryModal = ref(false)
+const showShopModal = ref(false)
 const showOs = ref(false)
 const showPianoModal = ref(false)
 const osApplication = ref(null)
@@ -221,9 +223,16 @@ const filteredItems = computed(() => {
   <config-modal @close="showConfigModal = false" v-model="showConfigModal" v-if="showConfigModal" />
   <tennis-modal @close="showTennisModal = false" v-model="showTennisModal" v-if="showTennisModal" />
   <inventory-modal @close="showInventoryModal = false" v-model="showInventoryModal" v-if="showInventoryModal" />
+  <shop-modal @close="showShopModal = false" v-model="showShopModal" v-if="showShopModal" />
 
   <div class="fixed top-0 left-0 w-full">
     <div class="flex items-center justify-end p-4 gap-2">
+      <b-button
+        icon-left="store"
+        type="is-danger"
+        @click="showShopModal = true"
+      />
+
       <b-button
         icon-left="bag-personal"
         type="is-info"

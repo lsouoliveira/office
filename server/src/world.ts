@@ -19,6 +19,8 @@ import { GetPlayerInventoryAction } from './actions/get_player_inventory_action'
 import { GetPlayerAction } from './actions/get_player_action'
 import { EquipItemAction } from './actions/equip_item_action'
 import { UnequipItemAction } from './actions/unequip_item_action'
+import { GetShopAction } from './actions/get_shop_action'
+import { BuyItemAction } from './actions/buy_item_action'
 
 import jsonwebtoken from 'jsonwebtoken'
 import { db } from './db'
@@ -132,7 +134,9 @@ const ACTION_HANDLER = {
   getPlayerInventory: GetPlayerInventoryAction,
   getPlayer: GetPlayerAction,
   equipItem: EquipItemAction,
-  unequipItem: UnequipItemAction
+  unequipItem: UnequipItemAction,
+  getShop: GetShopAction,
+  buyItem: BuyItemAction
 }
 
 const TICK_RATE = 1.0 / 60.0
@@ -1379,6 +1383,10 @@ class World {
     }
 
     return new Equipment(equipmentId, equipmentData.type)
+  }
+
+  getItemById(id) {
+    return this.items[id]
   }
 }
 

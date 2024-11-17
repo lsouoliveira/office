@@ -1,0 +1,133 @@
+<script setup lang="ts">
+    import { defineModel, ref, onMounted, computed, useTemplateRef } from 'vue'
+    import { useI18n } from 'vue-i18n'
+    import spriteJson from './../game/data/sprites.json'
+    import { useToast } from 'vue-toast-notification';
+    import 'vue-toast-notification/dist/theme-sugar.css';
+
+    const model = defineModel()
+    const { t } = useI18n()
+    const $toast = useToast();
+
+    const isLoading = ref(true)
+    const shop = ref(null)
+    const inventory = ref(null)
+    const hasError = ref(false)
+
+    onMounted(async () => {
+        try {
+            inventory.value = await getPlayerInventory()
+            shop.value = await getShop()
+            isLoading.value = false
+        } catch (error) {
+            hasError.value = true
+        }
+    })
+
+    const getPlayerInventory = async () => {
+        const response = await window.gameClient.getPlayerInventory()
+
+        return response.body.inventory 
+    }
+
+    const getShop = async () => {
+        const response = await window.gameClient.getShop()
+
+        return response.body
+    }
+
+    const formatPrice = (price) => {
+        return price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+    }
+
+    const formattedProducts = computed(() => {
+        return shop.value?.products.map((product) => {
+            const spriteData = spriteJson[product.itemTypeId]
+
+            return {
+                ...product,
+                price: formatPrice(product.price),
+                imageUrl: spriteData?.tileset,
+                x: (spriteData?.x || 0) * 16,
+                y: (spriteData?.y || 0) * 16,
+                width: spriteData?.width * 16,
+                height: spriteData?.height * 16,
+                playerOwns: inventory.value?.some((item) => item.item.itemType.id === product.itemTypeId)
+            }
+        })
+    })
+
+    const handleBuy = async (product) => {
+        try {
+            await window.gameClient.buyItem(product.itemTypeId)
+            inventory.value = await getPlayerInventory()
+        } catch (error) {
+            if (error.status == 400) {
+                $toast.open({
+                    message: 'Você não tem dinheiro suficiente para comprar este produto.',
+                    type: 'error',
+                    duration: 5000
+                })
+            } else {
+                $toast.open({
+                    message: 'Ocorreu um erro ao comprar o produto.',
+                    type: 'error',
+                    duration: 5000
+                })
+            }
+        }
+    }
+</script>
+
+<template>
+    <b-modal v-model="model">
+        <div class="bg-white rounded-lg h-[800px] overflow-y-auto">
+            <header class="p-4 border-b">
+                <div class="flex items-center justify-center">
+                    <h1 class="text-xl font-extrabold uppercase">Lojinha</h1>
+                </div>
+            </header>
+
+            <div class="p-6">
+                <section class="grid grid-cols-4 gap-6" v-if="!isLoading">
+                    <div class="space-y-3" v-for="product in formattedProducts" :key="product.itemTypeId">
+                        <div class="bg-neutral-100 flex items-center justify-center p-4 h-56">
+                            <div class="w-full h-full" :style="{ width: `${product.width}px`, height: `${product.height}px`, backgroundImage: `url(${product.imageUrl})`, backgroundPosition: `-${product.x}px -${product.y}px`, transform: 'scale(6)', imageRendering: 'pixelated' }">
+                            </div>
+                        </div>
+
+                        <div class="font-semibold text-center leading-none">
+                            {{ product.name }}
+                        </div>
+
+                        <div class="text-gray-500 text-center leading-none">
+                            {{ product.price }}
+                        </div>
+
+                        <div>
+                            <b-button class="w-full" icon-left="cart-arrow-down" size="is-small" v-if="!product.playerOwns" @click="handleBuy(product)">
+                                Comprar
+                            </b-button>
+
+                            <b-button class="w-full" icon-left="cart-arrow-down" size="is-small" v-else disabled>
+                                Comprado
+                            </b-button>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="grid grid-cols-4 gap-6" v-if="isLoading">
+                    <div class="space-y-3" v-for="index in 12" :key="index">
+                        <div class="flex items-center justify-center h-56">
+                          <b-skeleton width="100%" height="224px" animated="animated"></b-skeleton>
+                        </div>
+
+                        <div>
+                            <b-skeleton width="100%" height="24px" animated="animated"></b-skeleton>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </b-modal>
+</template>
