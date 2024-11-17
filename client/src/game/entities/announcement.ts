@@ -1,7 +1,7 @@
 import { Text, Container } from 'pixi.js'
 import { type Entity } from './entity'
 
-const DEFAULT_DURATION = 5
+const DEFAULT_DURATION = 10
 
 enum Level {
   INFO,
@@ -27,8 +27,11 @@ class Announcement extends Container implements Entity {
       fontFamily: 'Arial',
       fontSize: 32,
       stroke: 0x000000,
-      strokeThickness: 4
+      strokeThickness: 4,
+      wordWrap: true,
+      wordWrapWidth: window.innerWidth * 0.6
     })
+    this.text.anchor.set(0.5, 0)
 
     this.timer = 0
 

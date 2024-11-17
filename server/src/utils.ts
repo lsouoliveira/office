@@ -30,6 +30,16 @@ namespace Errors {
       return new CustomError('user.email_already_exists', 'Email already exists', 'email')
     }
   }
+
+  export class Lottery {
+    static notEnoughMoney() {
+      return new CustomError('lottery.not_enough_money', 'Not enough money')
+    }
+
+    static playerAlreadyHasTicket() {
+      return new CustomError('lottery.player_already_has_ticket', 'Player already has ticket')
+    }
+  }
 }
 
 class Result<T> {

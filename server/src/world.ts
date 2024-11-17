@@ -21,6 +21,11 @@ import { EquipItemAction } from './actions/equip_item_action'
 import { UnequipItemAction } from './actions/unequip_item_action'
 import { GetShopAction } from './actions/get_shop_action'
 import { BuyItemAction } from './actions/buy_item_action'
+import { LotterySystem } from './lottery/lottery_system'
+import { GetPlayerLotteryTicketAction } from './actions/get_player_lottery_ticket_action'
+import { GetLastLotteryResultsAction } from './actions/get_last_lottery_results_action'
+import { BuyLotteryTicketAction } from './actions/buy_lottery_ticket_action'
+import { GetNextLotteryAction } from './actions/get_next_lottery_action'
 
 import jsonwebtoken from 'jsonwebtoken'
 import { db } from './db'
@@ -136,7 +141,11 @@ const ACTION_HANDLER = {
   equipItem: EquipItemAction,
   unequipItem: UnequipItemAction,
   getShop: GetShopAction,
-  buyItem: BuyItemAction
+  buyItem: BuyItemAction,
+  getPlayerLotteryTicket: GetPlayerLotteryTicketAction,
+  getLastLotteryResults: GetLastLotteryResultsAction,
+  buyLotteryTicket: BuyLotteryTicketAction,
+  getNextLottery: GetNextLotteryAction
 }
 
 const TICK_RATE = 1.0 / 60.0
@@ -154,11 +163,13 @@ class World {
   private map: GameMap
   private players: Map<string, Player>
   private items: object
+  private lotterySystem: LotterySystem
 
   constructor(io: Server) {
     this.io = io
     this.players = new Map()
     this.sessions = new Map()
+    this.lotterySystem = new LotterySystem(this, 500)
   }
 
   init() {
@@ -216,13 +227,25 @@ class World {
       () => {
         this.saveServer()
       },
-      15 * 60 * 1000
+      5 * 60 * 1000
     )
   }
 
   private scheduleRecurrentTasks() {
     cron.schedule('*/10 * * * *', () => {
       this.giveMoneyToPlayers()
+    })
+
+    cron.schedule('0 14 * * *', () => {
+      this.sendAnnounment(Level.INFO, 'Falta 1 hora para o sorteio da loteria!')
+    })
+
+    cron.schedule('30 14 * * *', () => {
+      this.sendAnnounment(Level.INFO, 'Faltam 30 minutos para o sorteio da loteria!')
+    })
+
+    cron.schedule('00 15 * * *', () => {
+      this.drawLotteryWinner()
     })
   }
 
@@ -236,11 +259,44 @@ class World {
     }
   }
 
+  private async drawLotteryWinner() {
+    this.lotterySystem.buyTicket(Object.values(this.players)[0], 1)
+    await this.lotterySystem.drawWinner()
+    const results = await this.lotterySystem.getLastNthResults(1)
+    let winners = ''
+
+    if (results.length === 0) {
+      return
+    }
+
+    const result = results[0]
+
+    if (result.winners.length > 0) {
+      const winnerNames = result.winners.map((winner) => winner.player_name).join(', ')
+
+      winners = `e ${result.winners.length > 1 ? 'os vencedores foram' : 'o vencedor foi'} ${winnerNames}.`
+    } else {
+      winners = 'e não houve vencedores.'
+    }
+
+    this.sendAnnounment(
+      Level.INFO,
+      `Resultado da loteria do dia ${new Date().toLocaleDateString()}:`
+    )
+
+    setTimeout(() => {
+      this.sendAnnounment(Level.INFO, `O número sorteado foi ${result.number} ${winners}`)
+    }, 10000)
+  }
+
   private async saveServer() {
     logger.info('Saving server...')
 
     const data = {
-      players: Object.values(this.players).map((player) => player.getPlayerData())
+      players: Object.values(this.players).map((player) => ({
+        player: player.getPlayerData(),
+        inventory: player.getInventory().serialize()
+      }))
     }
 
     const json = JSON.stringify(data)
@@ -269,9 +325,22 @@ class World {
     const serverData = JSON.parse(data)
 
     for (const playerData of serverData.players) {
-      const player = new Player(playerData)
+      const playerObject = playerData.player
+      const inventoryData = playerData.inventory
 
+      const { helmetSlot, ...data } = playerObject
+      const helmetSlotItem = helmetSlot ? this.createItemFromData(helmetSlot) : null
+
+      const player = new Player({ helmetSlot: helmetSlotItem, ...data })
       const playerMovement = new PlayerMovement(player, this.map)
+
+      for (const inventoryItem of inventoryData) {
+        const item = this.createItemFromData(inventoryItem.item)
+
+        if (item) {
+          player.getInventory().addItem(item)
+        }
+      }
 
       player.init(playerMovement)
 
@@ -1387,6 +1456,26 @@ class World {
 
   getItemById(id) {
     return this.items[id]
+  }
+
+  getPlayerById(id) {
+    return this.players[id]
+  }
+
+  createItemFromData(data) {
+    if (!data) {
+      return null
+    }
+
+    const equipment = this.createEquipment(data.itemType.equipmentId)
+    const itemType = new ItemType(data.itemType.id, data.itemType, equipment)
+    const item = new Item(itemType, data.id)
+
+    return item
+  }
+
+  getLotterySystem() {
+    return this.lotterySystem
   }
 }
 

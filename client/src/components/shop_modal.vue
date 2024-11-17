@@ -13,6 +13,7 @@
     const shop = ref(null)
     const inventory = ref(null)
     const hasError = ref(false)
+    const isFetching = ref(false)
 
     onMounted(async () => {
         try {
@@ -58,6 +59,12 @@
     })
 
     const handleBuy = async (product) => {
+        if (isFetching.value) {
+            return
+        }
+
+        isFetching.value = true
+
         try {
             await window.gameClient.buyItem(product.itemTypeId)
             inventory.value = await getPlayerInventory()
@@ -75,6 +82,8 @@
                     duration: 5000
                 })
             }
+        } finally {
+            isFetching.value = false
         }
     }
 </script>

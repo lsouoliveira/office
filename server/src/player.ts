@@ -458,6 +458,14 @@ class Player extends EventEmitter {
     return this.inventory
   }
 
+  getId() {
+    return this.playerData.id
+  }
+
+  getName() {
+    return this.playerData.name
+  }
+
   getPlayerData() {
     return {
       id: this.playerData.id,

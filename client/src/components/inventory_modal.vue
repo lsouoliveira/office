@@ -9,6 +9,7 @@
     const items = ref([])
     const player = ref(null)
     const hasError = ref(false)
+    const isFetching = ref(false)
 
     onMounted(async () => {
         try {
@@ -52,20 +53,36 @@
     })
 
     const handleEquipItem = async (item) => {
+        if (isFetching.value) {
+            return
+        }
+
+        isFetching.value = true
+
         try {
             await window.gameClient.equipItem(item.id)
             await updateInventory()
         } catch (error) {
             console.error(error)
+        } finally {
+            isFetching.value = false
         }
     }
 
     const handleUnequipItem = async (item) => {
+        if (isFetching.value) {
+            return
+        }
+
+        isFetching.value = true
+
         try {
             await window.gameClient.unequipItem(item.id)
             await updateInventory()
         } catch (error) {
             console.error(error)
+        } {
+            isFetching.value = false
         }
     }
 

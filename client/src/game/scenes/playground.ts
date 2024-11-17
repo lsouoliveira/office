@@ -623,13 +623,19 @@ class Playground extends Scene {
       return
     }
 
-    const helmetSpritesheet = this.equipmentSpritesheets.get(playerData.helmetSlot.itemType.equipmentId)
+    const helmetSpritesheet = this.equipmentSpritesheets.get(
+      playerData.helmetSlot.itemType.equipmentId
+    )
 
     if (!helmetSpritesheet) {
       return
     }
 
-    const helmet = new Equipment(playerData.helmetSlot.itemType.equipmentId, EquipmentType.Helmet, helmetSpritesheet)
+    const helmet = new Equipment(
+      playerData.helmetSlot.itemType.equipmentId,
+      EquipmentType.Helmet,
+      helmetSpritesheet
+    )
     const animator = this.createBaseAnimator(helmet as AnimatedSprite, helmetSpritesheet)
     helmet.init(animator)
 

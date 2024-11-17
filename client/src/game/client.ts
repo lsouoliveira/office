@@ -102,6 +102,22 @@ class Client {
     return this.sendAction('buyItem', { itemTypeId })
   }
 
+  getPlayerLotteryTicket() {
+    return this.sendAction('getPlayerLotteryTicket', {})
+  }
+
+  getLastLotteryResults() {
+    return this.sendAction('getLastLotteryResults', {})
+  }
+
+  buyLotteryTicket(number: number) {
+    return this.sendAction('buyLotteryTicket', { number })
+  }
+
+  getNextLottery() {
+    return this.sendAction('getNextLottery', {})
+  }
+
   private sendAction(action: string, data: any): Promise<any> {
     return new Promise((resolve, reject) => {
       const requestId = Math.random().toString(36).substring(7)
