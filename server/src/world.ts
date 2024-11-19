@@ -10,6 +10,7 @@ import { PingPongTask } from './tasks/ping_pong_task'
 import { DrinkTask } from './tasks/drink_task'
 import { ReplaceItemTask } from './tasks/replace_item_task'
 import { EquipTempEquipmentTask } from './tasks/equip_temp_equipment_task'
+import { ClaimRewardTask } from './tasks/claim_reward_task'
 import { EquipEquipment } from './tasks/equip_equipment_task'
 import { Inventory } from './inventory/inventory'
 import logger from './logger'
@@ -26,6 +27,9 @@ import { GetPlayerLotteryTicketAction } from './actions/get_player_lottery_ticke
 import { GetLastLotteryResultsAction } from './actions/get_last_lottery_results_action'
 import { BuyLotteryTicketAction } from './actions/buy_lottery_ticket_action'
 import { GetNextLotteryAction } from './actions/get_next_lottery_action'
+import RewardSpawnerSystem from './rewards/reward_spawner_system'
+import Reward from './rewards/reward'
+import SpawnZone from './rewards/spawn_zone'
 
 import jsonwebtoken from 'jsonwebtoken'
 import { db } from './db'
@@ -148,6 +152,29 @@ const ACTION_HANDLER = {
   getNextLottery: GetNextLotteryAction
 }
 
+const spawnPoints = [
+  { start: { x: 4, y: 4 }, end: { x: 7, y: 8 } },
+  { start: { x: 8, y: 6 }, end: { x: 8, y: 8 } },
+  { start: { x: 2, y: 9 }, end: { x: 24, y: 9 } },
+  { start: { x: 16, y: 4 }, end: { x: 16, y: 8 } },
+  { start: { x: 9, y: 4 }, end: { x: 16, y: 4 } },
+  { start: { x: 16, y: 8 }, end: { x: 22, y: 8 } },
+  { start: { x: 19, y: 13 }, end: { x: 24, y: 13 } },
+  { start: { x: 24, y: 13 }, end: { x: 24, y: 18 } },
+  { start: { x: 18, y: 18 }, end: { x: 24, y: 18 } },
+  { start: { x: 18, y: 16 }, end: { x: 18, y: 17 } },
+  { start: { x: 19, y: 17 }, end: { x: 19, y: 17 } },
+  { start: { x: 21, y: 16 }, end: { x: 21, y: 17 } },
+  { start: { x: 22, y: 17 }, end: { x: 22, y: 17 } },
+  { start: { x: 9, y: 13 }, end: { x: 9, y: 18 } },
+  { start: { x: 9, y: 18 }, end: { x: 16, y: 18 } },
+  { start: { x: 16, y: 13 }, end: { x: 16, y: 18 } },
+  { start: { x: 2, y: 4 }, end: { x: 2, y: 6 } },
+  { start: { x: 7, y: 13 }, end: { x: 7, y: 16 } },
+  { start: { x: 2, y: 16 }, end: { x: 3, y: 16 } },
+  { start: { x: 5, y: 16 }, end: { x: 7, y: 16 } }
+]
+
 const TICK_RATE = 1.0 / 60.0
 
 interface Session {
@@ -164,12 +191,28 @@ class World {
   private players: Map<string, Player>
   private items: object
   private lotterySystem: LotterySystem
+  private rewardSpawnerSystem: RewardSpawnerSystem
 
   constructor(io: Server) {
     this.io = io
     this.players = new Map()
     this.sessions = new Map()
     this.lotterySystem = new LotterySystem(this, 500)
+    this.rewardSpawnerSystem = new RewardSpawnerSystem(
+      this,
+      this.handleRewardSpawned.bind(this),
+      this.handleRewardClaimed.bind(this),
+      this.handleRewardExpired.bind(this)
+    )
+
+    for (const spawnPoint of spawnPoints) {
+      const x = spawnPoint.start.x
+      const y = spawnPoint.start.y
+      const width = spawnPoint.end.x - spawnPoint.start.x
+      const height = spawnPoint.end.y - spawnPoint.start.y
+
+      this.rewardSpawnerSystem.addSpawnZone(new SpawnZone(x, y, width, height))
+    }
   }
 
   init() {
@@ -187,9 +230,10 @@ class World {
     this.scheduleRecurrentTasks()
   }
 
-  mainloop() {
+  mainloop(dt: number) {
     for (const player of Object.values(this.players)) {
       player.update(TICK_RATE)
+      this.rewardSpawnerSystem.update(TICK_RATE)
     }
   }
 
@@ -197,7 +241,7 @@ class World {
     this.init()
 
     setInterval(() => {
-      this.mainloop()
+      this.mainloop(TICK_RATE)
     }, TICK_RATE * 1000)
   }
 
@@ -622,6 +666,10 @@ class World {
 
         for (const itemData of tileData.items) {
           let itemTypeData = itemData.itemType
+
+          if (itemTypeData.actionId == 'claimReward') {
+            continue
+          }
 
           const equipment = this.createEquipment(itemTypeData.equipmentId)
           const itemType = new ItemType(itemTypeData.id, itemTypeData, equipment)
@@ -1188,6 +1236,8 @@ class World {
       this.performDrinkAction(socket, player, tile)
     } else if (item.getActionId() == 'replaceItem') {
       this.performReplaceItemAction(socket, player, tile, item)
+    } else if (item.getActionId() == 'claimReward') {
+      this.performClaimRewardAction(socket, player, tile, item)
     } else if (item.getActionId() == 'equipTempItem') {
       logger.info(
         `[ Server ] Equipping temporary item ${item.getType().getId()} to player ${player.playerData.name}`
@@ -1370,6 +1420,24 @@ class World {
     player.addTask(replaceItemTask)
   }
 
+  private async performClaimRewardAction(socket, player, tile, item) {
+    player.clearTasks()
+
+    if (!player.movement.isNeighbour(tile.getX(), tile.getY())) {
+      const target = this.findAvailableNeighbourTile(player, tile)
+
+      if (!target) {
+        return
+      }
+
+      const moveTask = new MoveTask(player, [target[0], target[1]])
+      player.addTask(moveTask)
+    }
+
+    const claimRewardTask = new ClaimRewardTask(this, player, item.getId())
+    player.addTask(claimRewardTask)
+  }
+
   private performEquipTempEquipment(socket, player, tile, item) {
     logger.info(
       `[ Server ] Equipping temporary equipment ${item.getEquipmentId()} to player ${player.playerData.name}`
@@ -1401,6 +1469,52 @@ class World {
 
     const equipEquipmentTask = new EquipEquipment(player, equipment)
     player.addTask(equipEquipmentTask)
+  }
+
+  private async handleRewardSpawned(reward: Reward) {
+    logger.info(`[ Server ] Reward spawned: ${reward.Id}`)
+
+    this.map.getTile(reward.X, reward.Y).addItem(reward.Item)
+
+    this.io.emit('item:added', {
+      x: reward.X,
+      y: reward.Y,
+      item: reward.Item.toData()
+    })
+  }
+
+  private async handleRewardClaimed(playerId: string, reward: Reward) {
+    const player = this.players[playerId]
+
+    if (!player) {
+      return
+    }
+
+    player.addMoney(reward.Amount)
+
+    const tile = this.map.getTile(reward.X, reward.Y)
+
+    tile.removeItem(reward.Item)
+
+    this.io.emit('item:removed', {
+      id: reward.Item.getId(),
+      x: reward.X,
+      y: reward.Y
+    })
+
+    logger.info(`[ Server ] Reward claimed: ${reward.Id} by player ${playerId}`)
+  }
+
+  private async handleRewardExpired(reward: Reward) {
+    logger.info(`[ Server ] Reward expired: ${reward.Id}`)
+
+    this.map.getTile(reward.X, reward.Y).removeItem(reward.Item)
+
+    this.io.emit('item:removed', {
+      id: reward.Item.getId(),
+      x: reward.X,
+      y: reward.Y
+    })
   }
 
   private notifyMapChange() {
@@ -1476,6 +1590,14 @@ class World {
 
   getLotterySystem() {
     return this.lotterySystem
+  }
+
+  getRewardSpawnerSystem() {
+    return this.rewardSpawnerSystem
+  }
+
+  getMap() {
+    return this.map
   }
 }
 

@@ -7930,5 +7930,45 @@
     ],
     "tileset": "resources/images/snapback_01.png",
     "tileset_id": 0
+  },
+  "110000": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      806
+    ],
+    "tileset": "resources/maps/22_Museum_Black_Shadow_16x16.png",
+    "tileset_id": 110000
+  },
+  "110001": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      807
+    ],
+    "tileset": "resources/maps/22_Museum_Black_Shadow_16x16.png",
+    "tileset_id": 110000
+  },
+  "110002": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      822
+    ],
+    "tileset": "resources/maps/22_Museum_Black_Shadow_16x16.png",
+    "tileset_id": 110000
+  },
+  "110003": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      823
+    ],
+    "tileset": "resources/maps/22_Museum_Black_Shadow_16x16.png",
+    "tileset_id": 110000
   }
 }

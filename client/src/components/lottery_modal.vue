@@ -197,12 +197,20 @@
                                         </div>
                                     </div>
 
-                                    <div v-if="result.winners.length">
-                                        <ul>
-                                            <li class="text-xs list-disc" v-for="winner in result.winners" :key="winner.id">
-                                                Teste
-                                            </li>
-                                        </ul>
+                                    <div v-if="result.winners.length" class="space-y-1">
+                                        <div class="text-xs font-bold">
+                                            Vencedores
+                                        </div>
+
+                                        <div class="flex items-center justify-between" v-for="(winner, index) in result.winners" :key="winner.id">
+                                            <div class="text-xs">
+                                                {{ winner.player_name }}
+                                            </div>
+
+                                            <div class="text-xs">
+                                                {{ new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(winner.prize) }}
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

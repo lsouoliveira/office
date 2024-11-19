@@ -29,7 +29,7 @@ class Ticket {
   }
 }
 
-const BASE_TICKET_PRICE = 5
+const BASE_TICKET_PRICE = 10
 
 class LotterySystem {
   private prizePool: number

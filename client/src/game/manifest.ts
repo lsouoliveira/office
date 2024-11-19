@@ -18,6 +18,11 @@ export default {
           data: { scaleMode: 'nearest' }
         },
         {
+          alias: '22_Museum_Black_Shadow_16x16.png',
+          src: 'resources/maps/22_Museum_Black_Shadow_16x16.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
           alias: 'bathroom.png',
           src: 'resources/maps/bathroom.png',
           data: { scaleMode: 'nearest' }
