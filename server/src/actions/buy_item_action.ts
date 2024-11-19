@@ -30,7 +30,6 @@ class BuyItemAction extends ActionHandler {
         .getInventory()
         .getItems()
         .find((inventoryItem) => {
-          console.log(inventoryItem.getItem().getType().getId(), product.itemTypeId)
           return inventoryItem.getItem().getType().getId() === product.itemTypeId
         })
 

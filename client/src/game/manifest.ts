@@ -156,6 +156,11 @@ export default {
           data: { scaleMode: 'nearest' }
         },
         {
+          alias: 'snapback_mclaren.png',
+          src: 'resources/images/snapback_mclaren.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
           alias: 'policeman_hat_01.png',
           src: 'resources/images/policeman_hat_01.png',
           data: { scaleMode: 'nearest' }

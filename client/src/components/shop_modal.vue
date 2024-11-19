@@ -44,13 +44,23 @@
     const formattedProducts = computed(() => {
         return shop.value?.products.map((product) => {
             const spriteData = spriteJson[product.itemTypeId]
+            const states = spriteData.states
+            const mainImageIndex = 0
+            const imageIndex = states.length > 1 ? 1 : 0
+
+            const imageX = states[imageIndex] % spriteData.tilesetWidth * 16
+            const imageY = Math.floor(states[imageIndex] / spriteData.tilesetWidth) * 16
+            const mainImageX = states[mainImageIndex] % spriteData.tilesetWidth * 16
+            const mainImageY = Math.floor(states[mainImageIndex] / spriteData.tilesetWidth) * 16
 
             return {
                 ...product,
                 price: formatPrice(product.price),
                 imageUrl: spriteData?.tileset,
-                x: (spriteData?.x || 0) * 16,
-                y: (spriteData?.y || 0) * 16,
+                imageX,
+                imageY,
+                mainImageX,
+                mainImageY,
                 width: spriteData?.width * 16,
                 height: spriteData?.height * 16,
                 playerOwns: inventory.value?.some((item) => item.item.itemType.id === product.itemTypeId)
@@ -100,8 +110,11 @@
             <div class="p-6">
                 <section class="grid grid-cols-4 gap-6" v-if="!isLoading">
                     <div class="space-y-3" v-for="product in formattedProducts" :key="product.itemTypeId">
-                        <div class="bg-neutral-100 flex items-center justify-center p-4 h-56">
-                            <div class="w-full h-full" :style="{ width: `${product.width}px`, height: `${product.height}px`, backgroundImage: `url(${product.imageUrl})`, backgroundPosition: `-${product.x}px -${product.y}px`, transform: 'scale(6)', imageRendering: 'pixelated' }">
+                        <div class="bg-neutral-100 flex items-center justify-center p-4 h-56 group">
+                            <div class="w-full h-full group-hover:hidden" :style="{ width: `${product.width}px`, height: `${product.height}px`, backgroundImage: `url(${product.imageUrl})`, backgroundPosition: `-${product.mainImageX}px -${product.mainImageY}px`, transform: 'scale(6)', imageRendering: 'pixelated' }">
+                            </div>
+
+                            <div class="w-full h-full hidden group-hover:block" :style="{ width: `${product.width}px`, height: `${product.height}px`, backgroundImage: `url(${product.imageUrl})`, backgroundPosition: `-${product.imageX}px -${product.imageY}px`, transform: 'scale(6)', imageRendering: 'pixelated' }">
                             </div>
                         </div>
 

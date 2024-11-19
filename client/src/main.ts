@@ -30,7 +30,29 @@ const i18n = createI18n({
         }
       },
       items: {
-        '100000': 'Boné vermelho'
+        '100000': 'Boné vermelho',
+        '100001': 'Boné McLaren',
+        '100002': 'Balaclava',
+        '100003': 'Gorro',
+        '100004': 'Barba',
+        '100005': 'Abelha',
+        '100006': 'Raio',
+        '100007': 'Chapéu de Chef',
+        '100008': 'Chapéu de Detetive',
+        '100009': 'Boné Dino',
+        '100010': 'Óculos',
+        '100011': 'Joaninha',
+        '100012': 'Máscara Médica',
+        '100013': 'Monóculo',
+        '100014': 'Bigode',
+        '100015': 'Chapéu de Festa 01',
+        '100016': 'Chapéu de Festa 04',
+        '100017': 'Chapéu de Policial',
+        '100018': 'Boné Azul',
+        '100019': 'Boné Verde',
+        '100020': 'Boné Branco',
+        '100021': 'Boné Rosa',
+        '100022': 'Cérebro de Zumbi'
       }
     }
   }

@@ -7926,10 +7926,299 @@
     "width": 1,
     "height": 2,
     "states": [
+      3,
       0
     ],
     "tileset": "resources/images/snapback_01.png",
-    "tileset_id": 0
+    "tileset_id": 0,
+    "tilesetWidth": 56,
+    "tilesetHeight": 41
+  },
+  "100001": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      3,
+      0
+    ],
+    "tileset": "resources/images/snapback_mclaren.png",
+    "tileset_id": 0,
+    "tilesetWidth": 56,
+    "tilesetHeight": 41
+  },
+  "100002": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      3,
+      0
+    ],
+    "tileset": "resources/images/bataclava_01.png",
+    "tileset_id": 0,
+    "tilesetWidth": 56,
+    "tilesetHeight": 41
+  },
+  "100003": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      3,
+      0
+    ],
+    "tileset": "resources/images/beanie_01.png",
+    "tileset_id": 0,
+    "tilesetWidth": 56,
+    "tilesetHeight": 41
+  },
+  "100004": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      3,
+      0
+    ],
+    "tileset": "resources/images/beard_01.png",
+    "tileset_id": 0,
+    "tilesetWidth": 56,
+    "tilesetHeight": 41
+  },
+  "100005": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      3,
+      0
+    ],
+    "tileset": "resources/images/bee_01.png",
+    "tileset_id": 0,
+    "tilesetWidth": 56,
+    "tilesetHeight": 41
+  },
+  "100006": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      3,
+      0
+    ],
+    "tileset": "resources/images/bolt_01.png",
+    "tileset_id": 0,
+    "tilesetWidth": 56,
+    "tilesetHeight": 41
+  },
+  "100007": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      3,
+      0
+    ],
+    "tileset": "resources/images/chef_01.png",
+    "tileset_id": 0,
+    "tilesetWidth": 56,
+    "tilesetHeight": 41
+  },
+  "100008": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      3,
+      0
+    ],
+    "tileset": "resources/images/detective_hat_01.png",
+    "tileset_id": 0,
+    "tilesetWidth": 56,
+    "tilesetHeight": 41
+  },
+  "100009": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      3,
+      0
+    ],
+    "tileset": "resources/images/dino_snapback_01.png",
+    "tileset_id": 0,
+    "tilesetWidth": 56,
+    "tilesetHeight": 41
+  },
+  "100010": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      3,
+      0
+    ],
+    "tileset": "resources/images/glasses_01.png",
+    "tileset_id": 0,
+    "tilesetWidth": 56,
+    "tilesetHeight": 41
+  },
+  "100011": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      3,
+      0
+    ],
+    "tileset": "resources/images/ladybug_01.png",
+    "tileset_id": 0,
+    "tilesetWidth": 56,
+    "tilesetHeight": 41
+  },
+  "100012": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      3,
+      0
+    ],
+    "tileset": "resources/images/medical_mask_01.png",
+    "tileset_id": 0,
+    "tilesetWidth": 56,
+    "tilesetHeight": 41
+  },
+  "100013": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      3,
+      0
+    ],
+    "tileset": "resources/images/monocle_01.png",
+    "tileset_id": 0,
+    "tilesetWidth": 56,
+    "tilesetHeight": 41
+  },
+  "100014": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      3,
+      0
+    ],
+    "tileset": "resources/images/mustache_01.png",
+    "tileset_id": 0,
+    "tilesetWidth": 56,
+    "tilesetHeight": 41
+  },
+  "100015": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      3,
+      0
+    ],
+    "tileset": "resources/images/party_cone_01.png",
+    "tileset_id": 0,
+    "tilesetWidth": 56,
+    "tilesetHeight": 41
+  },
+  "100016": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      3,
+      0
+    ],
+    "tileset": "resources/images/party_cone_04.png",
+    "tileset_id": 0,
+    "tilesetWidth": 56,
+    "tilesetHeight": 41
+  },
+  "100017": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      3,
+      0
+    ],
+    "tileset": "resources/images/policeman_hat_01.png",
+    "tileset_id": 0,
+    "tilesetWidth": 56,
+    "tilesetHeight": 41
+  },
+  "100018": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      3,
+      0
+    ],
+    "tileset": "resources/images/snapback_02.png",
+    "tileset_id": 0,
+    "tilesetWidth": 56,
+    "tilesetHeight": 41
+  },
+  "100019": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      3,
+      0
+    ],
+    "tileset": "resources/images/snapback_03.png",
+    "tileset_id": 0,
+    "tilesetWidth": 56,
+    "tilesetHeight": 41
+  },
+  "100020": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      3,
+      0
+    ],
+    "tileset": "resources/images/snapback_04.png",
+    "tileset_id": 0,
+    "tilesetWidth": 56,
+    "tilesetHeight": 41
+  },
+  "100021": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      3,
+      0
+    ],
+    "tileset": "resources/images/snapback_05.png",
+    "tileset_id": 0,
+    "tilesetWidth": 56,
+    "tilesetHeight": 41
+  },
+  "100022": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      3,
+      0
+    ],
+    "tileset": "resources/images/zombie_brain_01.png",
+    "tileset_id": 0,
+    "tilesetWidth": 56,
+    "tilesetHeight": 41
   },
   "110000": {
     "y": 0,

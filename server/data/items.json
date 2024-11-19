@@ -4736,6 +4736,182 @@
     "equipment_id": "snapback_01",
     "tileset_id": 0
   },
+  "100001": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": "snapback_mclaren",
+    "tileset_id": 0
+  },
+  "100002": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": "bataclava_01",
+    "tileset_id": 0
+  },
+  "100003": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": "beanie_01",
+    "tileset_id": 0
+  },
+  "100004": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": "beard_01",
+    "tileset_id": 0
+  },
+  "100005": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": "bee_01",
+    "tileset_id": 0
+  },
+  "100006": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": "bolt_01",
+    "tileset_id": 0
+  },
+  "100007": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": "chef_01",
+    "tileset_id": 0
+  },
+  "100008": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": "detective_hat_01",
+    "tileset_id": 0
+  },
+  "100009": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": "dino_snapback_01",
+    "tileset_id": 0
+  },
+  "100010": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": "glasses_01",
+    "tileset_id": 0
+  },
+  "100011": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": "ladybug_01",
+    "tileset_id": 0
+  },
+  "100012": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": "medical_mask_01",
+    "tileset_id": 0
+  },
+  "100013": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": "monocle_01",
+    "tileset_id": 0
+  },
+  "100014": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": "mustache_01",
+    "tileset_id": 0
+  },
+  "100015": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": "party_cone_01",
+    "tileset_id": 0
+  },
+  "100016": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": "party_cone_04",
+    "tileset_id": 0
+  },
+  "100017": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": "policeman_hat_01",
+    "tileset_id": 0
+  },
+  "100018": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": "snapback_02",
+    "tileset_id": 0
+  },
+  "100019": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": "snapback_03",
+    "tileset_id": 0
+  },
+  "100020": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": "snapback_04",
+    "tileset_id": 0
+  },
+  "100021": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": "snapback_05",
+    "tileset_id": 0
+  },
+  "100022": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": "zombie_brain_01",
+    "tileset_id": 0
+  },
   "110000": {
     "is_ground": false,
     "is_walkable": false,

@@ -39,7 +39,7 @@ import { eq } from 'drizzle-orm'
 const fs = require('node:fs')
 const crypto = require('crypto')
 const DEFAULT_SKIN = 'Bob'
-const REWARD_AMOUNT = 10
+const REWARD_AMOUNT = 5
 
 enum Level {
   INFO,
@@ -78,6 +78,10 @@ const EQUIPMENTS = [
   },
   {
     id: 'dino_snapback_01',
+    type: EquipmentType.Helmet
+  },
+  {
+    id: 'snapback_mclaren',
     type: EquipmentType.Helmet
   },
   {

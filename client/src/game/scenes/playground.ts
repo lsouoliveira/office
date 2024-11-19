@@ -85,6 +85,11 @@ const EQUIPMENTS = [
     sprite: 'dino_snapback_01.png'
   },
   {
+    id: 'snapback_mclaren',
+    type: EquipmentType.Helmet,
+    sprite: 'snapback_mclaren.png'
+  },
+  {
     id: 'glasses_01',
     type: EquipmentType.Helmet,
     sprite: 'glasses_01.png'

@@ -1,9 +1,119 @@
 {
-    "products": [
-        {
-            "itemTypeId": "100000",
-            "name": "Boné Vermelho",
-            "price": 10
-        }
-    ]
+  "products": [
+    {
+      "itemTypeId": "100000",
+      "name": "Boné Vermelho",
+      "price": 50
+    },
+    {
+      "itemTypeId": "100001",
+      "name": "Boné McLaren",
+      "price": 500
+    },
+    {
+      "itemTypeId": "100002",
+      "name": "Balaclava",
+      "price": 200
+    },
+    {
+      "itemTypeId": "100003",
+      "name": "Gorro",
+      "price": 50
+    },
+    {
+      "itemTypeId": "100004",
+      "name": "Barba",
+      "price": 25
+    },
+    {
+      "itemTypeId": "100005",
+      "name": "Abelha",
+      "price": 150
+    },
+    {
+      "itemTypeId": "100006",
+      "name": "Prego",
+      "price": 10
+    },
+    {
+      "itemTypeId": "100007",
+      "name": "Chapéu de Chef",
+      "price": 200
+    },
+    {
+      "itemTypeId": "100008",
+      "name": "Chapéu de Detetive",
+      "price": 200
+    },
+    {
+      "itemTypeId": "100009",
+      "name": "Boné Dino",
+      "price": 300
+    },
+    {
+      "itemTypeId": "100010",
+      "name": "Óculos",
+      "price": 100
+    },
+    {
+      "itemTypeId": "100011",
+      "name": "Joaninha",
+      "price": 25
+    },
+    {
+      "itemTypeId": "100012",
+      "name": "Máscara Médica",
+      "price": 250
+    },
+    {
+      "itemTypeId": "100013",
+      "name": "Monóculo",
+      "price": 100
+    },
+    {
+      "itemTypeId": "100014",
+      "name": "Bigode",
+      "price": 10
+    },
+    {
+      "itemTypeId": "100015",
+      "name": "Chapéu de Festa 01",
+      "price": 25
+    },
+    {
+      "itemTypeId": "100016",
+      "name": "Chapéu de Festa 04",
+      "price": 25
+    },
+    {
+      "itemTypeId": "100017",
+      "name": "Chapéu de Policial",
+      "price": 150
+    },
+    {
+      "itemTypeId": "100018",
+      "name": "Boné Azul",
+      "price": 150
+    },
+    {
+      "itemTypeId": "100019",
+      "name": "Boné Verde",
+      "price": 150
+    },
+    {
+      "itemTypeId": "100020",
+      "name": "Boné Branco",
+      "price": 75
+    },
+    {
+      "itemTypeId": "100021",
+      "name": "Boné Rosa",
+      "price": 150
+    },
+    {
+      "itemTypeId": "100022",
+      "name": "Cérebro de Zumbi",
+      "price": 80
+    }
+  ]
 }
