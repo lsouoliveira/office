@@ -5,7 +5,7 @@
   "author": "Lucas Sousa <ls442336@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "esbuild src/index.ts --bundle --outfile=dist/main.js --platform=node --watch"
+    "build": "esbuild src/index.ts --bundle --outfile=dist/main.js --platform=node"
   },
   "dependencies": {
     "@libsql/client": "^0.14.0",
