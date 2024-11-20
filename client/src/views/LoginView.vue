@@ -9,10 +9,10 @@ const router = useRouter()
 
 const baseError = ref('')
 const email = ref({
-  value: 'teste@example.com'
+  value: ''
 })
 const password = ref({
-  value: '123456'
+  value: ''
 })
 const isLoading = ref(false)
 
