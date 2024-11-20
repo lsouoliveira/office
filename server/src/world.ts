@@ -534,7 +534,7 @@ class World {
 
       delete this.sessions[socket.sessionId]
 
-      player.forEach((player) => {
+      players.forEach((player) => {
         delete this.players[player.playerData.id]
       })
 
