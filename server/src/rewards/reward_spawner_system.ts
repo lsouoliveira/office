@@ -16,17 +16,17 @@ const REWARDS = [
   {
     itemId: '110001',
     amount: 10,
-    dropRate: 0.5
+    dropRate: 0.3
   },
   {
     itemId: '110002',
     amount: 25,
-    dropRate: 0.25
+    dropRate: 0.1
   },
   {
     itemId: '110003',
     amount: 50,
-    dropRate: 0.1
+    dropRate: 0.05
   }
 ]
 
