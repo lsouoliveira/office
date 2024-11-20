@@ -165,7 +165,7 @@
                         </div>
 
                         <div>
-                            <div class="text-center leading-none hidden" v-if="!lastResults.isLoading && !lastResults.data.length">
+                            <div class="text-center leading-none" v-if="!lastResults.isLoading && !lastResults.data.length">
                                 Ainda não houveram resultados
                             </div>
 
