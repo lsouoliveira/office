@@ -74,8 +74,9 @@ echo "Tennis server built."
 echo "Updating client server URLs..."
 cd ../client
 for file in dist/assets/index-*.js; do
-    sed -i 's|ws://localhost:3000|wss://8b29cd6c.xyz|g' "$file"
-    sed -i 's|ws://localhost:3001|wss://tennis.8b29cd6c.xyz|g' "$file"
+    sed -i 's|ws://localhost:3000|wss://hostname|g' "$file"
+    sed -i 's|ws://localhost:3001|wss://tennis.hostname|g' "$file"
+    sed -i 's|http://localhost:3000/api|https://hostname/api|g' "$file"
 done
 echo "Client server URLs updated."
 

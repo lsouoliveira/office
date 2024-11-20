@@ -308,7 +308,6 @@ class World {
   }
 
   private async drawLotteryWinner() {
-    this.lotterySystem.buyTicket(Object.values(this.players)[0], 1)
     await this.lotterySystem.drawWinner()
     const results = await this.lotterySystem.getLastNthResults(1)
     let winners = ''
