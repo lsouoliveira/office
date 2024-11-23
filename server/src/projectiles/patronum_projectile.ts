@@ -12,7 +12,7 @@ class PatronumProjectile extends Projectile {
     speed: number,
     duration: number
   ) {
-    super('patronum', position, direction, speed, duration)
+    super('patronum', position, direction, speed, duration, 14)
     this.world = world
   }
 

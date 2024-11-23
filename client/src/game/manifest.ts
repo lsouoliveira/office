@@ -229,6 +229,11 @@ export default {
           alias: 'blue_effects.png',
           src: 'resources/images/blue_effects.png',
           data: { scaleMode: 'nearest' }
+        },
+        {
+          alias: 'red_effects.png',
+          src: 'resources/images/red_effects.png',
+          data: { scaleMode: 'nearest' }
         }
       ]
     }

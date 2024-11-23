@@ -12,31 +12,14 @@ class ProjectileSystem {
   }
 
   update(dt: number) {
+    this.removedDestroyedProjectiles()
+
     this.projectiles.forEach((projectile) => {
       projectile.update(dt)
 
-      let hit = false
-
-      const tileX = Math.floor(projectile.Position.x / 16)
-      const tileY = Math.floor(projectile.Position.y / 16)
-
-      if (this.world.getMap().contains(tileX, tileY)) {
-        const tile = this.world.getMap().getTile(tileX, tileY)
-
-        if (!tile.isWalkable()) {
-          projectile.onHit(tile)
-          hit = true
-        }
-      }
-
-      if (!hit) {
-        Object.values(this.world.getOnlinePlayers()).forEach((player) => {
-          if (player.contains(projectile.Position.x, projectile.Position.y)) {
-            projectile.onHit(player)
-            hit = true
-          }
-        })
-      }
+      this.checkProjectileCollisionWithWorld(projectile) ||
+        this.checkProjectileCollisionWithPlayers(projectile) ||
+        this.checkProjectileCollisionWithProjectiles(projectile)
     })
   }
 
@@ -48,8 +31,62 @@ class ProjectileSystem {
   }
 
   private handleProjectileEnd(projectile: Projectile) {
-    this.projectiles = this.projectiles.filter((p) => p.Id !== projectile.Id)
     this.world.sendMessage('projectile:removed', projectile.toData())
+  }
+
+  private removedDestroyedProjectiles() {
+    this.projectiles = this.projectiles.filter((projectile) => !projectile._destroy)
+  }
+
+  private checkProjectileCollisionWithWorld(projectile: Projectile) {
+    const tileX = Math.floor(projectile.Position.x / 16)
+    const tileY = Math.floor(projectile.Position.y / 16)
+
+    if (this.world.getMap().contains(tileX, tileY)) {
+      const tile = this.world.getMap().getTile(tileX, tileY)
+
+      if (!tile.isWalkable()) {
+        projectile.onHit(tile)
+
+        return true
+      }
+    }
+
+    return false
+  }
+
+  private checkProjectileCollisionWithPlayers(projectile: Projectile) {
+    let hit = false
+
+    Object.values(this.world.getOnlinePlayers()).forEach((player) => {
+      if (player.contains(projectile.Position.x, projectile.Position.y)) {
+        projectile.onHit(player)
+        hit = true
+      }
+    })
+
+    return hit
+  }
+
+  private checkProjectileCollisionWithProjectiles(projectile: Projectile) {
+    let hit = false
+
+    this.projectiles.forEach((p) => {
+      if (
+        p.Id !== projectile.Id &&
+        p.contains(
+          projectile.Position.x,
+          projectile.Position.y,
+          projectile.Radius,
+          projectile.Radius
+        )
+      ) {
+        projectile.onHit(p)
+        hit = true
+      }
+    })
+
+    return hit
   }
 }
 

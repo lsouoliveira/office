@@ -8,7 +8,10 @@ class Projectile {
   speed: number
   duration: number
   timer: number
+  radius: number
   onTimerEnd: Array<(projectile: Projectile) => void>
+
+  public _destroy: boolean
 
   constructor(
     name: string,
@@ -16,6 +19,7 @@ class Projectile {
     direction: { x: number; y: number },
     speed: number,
     duration: number,
+    radius: number,
     id?: string
   ) {
     this.name = name
@@ -24,6 +28,7 @@ class Projectile {
     this.direction = direction
     this.speed = speed
     this.duration = duration
+    this.radius = radius
     this.timer = 0
     this.direction = direction
     this.onTimerEnd = []
@@ -45,6 +50,10 @@ class Projectile {
     return this.duration
   }
 
+  get Radius() {
+    return this.radius
+  }
+
   update(dt: number) {
     this.position.x += this.direction.x * this.speed * dt
     this.position.y += this.direction.y * this.speed * dt
@@ -57,11 +66,21 @@ class Projectile {
   }
 
   destroy() {
+    this._destroy = true
     this.onTimerEnd.forEach((cb) => cb(this))
   }
 
   addOnTimerEnd(cb: (projectile: Projectile) => void) {
     this.onTimerEnd.push(cb)
+  }
+
+  contains(x: number, y: number, width: number, height: number) {
+    return (
+      x > this.position.x - this.radius &&
+      x < this.position.x + this.radius &&
+      y > this.position.y - this.radius &&
+      y < this.position.y + this.radius
+    )
   }
 
   onHit(target: any) {}

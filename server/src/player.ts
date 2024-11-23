@@ -291,12 +291,11 @@ class PlayerMovement {
 }
 
 const DRINKING_TIME = 30000
-const patronoDuration = 60000
+const patronoDuration = 30000
 const patronos = [
   '🐶',
   '🐺',
   '🦊',
-  '🦝',
   '🐱',
   '🦁',
   '🐯',
@@ -313,8 +312,7 @@ const patronos = [
   '🦔',
   '🦅',
   '🦢',
-  '🦉',
-  '🐲'
+  '🦉'
 ]
 
 class Player extends EventEmitter {
@@ -556,6 +554,13 @@ class Player extends EventEmitter {
 
   getPosition() {
     return this.playerData.position
+  }
+
+  getCenterPosition() {
+    return {
+      x: this.playerData.position.x + 8,
+      y: this.playerData.position.y
+    }
   }
 
   getDirectionVector() {

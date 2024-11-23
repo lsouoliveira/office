@@ -21,6 +21,7 @@ import { SpritesheetSplitter, ComposedSpritesheet } from './../animation/sprites
 import { MoneyDisplay } from './../entities/money_display'
 import { Announcement } from './../entities/announcement'
 import { Projectile, ProjectileType } from './../entities/projectile'
+import { Explosion, ExplosionType } from './../entities/explosion'
 
 const TILE_SIZE = 16
 const DEFAULT_SKIN = 'Bob'
@@ -902,7 +903,17 @@ class Playground extends Scene {
     this.projectiles.delete(id)
   }
 
-  private async handleExplosionAdded({ position, type }) {}
+  private async handleExplosionAdded({ position, type }) {
+    const explosion = Explosion.createExplosion(
+      Math.floor(Math.random() * 1000000).toString(),
+      type,
+      position.x,
+      position.y
+    )
+
+    this.addEntity(explosion)
+    this.uiLayer.addChild(explosion)
+  }
 
   destroyEntity(entity: any) {
     this.entities.splice(this.entities.indexOf(entity), 1)

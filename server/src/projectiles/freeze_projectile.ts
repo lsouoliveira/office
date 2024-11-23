@@ -12,7 +12,7 @@ class FreezeProjectile extends Projectile {
     speed: number,
     duration: number
   ) {
-    super('freeze', position, direction, speed, duration)
+    super('freeze', position, direction, speed, duration, 14)
 
     this.world = world
   }
@@ -23,10 +23,18 @@ class FreezeProjectile extends Projectile {
     }
 
     this.destroy()
-    this.world.sendMessage('explosion:added', {
-      position: this.position,
-      type: 'freeze'
-    })
+
+    if (target instanceof Player) {
+      this.world.sendMessage('explosion:added', {
+        position: target.getCenterPosition(),
+        type: 'purple_2'
+      })
+    } else {
+      this.world.sendMessage('explosion:added', {
+        position: this.position,
+        type: 'purple_1'
+      })
+    }
   }
 }
 
