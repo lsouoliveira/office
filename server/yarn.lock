@@ -866,7 +866,7 @@ esbuild@^0.19.7:
     "@esbuild/win32-ia32" "0.19.12"
     "@esbuild/win32-x64" "0.19.12"
 
-"esbuild@>=0.12 <1", esbuild@~0.23.0, esbuild@0.23.1:
+esbuild@^0.23.1, "esbuild@>=0.12 <1", esbuild@~0.23.0:
   version "0.23.1"
   resolved "https://registry.npmjs.org/esbuild/-/esbuild-0.23.1.tgz"
   integrity sha512-VVNz/9Sa0bs5SELtn3f7qhJCDPCF5oMEl5cO9/SSinpE9hbPVvxbd572HH5AKiP7WD8INO53GgfDDhRjkylHEg==

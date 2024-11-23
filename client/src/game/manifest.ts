@@ -219,6 +219,16 @@ export default {
           alias: 'medical_mask_01.png',
           src: 'resources/images/medical_mask_01.png',
           data: { scaleMode: 'nearest' }
+        },
+        {
+          alias: 'purple_effects.png',
+          src: 'resources/images/purple_effects.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
+          alias: 'blue_effects.png',
+          src: 'resources/images/blue_effects.png',
+          data: { scaleMode: 'nearest' }
         }
       ]
     }

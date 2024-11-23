@@ -19,6 +19,8 @@ class Scene extends Container {
   async onDestroy() {}
 
   update(_: number) {}
+
+  fixedUpdate(_: number) {}
 }
 
 export { Scene }

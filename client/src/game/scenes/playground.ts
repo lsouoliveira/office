@@ -20,6 +20,7 @@ import { Equipment, EquipmentType } from './../characters/player'
 import { SpritesheetSplitter, ComposedSpritesheet } from './../animation/spritesheet'
 import { MoneyDisplay } from './../entities/money_display'
 import { Announcement } from './../entities/announcement'
+import { Projectile, ProjectileType } from './../entities/projectile'
 
 const TILE_SIZE = 16
 const DEFAULT_SKIN = 'Bob'
@@ -189,6 +190,7 @@ class Playground extends Scene {
   private emoteSpritesheet: PIXI.Texture
   private moneyDisplay: MoneyDisplay
   private announcement: Announcement
+  private projectiles: Map<string, Projectile> = new Map()
 
   async onStart() {
     // const stats = new Stats(this.app.renderer)
@@ -273,6 +275,14 @@ class Playground extends Scene {
     this.camera.update()
   }
 
+  fixedUpdate(dt: number) {
+    for (const entity of this.entities) {
+      if (entity.fixedUpdateEntity) {
+        entity.fixedUpdateEntity(dt)
+      }
+    }
+  }
+
   setupMapBuilder() {
     this.spriteCursor = new SpriteCursor(this.map)
 
@@ -304,6 +314,9 @@ class Playground extends Scene {
       this.client.socket.on('item:added', this.handleItemAdded.bind(this))
       this.client.socket.on('item:removed', this.handleItemRemoved.bind(this))
       this.client.socket.on('item:replaced', this.handleItemReplaced.bind(this))
+      this.client.socket.on('projectile:added', this.handleProjectileAdded.bind(this))
+      this.client.socket.on('projectile:removed', this.handleProjectileRemoved.bind(this))
+      this.client.socket.on('explosion:added', this.handleExplosionAdded.bind(this))
       this.client.socket.on('gameState', this.handleGameState.bind(this))
     })
 
@@ -559,6 +572,8 @@ class Playground extends Scene {
     const tileX = Math.floor(x / TILE_SIZE)
     const tileY = Math.floor(y / TILE_SIZE)
 
+    console.log(tileX, tileY)
+
     if (!this.map.contains(tileX, tileY)) {
       return
     }
@@ -724,14 +739,14 @@ class Playground extends Scene {
     this.ctrlPressed = e.ctrlKey
   }
 
-  private handlePlayerMessage({ playerId, message }) {
+  private handlePlayerMessage({ playerId, message, color, compact }) {
     const player = this.players[playerId]
 
     if (!player) {
       return
     }
 
-    const chatMessage = player.say(message)
+    const chatMessage = player.say(message, color || 'yellow', compact || false)
 
     this.addEntity(chatMessage)
     this.uiLayer.addChild(chatMessage)
@@ -835,6 +850,35 @@ class Playground extends Scene {
     oldItem.destroy()
   }
 
+  private async handleProjectileAdded({
+    id,
+    name,
+    position,
+    direction,
+    speed,
+    duration,
+    timestamp
+  }) {
+    const delay = (Date.now() - timestamp) / 1000
+    const updatedPosition = {
+      x: position.x + direction.x * speed * delay,
+      y: position.y + direction.y * speed
+    }
+    const projectile = Projectile.createProjectile(
+      id,
+      name,
+      updatedPosition.x,
+      updatedPosition.y,
+      direction,
+      speed,
+      duration
+    )
+
+    this.addEntity(projectile)
+    this.uiLayer.addChild(projectile)
+    this.projectiles.set(id, projectile)
+  }
+
   addEntity(entity: any) {
     this.entities.push(entity)
 
@@ -846,6 +890,19 @@ class Playground extends Scene {
       this.entities.splice(this.entities.indexOf(entity), 1)
     })
   }
+
+  private async handleProjectileRemoved({ id }) {
+    const projectile = this.projectiles.get(id)
+
+    if (!projectile) {
+      return
+    }
+
+    projectile.destroy()
+    this.projectiles.delete(id)
+  }
+
+  private async handleExplosionAdded({ position, type }) {}
 
   destroyEntity(entity: any) {
     this.entities.splice(this.entities.indexOf(entity), 1)

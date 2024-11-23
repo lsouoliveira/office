@@ -5,7 +5,7 @@ import { ItemType } from './../items/item_type'
 import { World } from './../world'
 
 const SPAWN_COOLDOWN = 10 * 60
-const MAX_REWARDS = 3
+const MAX_REWARDS = 2
 const REWARD_DURATION = 60 * 60
 const REWARDS = [
   {
@@ -15,17 +15,17 @@ const REWARDS = [
   },
   {
     itemId: '110001',
-    amount: 10,
+    amount: 8,
     dropRate: 0.3
   },
   {
     itemId: '110002',
-    amount: 25,
+    amount: 10,
     dropRate: 0.1
   },
   {
     itemId: '110003',
-    amount: 50,
+    amount: 15,
     dropRate: 0.05
   }
 ]
@@ -106,7 +106,7 @@ class RewardSpawnerSystem {
   }
 
   private canSpawnReward() {
-    return this.rewards.length <= MAX_REWARDS && this.timer >= SPAWN_COOLDOWN
+    return this.rewards.length < MAX_REWARDS && this.timer >= SPAWN_COOLDOWN
   }
 
   private spawnReward() {

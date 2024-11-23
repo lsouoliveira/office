@@ -4,6 +4,9 @@ import { GameMap } from './map'
 import { Task } from './tasks/task'
 import { Item } from './items/item'
 import { Inventory } from './inventory/inventory'
+import Spell from './spells/spell'
+import { SPELLS } from './spells/spells'
+import SpellData from './spells/spell_data'
 
 interface Position {
   x: number
@@ -123,6 +126,10 @@ class PlayerMovement {
   }
 
   moveTo(tileX, tileY) {
+    if (this.player.playerData.speed <= 0) {
+      return
+    }
+
     if (!this.validatePosition(tileX, tileY)) {
       return
     }
@@ -284,6 +291,31 @@ class PlayerMovement {
 }
 
 const DRINKING_TIME = 30000
+const patronoDuration = 60000
+const patronos = [
+  '🐶',
+  '🐺',
+  '🦊',
+  '🦝',
+  '🐱',
+  '🦁',
+  '🐯',
+  '🐴',
+  '🫎',
+  '🐎',
+  '🦄',
+  '🦌',
+  '🦬',
+  '🐗',
+  '🐑',
+  '🦙',
+  '🐇',
+  '🦔',
+  '🦅',
+  '🦢',
+  '🦉',
+  '🐲'
+]
 
 class Player extends EventEmitter {
   public playerData: PlayerData
@@ -292,11 +324,16 @@ class Player extends EventEmitter {
   private occupiedItem: Item
   private drinkingTimeout: NodeJS.Timeout
   private inventory: Inventory = new Inventory()
+  private spells: Spell[] = []
+  private patronoTimer: number
+  private isPatronoActive: boolean
 
   constructor(playerData: PlayerData) {
     super()
 
     this.playerData = playerData
+
+    SPELLS.forEach((spellData: SpellData) => this.spells.push(new Spell(spellData)))
   }
 
   init(playerMovement: PlayerMovement) {
@@ -308,6 +345,17 @@ class Player extends EventEmitter {
       this.performNextTask()
       this.movement.update(dt)
     } catch (e) {}
+
+    this.spells.forEach((spell) => spell.update(dt))
+
+    if (this.isPatronoActive) {
+      this.patronoTimer += dt
+
+      if (this.patronoTimer >= patronoDuration) {
+        this.isPatronoActive = false
+        this.notifyChange()
+      }
+    }
   }
 
   performNextTask() {
@@ -479,8 +527,82 @@ class Player extends EventEmitter {
       skin: this.playerData.skin,
       helmetSlot: this.playerData.helmetSlot?.toData(),
       userId: this.playerData.userId,
-      money: this.playerData.money
+      money: this.playerData.money,
+      patrono: this.getPatrono(),
+      isPatronoActive: this.isPatronoActive
     }
+  }
+
+  canCastSpell(spellId: number) {
+    const spell = this.spells.find((spell) => spell.Id === spellId)
+
+    if (!spell) {
+      console.log(`Spell with id ${spellId} not found`)
+      return false
+    }
+
+    return spell.canCast()
+  }
+
+  castSpell(spellId: number) {
+    const spell = this.spells.find((spell) => spell.Id === spellId)
+
+    if (!spell) {
+      return
+    }
+
+    spell.cast()
+  }
+
+  getPosition() {
+    return this.playerData.position
+  }
+
+  getDirectionVector() {
+    switch (this.playerData.direction) {
+      case Direction.North:
+        return { x: 0, y: -1 }
+      case Direction.South:
+        return { x: 0, y: 1 }
+      case Direction.East:
+        return { x: 1, y: 0 }
+      case Direction.West:
+        return { x: -1, y: 0 }
+    }
+  }
+
+  contains(x: number, y: number) {
+    return (
+      x > this.playerData.position.x &&
+      x < this.playerData.position.x + 16 &&
+      y > this.playerData.position.y &&
+      y < this.playerData.position.y + 32
+    )
+  }
+
+  freeze() {
+    const speed = this.playerData.speed
+
+    this.setSpeed(0)
+
+    setTimeout(() => {
+      this.setSpeed(speed)
+    }, 5000)
+  }
+
+  patrono() {
+    this.isPatronoActive = true
+    this.patronoTimer = 0
+    this.notifyChange()
+  }
+
+  getPatrono() {
+    const nameSum = this.playerData.name
+      .split('')
+      .reduce((acc, char) => acc + char.charCodeAt(0), 0)
+    const patronoIndex = nameSum % patronos.length
+
+    return patronos[patronoIndex]
   }
 }
 

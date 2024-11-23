@@ -7,6 +7,7 @@ class Game extends EventTarget {
   private app: Application
   private sceneManager: SceneManager
   private root: HTMLElement
+  private lastTime: number
 
   constructor(root: HTMLElement) {
     super()
@@ -36,6 +37,10 @@ class Game extends EventTarget {
 
     this.dispatchEvent(new Event('game:ready'))
     this.app.ticker.add(this.update.bind(this))
+
+    setInterval(() => {
+      this.sceneManager.fixedUpdate(1.0 / 60)
+    }, 1000 / 60)
   }
 
   private update(dt: number) {

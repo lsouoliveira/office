@@ -35,6 +35,10 @@ class SceneManager {
   update(dt: number) {
     this.currentScene?.update(dt)
   }
+
+  fixedUpdate(dt: number) {
+    this.currentScene?.fixedUpdate(dt)
+  }
 }
 
 export { SceneManager }

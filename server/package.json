@@ -25,7 +25,7 @@
     "@types/express": "^4.17.21",
     "@types/socket.io": "^3.0.2",
     "drizzle-kit": "^0.28.1",
-    "esbuild": "0.23.1",
+    "esbuild": "^0.23.1",
     "eslint": "^9.11.1",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",

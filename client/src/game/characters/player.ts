@@ -128,12 +128,12 @@ class Player extends PIXI.Container implements Entity {
     return this.name
   }
 
-  say(message: string) {
+  say(message: string, color: string, compact: boolean) {
     if (this.lastMessage) {
       this.lastMessage.destroy()
     }
 
-    this.lastMessage = PlayerMessage.show(this, message)
+    this.lastMessage = PlayerMessage.show(this, message, color, compact)
 
     return this.lastMessage
   }
@@ -254,7 +254,11 @@ class Player extends PIXI.Container implements Entity {
     this.isDrinking = data.isDrinking
     this.isSitting = data.state == State.Sitting
 
-    this.setName(data.name)
+    if (data.isPatronoActive) {
+      this.setName(`${data.name} ${data.patrono}`)
+    } else {
+      this.setName(data.name)
+    }
 
     if (data.state == State.Sitting) {
       this.clearTargets()

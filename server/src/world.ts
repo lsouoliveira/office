@@ -30,6 +30,9 @@ import { GetNextLotteryAction } from './actions/get_next_lottery_action'
 import RewardSpawnerSystem from './rewards/reward_spawner_system'
 import Reward from './rewards/reward'
 import SpawnZone from './rewards/spawn_zone'
+import { getSpellData, spellExists } from './spells/spells'
+import SpellSystem from './spells/spell_system'
+import ProjectileSystem from './projectiles/projectile_system'
 
 import jsonwebtoken from 'jsonwebtoken'
 import { db } from './db'
@@ -45,6 +48,13 @@ enum Level {
   INFO,
   WARNING,
   DANGER
+}
+
+enum MessageColor {
+  YELLOW = 'yellow',
+  GRAY = 'gray',
+  GREEN = 'green',
+  BLUE = 'blue'
 }
 
 const EQUIPMENTS = [
@@ -196,6 +206,8 @@ class World {
   private items: object
   private lotterySystem: LotterySystem
   private rewardSpawnerSystem: RewardSpawnerSystem
+  private spellSystem: SpellSystem
+  private projectileSystem: ProjectileSystem
 
   constructor(io: Server) {
     this.io = io
@@ -208,6 +220,8 @@ class World {
       this.handleRewardClaimed.bind(this),
       this.handleRewardExpired.bind(this)
     )
+    this.spellSystem = new SpellSystem(this)
+    this.projectileSystem = new ProjectileSystem(this)
 
     for (const spawnPoint of spawnPoints) {
       const x = spawnPoint.start.x
@@ -237,8 +251,10 @@ class World {
   mainloop(dt: number) {
     for (const player of Object.values(this.players)) {
       player.update(TICK_RATE)
-      this.rewardSpawnerSystem.update(TICK_RATE)
     }
+
+    this.rewardSpawnerSystem.update(TICK_RATE)
+    this.projectileSystem.update(TICK_RATE)
   }
 
   start() {
@@ -251,6 +267,14 @@ class World {
 
   getPlayers() {
     return this.players
+  }
+
+  getOnlinePlayers() {
+    const players = Object.values(this.sessions)
+      .filter((session) => session.connected)
+      .map((session) => this.players[session.playerId])
+
+    return [...new Set(players)]
   }
 
   getPlayerBySessionId(sessionId: string) {
@@ -698,6 +722,13 @@ class World {
       return
     }
 
+    if (spellExists(message)) {
+      const spellData = getSpellData(message)
+      this.handleSpell(socket, spellData)
+
+      return
+    }
+
     const session = this.sessions[socket.sessionId]
 
     if (!session) {
@@ -750,6 +781,41 @@ class World {
     } else {
       this.handlePreset(socket, command)
     }
+  }
+
+  private async handleSpell(socket, spellData) {
+    const session = this.sessions[socket.sessionId]
+
+    if (!session) {
+      return
+    }
+
+    const player = this.players[session.playerId]
+
+    if (!player) {
+      return
+    }
+
+    if (!player.canCastSpell(spellData.id)) {
+      this.io.emit('player:message', {
+        playerId: player.playerData.id,
+        message: '*puff*',
+        color: MessageColor.GRAY,
+        compact: true
+      })
+
+      return
+    }
+
+    logger.info(`Casting spell ${spellData.id} by player ${player.playerData.name}`)
+
+    this.spellSystem.cast(player, spellData.id)
+    this.io.emit('player:message', {
+      playerId: player.playerData.id,
+      message: `*${spellData.spelling}*`,
+      color: MessageColor.GREEN,
+      compact: true
+    })
   }
 
   private async handlePreset(socket, preset) {
@@ -1599,8 +1665,20 @@ class World {
     return this.rewardSpawnerSystem
   }
 
+  getSpellSystem() {
+    return this.spellSystem
+  }
+
+  getProjectileSystem() {
+    return this.projectileSystem
+  }
+
   getMap() {
     return this.map
+  }
+
+  sendMessage(message, data) {
+    this.io.emit(message, data)
   }
 }
 
