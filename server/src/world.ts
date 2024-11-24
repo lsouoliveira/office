@@ -165,6 +165,14 @@ const EQUIPMENTS = [
   {
     id: 'walnut_wand',
     type: EquipmentType.Wand
+  },
+  {
+    id: 'yew_wand',
+    type: EquipmentType.Wand
+  },
+  {
+    id: 'oak_wand',
+    type: EquipmentType.Wand
   }
 ]
 

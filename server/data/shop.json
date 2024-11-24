@@ -117,7 +117,7 @@
     },
     {
       "itemTypeId": "100023",
-      "name": "Varinha de madeira",
+      "name": "Varinha de Bétula",
       "price": 10
     },
     {
@@ -134,6 +134,16 @@
       "itemTypeId": "100026",
       "name": "Varinha de Nogueira",
       "price": 25
+    },
+    {
+      "itemTypeId": "100027",
+      "name": "Varinha de Teixo",
+      "price": 100
+    },
+    {
+      "itemTypeId": "100028",
+      "name": "Varinha de Carvalho",
+      "price": 100
     }
   ]
 }

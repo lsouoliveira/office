@@ -8272,6 +8272,32 @@
     "tilesetHeight": 10,
     "tileSize": 145.4
   },
+  "100027": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      43
+    ],
+    "tileset": "resources/images/wands.png",
+    "tileset_id": 0,
+    "tilesetWidth": 10,
+    "tilesetHeight": 10,
+    "tileSize": 145.4
+  },
+  "100028": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      49
+    ],
+    "tileset": "resources/images/wands.png",
+    "tileset_id": 0,
+    "tilesetWidth": 10,
+    "tilesetHeight": 10,
+    "tileSize": 145.4
+  },
   "110000": {
     "y": 0,
     "width": 1,

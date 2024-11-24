@@ -4944,6 +4944,22 @@
     "equipment_id": "walnut_wand",
     "tileset_id": 0
   },
+  "100027": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": "yew_wand",
+    "tileset_id": 0
+  },
+  "100028": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": "oak_wand",
+    "tileset_id": 0
+  },
   "110000": {
     "is_ground": false,
     "is_walkable": false,
