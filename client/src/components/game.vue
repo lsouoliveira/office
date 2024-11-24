@@ -11,6 +11,7 @@ import TennisModal from './tennis_modal.vue'
 import InventoryModal from './inventory_modal.vue'
 import ShopModal from './shop_modal.vue'
 import LotteryModal from './lottery_modal.vue'
+import HotkeysModal from './hotkeys_modal.vue'
 
 const EMOTES = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', '=']
 
@@ -30,6 +31,7 @@ const showTennisModal = ref(false)
 const showInventoryModal = ref(false)
 const showShopModal = ref(false)
 const showLotteryModal = ref(false)
+const showHotkeysModal = ref(false)
 const showOs = ref(false)
 const showPianoModal = ref(false)
 const osApplication = ref(null)
@@ -75,21 +77,31 @@ onMounted(async () => {
             chatMessageInput?.value?.focus()
           }, 0)
         }
-        break
+        return
       case 'Escape':
         chatMessage.show = false
         clearSelection()
-        break
+        return
       case '0':
         if (e.ctrlKey) {
           items.show = !items.show
         }
-
-        break
+        return
     }
 
     if (!e.ctrlKey && EMOTES.includes(e.key) && !chatMessage.show) {
       window.dispatchEvent(new CustomEvent('ui:emote', { detail: { id: e.key } }))
+      return
+    }
+
+    if (e.ctrlKey && e.key >= '1' && e.key <= '5') {
+        const hotkeys = getHotkeys()
+        const hotkey = hotkeys.find((h) => h.name === `ctrl${e.key}`)
+
+        if (hotkey) {
+            window.gameClient.sendMessage(hotkey.value.substring(0, 100))
+        }
+      return
     }
   })
 })
@@ -98,6 +110,14 @@ onUnmounted(() => {
   window.removeEventListener('keydown', () => {})
   window.removeEventListener('keyup', () => {})
 })
+
+const getHotkeys = () => {
+    try {
+        return JSON.parse(localStorage.getItem('hotkeys')) || []
+    } catch(e) {
+        return []
+    }
+}
 
 const handleChatMessage = ({ target: { value } }) => {
   const message = value.trim()
@@ -231,9 +251,16 @@ const filteredItems = computed(() => {
   <inventory-modal @close="showInventoryModal = false" v-model="showInventoryModal" v-if="showInventoryModal" />
   <shop-modal @close="showShopModal = false" v-model="showShopModal" v-if="showShopModal" />
   <lottery-modal @close="showLotteryModal = false" v-model="showLotteryModal" v-if="showLotteryModal" />
+  <hotkeys-modal @close="showHotkeysModal = false" v-model="showHotkeysModal" v-if="showHotkeysModal" />
 
   <div class="fixed top-0 left-0 w-full">
     <div class="flex items-center justify-end p-4 gap-2">
+      <b-button
+        icon-left="keyboard"
+        type="is-primary"
+        @click="showHotkeysModal = true"
+      />
+
       <b-button
         icon-left="cash"
         type="is-success"

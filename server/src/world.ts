@@ -794,6 +794,12 @@ class World {
       }
     }
 
+    if (command == 'player_speed') {
+      this.handlePlayerSpeedCommand(socket, parts)
+
+      return
+    }
+
     if (!this.isAdmin(socket)) {
       return
     }
@@ -805,8 +811,6 @@ class World {
       // this.handleTeleportPlayerCommand(socket, parts)
     } else if (command == 'clear_map') {
       this.handleClearMapCommand(socket)
-    } else if (command == 'player_speed') {
-      this.handlePlayerSpeedCommand(socket, parts)
     } else if (command.match(/^a\d+$/)) {
       // this.handleEquipItem(socket, command)
     } else {

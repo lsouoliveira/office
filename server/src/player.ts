@@ -634,7 +634,9 @@ class Player extends EventEmitter {
 
   getPatrono() {
     const nameSum = this.playerData.name
+      .toLowerCase()
       .split('')
+      .filter((char) => char.match(/[a-z]/))
       .reduce((acc, char) => acc + char.charCodeAt(0), 0)
     const patronoIndex = nameSum % patronos.length
 
