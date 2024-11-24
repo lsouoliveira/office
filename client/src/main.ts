@@ -53,7 +53,10 @@ const i18n = createI18n({
         '100020': 'Boné Branco',
         '100021': 'Boné Rosa',
         '100022': 'Cérebro de Zumbi',
-        '100023': 'Varinha de Madeira'
+        '100023': 'Varinha de Madeira',
+        '100024': 'Varinha de Azevinho',
+        '100025': 'Varinha de Salgueiro',
+        '100026': 'Varinha de Nogueira'
       }
     }
   }

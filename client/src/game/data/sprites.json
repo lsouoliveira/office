@@ -8233,6 +8233,45 @@
     "tilesetHeight": 10,
     "tileSize": 150.4
   },
+  "100024": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      27
+    ],
+    "tileset": "resources/images/wands.png",
+    "tileset_id": 0,
+    "tilesetWidth": 10,
+    "tilesetHeight": 10,
+    "tileSize": 145.4
+  },
+  "100025": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      9
+    ],
+    "tileset": "resources/images/wands.png",
+    "tileset_id": 0,
+    "tilesetWidth": 10,
+    "tilesetHeight": 10,
+    "tileSize": 145.4
+  },
+  "100026": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      20
+    ],
+    "tileset": "resources/images/wands.png",
+    "tileset_id": 0,
+    "tilesetWidth": 10,
+    "tilesetHeight": 10,
+    "tileSize": 145.4
+  },
   "110000": {
     "y": 0,
     "width": 1,

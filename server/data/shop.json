@@ -119,6 +119,21 @@
       "itemTypeId": "100023",
       "name": "Varinha de madeira",
       "price": 5
+    },
+    {
+      "itemTypeId": "100024",
+      "name": "Varinha de Azevinho",
+      "price": 40
+    },
+    {
+      "itemTypeId": "100025",
+      "name": "Varinha de Salgueiro",
+      "price": 40
+    },
+    {
+      "itemTypeId": "100026",
+      "name": "Varinha de Nogueira",
+      "price": 25
     }
   ]
 }

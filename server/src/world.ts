@@ -153,6 +153,18 @@ const EQUIPMENTS = [
   {
     id: 'wooden_wand',
     type: EquipmentType.Wand
+  },
+  {
+    id: 'willow_wand',
+    type: EquipmentType.Wand
+  },
+  {
+    id: 'holly_wand',
+    type: EquipmentType.Wand
+  },
+  {
+    id: 'walnut_wand',
+    type: EquipmentType.Wand
   }
 ]
 
@@ -403,10 +415,15 @@ class World {
       const playerObject = playerData.player
       const inventoryData = playerData.inventory
 
-      const { helmetSlot, ...data } = playerObject
+      const { helmetSlot, rightHandSlot, ...data } = playerObject
       const helmetSlotItem = helmetSlot ? this.createItemFromData(helmetSlot) : null
+      const rightHandSlotItem = rightHandSlot ? this.createItemFromData(rightHandSlot) : null
 
-      const player = new Player({ helmetSlot: helmetSlotItem, ...data })
+      const player = new Player({
+        helmetSlot: helmetSlotItem,
+        rightHandSlot: rightHandSlotItem,
+        ...data
+      })
       const playerMovement = new PlayerMovement(player, this.map)
 
       for (const inventoryItem of inventoryData) {

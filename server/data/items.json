@@ -4920,6 +4920,30 @@
     "equipment_id": "wooden_wand",
     "tileset_id": 0
   },
+  "100024": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": "holly_wand",
+    "tileset_id": 0
+  },
+  "100025": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": "willow_wand",
+    "tileset_id": 0
+  },
+  "100026": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": "walnut_wand",
+    "tileset_id": 0
+  },
   "110000": {
     "is_ground": false,
     "is_walkable": false,
