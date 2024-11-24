@@ -82,6 +82,7 @@ class RewardSpawnerSystem {
 
     this.rewards = this.rewards.filter((reward) => reward.Item.getId() !== itemId)
     this.onRewardClaimed(playerId, reward)
+    this.timer = 0
 
     return reward
   }
