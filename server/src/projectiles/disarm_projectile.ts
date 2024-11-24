@@ -1,8 +1,8 @@
 import Projectile from './projectile'
-import { Player } from '../player'
+import { Player, EquipmentType } from '../player'
 import { World } from '../world'
 
-class FreezeProjectile extends Projectile {
+class DisarmProjectile extends Projectile {
   static RADIUS = 8
   private world: World
 
@@ -13,14 +13,18 @@ class FreezeProjectile extends Projectile {
     speed: number,
     duration: number
   ) {
-    super('freeze', position, direction, speed, duration, FreezeProjectile.RADIUS, true)
+    super('disarm', position, direction, speed, duration, DisarmProjectile.RADIUS, true)
 
     this.world = world
   }
 
   onHit(target: any) {
     if (target instanceof Player) {
-      target.freeze()
+      const item = target.getEquipment(EquipmentType.Wand)
+
+      if (item) {
+        target.unequip(item)
+      }
     }
 
     this.destroy()
@@ -28,12 +32,12 @@ class FreezeProjectile extends Projectile {
     if (target instanceof Player) {
       this.world.sendMessage('explosion:added', {
         position: target.getCenterPosition(),
-        type: 'purple_2'
+        type: 'fire_2'
       })
     } else {
       this.world.sendMessage('explosion:added', {
         position: this.position,
-        type: 'purple_1'
+        type: 'fire_1'
       })
     }
 
@@ -48,4 +52,4 @@ class FreezeProjectile extends Projectile {
   }
 }
 
-export default FreezeProjectile
+export default DisarmProjectile

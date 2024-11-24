@@ -236,6 +236,11 @@ export default {
           data: { scaleMode: 'nearest' }
         },
         {
+          alias: 'green_effects.png',
+          src: 'resources/images/green_effects.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
           alias: 'wands.png',
           src: 'resources/images/wands.png',
           data: { scaleMode: 'nearest' }

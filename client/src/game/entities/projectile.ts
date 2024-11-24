@@ -3,7 +3,10 @@ import { type Entity } from './entity'
 
 enum ProjectileType {
   FREEZE = 'freeze',
-  PATRONUM = 'patronum'
+  PATRONUM = 'patronum',
+  DISARM = 'disarm',
+  KILLING_CURSE = 'killing_curse',
+  STUNNING = 'stunning'
 }
 
 const SPRITESHEET_WIDTH = 36
@@ -12,6 +15,15 @@ const SPRITESHEET_HEIGHT = 13
 const PROJECTILES = {
   [ProjectileType.FREEZE]: {
     assetPath: 'purple_effects.png',
+    tileId: 14,
+    width: 1,
+    height: 1,
+    frames: 2,
+    loop: true,
+    animationSpeed: 0.05
+  },
+  [ProjectileType.STUNNING]: {
+    assetPath: 'blue_effects.png',
     tileId: 14,
     width: 1,
     height: 1,
@@ -28,6 +40,24 @@ const PROJECTILES = {
     loop: false,
     rotation: Math.PI / 2,
     animationSpeed: 0.25
+  },
+  [ProjectileType.DISARM]: {
+    assetPath: 'red_effects.png',
+    tileId: 14,
+    width: 1,
+    height: 1,
+    frames: 2,
+    loop: true,
+    animationSpeed: 0.05
+  },
+  [ProjectileType.KILLING_CURSE]: {
+    assetPath: 'green_effects.png',
+    tileId: 370,
+    width: 1,
+    height: 3,
+    frames: 3,
+    loop: true,
+    animationSpeed: 0.1
   }
 }
 

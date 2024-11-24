@@ -1,9 +1,9 @@
 import Ability from '../ability'
-import FreezeProjectile from './../../projectiles/freeze_projectile'
+import StunningProjectile from './../../projectiles/stunning_projectile'
 import { Player } from '../../player'
 import { World } from '../../world'
 
-class FreezePlayerAbility implements Ability {
+class StunningAbility implements Ability {
   private world: World
 
   constructor(world: World) {
@@ -15,15 +15,15 @@ class FreezePlayerAbility implements Ability {
     const projectilePosition = {
       x:
         casterPosition.x +
-        caster.getDirectionVector().x * (16 + FreezeProjectile.RADIUS) +
+        caster.getDirectionVector().x * (16 + StunningProjectile.RADIUS) +
         Math.abs(caster.getDirectionVector().y) * 8,
       y:
         casterPosition.y +
-        caster.getDirectionVector().y * (16 + FreezeProjectile.RADIUS) +
+        caster.getDirectionVector().y * (16 + StunningProjectile.RADIUS) +
         Math.abs(caster.getDirectionVector().x) * 8
     }
 
-    const projectile = new FreezeProjectile(
+    const projectile = new StunningProjectile(
       this.world,
       projectilePosition,
       caster.getDirectionVector(),
@@ -35,4 +35,4 @@ class FreezePlayerAbility implements Ability {
   }
 }
 
-export default FreezePlayerAbility
+export default StunningAbility

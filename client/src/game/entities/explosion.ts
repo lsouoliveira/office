@@ -5,8 +5,15 @@ const EXPLOSION_SPRITESHEET_WIDTH = 36
 const EXPLOSION_SPRITESHEET_HEIGHT = 13
 
 enum ExplosionType {
+  FIRE_1 = 'fire_1',
+  FIRE_2 = 'fire_2',
+  FIRE_3 = 'fire_3',
   PURPLE_1 = 'purple_1',
-  PURPLE_2 = 'purple_2'
+  PURPLE_2 = 'purple_2',
+  GREEN_1 = 'green_1',
+  GREEN_2 = 'green_2',
+  GREEN_3 = 'green_3',
+  GREEN_4 = 'green_4'
 }
 
 const EXPLOSIONS = {
@@ -27,6 +34,69 @@ const EXPLOSIONS = {
     frames: 6,
     loop: false,
     animationSpeed: 0.1
+  },
+  [ExplosionType.FIRE_1]: {
+    assetPath: 'red_effects.png',
+    tileId: 354,
+    width: 1,
+    height: 1,
+    frames: 6,
+    loop: false,
+    animationSpeed: 0.1
+  },
+  [ExplosionType.FIRE_2]: {
+    assetPath: 'red_effects.png',
+    tileId: 354,
+    width: 1,
+    height: 1,
+    frames: 6,
+    loop: false,
+    animationSpeed: 0.1
+  },
+  [ExplosionType.FIRE_3]: {
+    assetPath: 'red_effects.png',
+    tileId: 138,
+    width: 1,
+    height: 1,
+    frames: 6,
+    loop: false,
+    animationSpeed: 0.25
+  },
+  [ExplosionType.GREEN_1]: {
+    assetPath: 'green_effects.png',
+    tileId: 354,
+    width: 1,
+    height: 1,
+    frames: 6,
+    loop: false,
+    animationSpeed: 0.1
+  },
+  [ExplosionType.GREEN_2]: {
+    assetPath: 'green_effects.png',
+    tileId: 354,
+    width: 1,
+    height: 1,
+    frames: 6,
+    loop: false,
+    animationSpeed: 0.1
+  },
+  [ExplosionType.GREEN_3]: {
+    assetPath: 'green_effects.png',
+    tileId: 138,
+    width: 1,
+    height: 1,
+    frames: 6,
+    loop: false,
+    animationSpeed: 0.25
+  },
+  [ExplosionType.GREEN_4]: {
+    assetPath: 'green_effects.png',
+    tileId: 66,
+    width: 1,
+    height: 1,
+    frames: 6,
+    loop: false,
+    animationSpeed: 0.25
   }
 }
 

@@ -12,6 +12,24 @@ const SPELLS = [
     spelling: 'Expecto Patronum',
     abilityName: 'summon_patronus',
     cooldown: 5
+  }),
+  new SpellData({
+    id: 3,
+    spelling: 'Expelliarmus',
+    abilityName: 'disarm_player',
+    cooldown: 5
+  }),
+  new SpellData({
+    id: 4,
+    spelling: 'Avada Kedavra',
+    abilityName: 'killing_curse',
+    cooldown: 5
+  }),
+  new SpellData({
+    id: 5,
+    spelling: 'Estupefaça',
+    abilityName: 'stunning',
+    cooldown: 5
   })
 ]
 

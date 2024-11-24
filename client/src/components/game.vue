@@ -72,7 +72,7 @@ onMounted(async () => {
         if (!showConfigModal.value && !showTennisModal.value) {
           chatMessage.show = true
           setTimeout(() => {
-            chatMessageInput.value.focus()
+            chatMessageInput?.value?.focus()
           }, 0)
         }
         break

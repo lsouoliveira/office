@@ -3,6 +3,9 @@ import Ability from './ability'
 import { SPELLS } from './spells'
 import FreezePlayerAbility from './abilities/freeze_player_ability'
 import SummonPatronusAbility from './abilities/summon_patronus_ability'
+import DisarmPlayerAbility from './abilities/disarm_player_ability'
+import KillingCurseAbility from './abilities/killing_curse_ability'
+import StunningAbility from './abilities/stunning_ability'
 import { World } from './../world'
 
 class SpellSystem {
@@ -15,6 +18,9 @@ class SpellSystem {
 
     this.abilities['freeze_player'] = new FreezePlayerAbility(world)
     this.abilities['summon_patronus'] = new SummonPatronusAbility(world)
+    this.abilities['disarm_player'] = new DisarmPlayerAbility(world)
+    this.abilities['killing_curse'] = new KillingCurseAbility(world)
+    this.abilities['stunning'] = new StunningAbility(world)
   }
 
   cast(player: Player, spellId: number) {

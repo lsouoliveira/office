@@ -9,6 +9,7 @@ class Projectile {
   duration: number
   timer: number
   radius: number
+  canClash: boolean
   onTimerEnd: Array<(projectile: Projectile) => void>
 
   public _destroy: boolean
@@ -20,6 +21,7 @@ class Projectile {
     speed: number,
     duration: number,
     radius: number,
+    canClash: boolean = false,
     id?: string
   ) {
     this.name = name
@@ -31,6 +33,7 @@ class Projectile {
     this.radius = radius
     this.timer = 0
     this.direction = direction
+    this.canClash = canClash
     this.onTimerEnd = []
   }
 

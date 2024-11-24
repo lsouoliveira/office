@@ -15,6 +15,10 @@ class ProjectileSystem {
     this.removedDestroyedProjectiles()
 
     this.projectiles.forEach((projectile) => {
+      if (projectile._destroy) {
+        return
+      }
+
       projectile.update(dt)
 
       this.checkProjectileCollisionWithWorld(projectile) ||
@@ -59,9 +63,17 @@ class ProjectileSystem {
     let hit = false
 
     Object.values(this.world.getOnlinePlayers()).forEach((player) => {
-      if (player.contains(projectile.Position.x, projectile.Position.y, projectile.Radius, projectile.Radius)) {
+      if (
+        player.contains(
+          projectile.Position.x,
+          projectile.Position.y,
+          projectile.Radius,
+          projectile.Radius
+        )
+      ) {
         projectile.onHit(player)
         hit = true
+          console.log('hit players')
       }
     })
 
@@ -83,6 +95,7 @@ class ProjectileSystem {
       ) {
         projectile.onHit(p)
         hit = true
+          console.log('hit projectiles')
       }
     })
 

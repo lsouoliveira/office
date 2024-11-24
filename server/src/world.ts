@@ -762,6 +762,16 @@ class World {
       return
     }
 
+    if (message.toLowerCase() === 'voldemort') {
+      this.io.emit('player:message', {
+        playerId: player.playerData.id,
+        message: '*He who must not be named*',
+        compact: true,
+        color: MessageColor.GRAY
+      })
+      return
+    }
+
     logger.info(`Player ${player.playerData.name} says: ${message}`)
 
     this.io.emit('player:message', {

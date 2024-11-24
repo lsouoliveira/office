@@ -549,9 +549,9 @@ class Player extends EventEmitter {
   }
 
   canCastSpell(spellId: number) {
-    // if (this.playerData.rightHandSlot?.getEquipmentType() !== EquipmentType.Wand) {
-    //   return false
-    // }
+    if (this.playerData.rightHandSlot?.getEquipmentType() !== EquipmentType.Wand) {
+      return false
+    }
 
     const spell = this.spells.find((spell) => spell.Id === spellId)
 
@@ -580,7 +580,7 @@ class Player extends EventEmitter {
   getCenterPosition() {
     return {
       x: this.playerData.position.x + 8,
-      y: this.playerData.position.y
+      y: this.playerData.position.y + 8
     }
   }
 
@@ -610,6 +610,16 @@ class Player extends EventEmitter {
     const speed = this.playerData.speed
 
     this.setSpeed(0)
+
+    setTimeout(() => {
+      this.setSpeed(speed)
+    }, 5000)
+  }
+
+  stun() {
+    const speed = this.playerData.speed
+
+    this.setSpeed(10)
 
     setTimeout(() => {
       this.setSpeed(speed)
