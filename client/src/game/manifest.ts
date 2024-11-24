@@ -244,6 +244,11 @@ export default {
           alias: 'wands.png',
           src: 'resources/images/wands.png',
           data: { scaleMode: 'nearest' }
+        },
+        {
+          alias: 'door_1.png',
+          src: 'resources/images/door_1.png',
+          data: { scaleMode: 'nearest' }
         }
       ]
     }

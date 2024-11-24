@@ -36,6 +36,12 @@ const SPELLS = [
     spelling: 'Wingardium Leviosa',
     abilityName: 'levitate_player',
     cooldown: 5
+  }),
+  new SpellData({
+    id: 7,
+    spelling: 'Alohomora',
+    abilityName: 'unlock_door',
+    cooldown: 5
   })
 ]
 

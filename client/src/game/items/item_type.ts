@@ -4,6 +4,7 @@ interface ItemTypeOptions {
   isWall?: boolean
   actionId?: string
   facing?: string
+  isDoor?: boolean
 }
 
 class ItemType {
@@ -13,9 +14,10 @@ class ItemType {
   private _isWall: boolean
   private _actionId?: string
   private _facing?: string
+  private _isDoor: boolean
 
   constructor(id: string, options: ItemTypeOptions) {
-    const { isGround, isWalkable, actionId, facing, isWall } = options
+    const { isGround, isWalkable, actionId, facing, isWall, isDoor } = options
 
     this.id = id
     this._isGround = isGround
@@ -23,6 +25,7 @@ class ItemType {
     this._isWall = isWall || false
     this._actionId = actionId
     this._facing = facing
+    this._isDoor = isDoor || false
   }
 
   getId(): string {
@@ -47,6 +50,10 @@ class ItemType {
 
   getFacing(): string | undefined {
     return this._facing
+  }
+
+  isDoor(): boolean {
+    return this._isDoor
   }
 }
 

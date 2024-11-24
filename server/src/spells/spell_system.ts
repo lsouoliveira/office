@@ -7,6 +7,7 @@ import DisarmPlayerAbility from './abilities/disarm_player_ability'
 import KillingCurseAbility from './abilities/killing_curse_ability'
 import StunningAbility from './abilities/stunning_ability'
 import LevitatePlayerAbility from './abilities/levitate_player_ability'
+import UnlockDoorAbility from './abilities/unlock_door_ability'
 import { World } from './../world'
 
 class SpellSystem {
@@ -23,6 +24,7 @@ class SpellSystem {
     this.abilities['killing_curse'] = new KillingCurseAbility(world)
     this.abilities['stunning'] = new StunningAbility(world)
     this.abilities['levitate_player'] = new LevitatePlayerAbility(world)
+    this.abilities['unlock_door'] = new UnlockDoorAbility(world)
   }
 
   cast(player: Player, spellId: number) {

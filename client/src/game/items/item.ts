@@ -25,6 +25,10 @@ class Item {
     return this.type.isWalkable()
   }
 
+  isDoor(): boolean {
+    return this.type.isDoor()
+  }
+
   getId(): string {
     return this.id
   }
@@ -79,6 +83,14 @@ class Item {
     }
   }
 
+  play() {
+    this.sprites.forEach((sprite) => {
+      if (sprite instanceof PIXI.AnimatedSprite) {
+        sprite.gotoAndPlay(0)
+      }
+    })
+  }
+
   private extractTextures(
     source: PIXI.BaseTexture,
     spriteData: any,
@@ -123,10 +135,21 @@ class Item {
     spriteData: any
   ): PIXI.AnimatedSprite {
     const sprite = new PIXI.AnimatedSprite(textures)
+    const autoPlay = spriteData.auto_play === undefined ? true : spriteData.auto_play
+    const playOnce = spriteData.play_once === undefined ? false : spriteData.play_once
+    const startFrame = spriteData.start_frame || 0
 
     sprite.position.set(x, y)
     sprite.animationSpeed = spriteData.animation_speed || 0.1
-    sprite.play()
+    sprite.loop = !playOnce
+
+    if (startFrame > 0) {
+      sprite.gotoAndStop(startFrame)
+    }
+
+    if (autoPlay) {
+      sprite.play()
+    }
 
     return sprite
   }

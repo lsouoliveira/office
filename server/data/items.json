@@ -4975,5 +4975,24 @@
     "facing": null,
     "equipment_id": null,
     "tileset_id": 110000
+  },
+  "120000": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "next_item_id": "120001",
+    "is_door": true,
+    "tileset_id": 120000
+  },
+  "120001": {
+    "is_ground": false,
+    "is_walkable": true,
+    "action_id": "replaceItem",
+    "facing": null,
+    "equipment_id": null,
+    "next_item_id": "120000",
+    "tileset_id": 120000
   }
 }

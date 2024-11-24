@@ -65,6 +65,10 @@ class Tile {
     this.items[index] = newItem
   }
 
+  getItems(): Item[] {
+    return this.items
+  }
+
   toData() {
     return {
       x: this.x,

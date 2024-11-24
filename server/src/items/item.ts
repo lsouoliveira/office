@@ -61,6 +61,10 @@ class Item {
     return this.type.getNextItemId()
   }
 
+  isDoor(): boolean {
+    return this.type.isDoor()
+  }
+
   toData() {
     return {
       id: this.id,

@@ -389,7 +389,8 @@ class Playground extends Scene {
             isWalkable: itemTypeData.isWalkable,
             isWall: itemTypeData.isWall,
             actionId: itemTypeData.actionId,
-            facing: itemTypeData.facing
+            facing: itemTypeData.facing,
+            isDoor: itemTypeData.isDoor
           })
           const item = new Item(itemData.id, itemType)
 
@@ -837,7 +838,8 @@ class Playground extends Scene {
         isWalkable: itemType.isWalkable,
         isWall: itemType.isWall,
         actionId: itemType.actionId,
-        facing: itemType.facing
+        facing: itemType.facing,
+        isDoor: itemType.isDoor
       })
     )
 
@@ -863,7 +865,8 @@ class Playground extends Scene {
       isWalkable: newItem.itemType.isWalkable,
       isWall: newItem.itemType.isWall,
       actionId: newItem.itemType.actionId,
-      facing: newItem.itemType.facing
+      facing: newItem.itemType.facing,
+      isDoor: newItem.itemType.isDoor
     })
 
     const itemToAdd = new Item(newItem.id, itemType)
@@ -876,6 +879,10 @@ class Playground extends Scene {
     tile.replaceItem(item.id, itemToAdd)
     itemToAdd.render(this.layers, x * TILE_SIZE, y * TILE_SIZE, tile.getItemHeight(itemToAdd))
     oldItem.destroy()
+
+    if (oldItem.isDoor()) {
+      itemToAdd.play()
+    }
   }
 
   private async handleProjectileAdded({

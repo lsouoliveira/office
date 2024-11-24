@@ -136,7 +136,8 @@ class RewardSpawnerSystem {
         isWall: itemTypeData.is_wall,
         actionId: itemTypeData.action_id,
         facing: itemTypeData.facing,
-        nextItemId: itemTypeData.next_item_id
+        nextItemId: itemTypeData.next_item_id,
+        isDoor: itemTypeData.is_door
       },
       undefined
     )

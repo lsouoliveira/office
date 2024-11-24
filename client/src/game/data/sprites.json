@@ -8311,5 +8311,32 @@
     ],
     "tileset": "resources/maps/22_Museum_Black_Shadow_16x16.png",
     "tileset_id": 110000
+  },
+  "120000": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      0
+    ],
+    "tileset": "resources/images/door_1.png",
+    "tileset_id": 120000
+  },
+  "120001": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "tileset": "resources/images/door_1.png",
+    "tileset_id": 120000,
+    "auto_play": false,
+    "play_once": true,
+    "start_frame": 4
   }
 }

@@ -53,6 +53,8 @@ class SpriteCursor extends PIXI.Sprite {
     const texture = new PIXI.Texture({ source: tilesetTexture.source, frame: textureRect })
 
     this.texture = texture
+    this.width = spriteData.width * tileSize
+    this.height = spriteData.height * tileSize
   }
 
   getSpriteId(): string | undefined {

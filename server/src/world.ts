@@ -1085,7 +1085,8 @@ class World {
         isWall: itemTypeData.is_wall,
         actionId: itemTypeData.action_id,
         facing: itemTypeData.facing,
-        nextItemId: itemTypeData.next_item_id
+        nextItemId: itemTypeData.next_item_id,
+        isDoor: itemTypeData.is_door
       },
       equipment
     )
@@ -1361,7 +1362,8 @@ class World {
           isWall: item.getType().isWall(),
           actionId: item.getType().getActionId(),
           facing: item.getType().getFacing(),
-          nextItemId: item.getType().getNextItemId()
+          nextItemId: item.getType().getNextItemId(),
+          isDoor: item.getType().isDoor()
         },
         equipment
       )
@@ -1513,7 +1515,8 @@ class World {
         isWall: itemData.is_wall,
         actionId: itemData.action_id,
         facing: itemData.facing,
-        nextItemId: itemData.next_item_id
+        nextItemId: itemData.next_item_id,
+        isDoor: itemData.is_door
       },
       equipment
     )
