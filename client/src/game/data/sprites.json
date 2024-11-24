@@ -8220,6 +8220,19 @@
     "tilesetWidth": 56,
     "tilesetHeight": 41
   },
+  "100023": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      0
+    ],
+    "tileset": "resources/images/wands.png",
+    "tileset_id": 0,
+    "tilesetWidth": 10,
+    "tilesetHeight": 10,
+    "tileSize": 150.4
+  },
   "110000": {
     "y": 0,
     "width": 1,

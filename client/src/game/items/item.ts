@@ -41,14 +41,21 @@ class Item {
         const tilesetTexture = PIXI.Assets.get(spriteData.tileset)
 
         const tileId = spriteData.states[0]
-        const tilesWidth = tilesetTexture.width / TILE_SIZE
+        const tileSize = spriteData.tileSize || TILE_SIZE
+        const tilesWidth = tilesetTexture.width / tileSize
 
         const tilesetX = tileId % tilesWidth
         const tilesetY = Math.floor(tileId / tilesWidth)
 
-        const textures = this.extractTextures(tilesetTexture.baseTexture, spriteData, j, i)
+        const textures = this.extractTextures(
+          tilesetTexture.baseTexture,
+          spriteData,
+          j,
+          i,
+          tileSize
+        )
         const spriteX = x
-        const spriteY = y + i * TILE_SIZE - spriteData.height * TILE_SIZE + TILE_SIZE
+        const spriteY = y + i * tileSize - spriteData.height * tileSize + tileSize
 
         let sprite
 
@@ -76,20 +83,21 @@ class Item {
     source: PIXI.BaseTexture,
     spriteData: any,
     x: number,
-    y: number
+    y: number,
+    tileSize: number
   ): PIXI.Texture[] {
     const textures: PIXI.Texture[] = []
-    const tilesWidth = source.width / TILE_SIZE
+    const tilesWidth = source.width / tileSize
 
     for (const state of spriteData.states) {
       const tilesetX = state % tilesWidth
       const tilesetY = Math.floor(state / tilesWidth)
 
       const textureRect = new PIXI.Rectangle(
-        (tilesetX + x) * TILE_SIZE,
-        (tilesetY + y) * TILE_SIZE,
-        TILE_SIZE,
-        TILE_SIZE
+        (tilesetX + x) * tileSize,
+        (tilesetY + y) * tileSize,
+        tileSize,
+        tileSize
       )
       const texture = new PIXI.Texture({ source: source.source, frame: textureRect })
       textures.push(texture)
@@ -102,6 +110,8 @@ class Item {
     const sprite = new PIXI.Sprite(texture)
 
     sprite.position.set(x, y)
+    sprite.width = TILE_SIZE
+    sprite.height = TILE_SIZE
 
     return sprite
   }

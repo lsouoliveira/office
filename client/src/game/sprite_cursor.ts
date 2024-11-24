@@ -13,6 +13,8 @@ class SpriteCursor extends PIXI.Sprite {
     super()
 
     this.map = map
+    this.width = TILE_SIZE
+    this.height = TILE_SIZE
 
     this.visible = false
   }
@@ -36,16 +38,17 @@ class SpriteCursor extends PIXI.Sprite {
     const pivot = spriteData.pivot || { x: 0, y: 0 }
 
     const tileId = spriteData.states[0]
-    const tilesWidth = tilesetTexture.width / TILE_SIZE
+    const tileSize = spriteData.tileSize || TILE_SIZE
+    const tilesWidth = tilesetTexture.width / tileSize
 
     const tilesetX = tileId % tilesWidth
     const tilesetY = Math.floor(tileId / tilesWidth)
 
     const textureRect = new PIXI.Rectangle(
-      tilesetX * TILE_SIZE,
-      tilesetY * TILE_SIZE,
-      spriteData.width * TILE_SIZE,
-      spriteData.height * TILE_SIZE
+      tilesetX * tileSize,
+      tilesetY * tileSize,
+      spriteData.width * tileSize,
+      spriteData.height * tileSize
     )
     const texture = new PIXI.Texture({ source: tilesetTexture.source, frame: textureRect })
 

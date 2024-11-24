@@ -30,7 +30,8 @@ const lerp = (start: number, end: number, t: number) => {
 }
 
 enum EquipmentType {
-  Helmet
+  Helmet,
+  Wand
 }
 
 class Equipment extends AnimatedSprite {
@@ -38,8 +39,17 @@ class Equipment extends AnimatedSprite {
   public readonly type: EquipmentType
   private animator?: Animator
 
-  constructor(id: string, type: EquipmentType, spriteSheet: Spritesheet) {
-    super(spriteSheet.animations.idle_south)
+  constructor(
+    id: string,
+    type: EquipmentType,
+    spriteSheet?: Spritesheet,
+    textures?: PIXI.Texture[]
+  ) {
+    if (!spriteSheet && !textures) {
+      throw new Error('Equipment must have a spriteSheet or textures')
+    }
+
+    super(spriteSheet?.animations?.idle_south || textures)
 
     this.id = id
     this.type = type
@@ -74,6 +84,8 @@ class Player extends PIXI.Container implements Entity {
   public topHalfSprite: PIXI.AnimatedSprite
   public bottomHalfSprite: PIXI.AnimatedSprite
 
+  public rightHandSlot: PIXI.Container
+
   private offsetX: number = 0
   private offsetY: number = 0
 
@@ -95,6 +107,8 @@ class Player extends PIXI.Container implements Entity {
     this.bottomHalf = new PIXI.Container()
     this.bottomHalf.zIndex = 1
     this.bottomHalf.sortableChildren = true
+
+    this.rightHandSlot = new PIXI.Container()
 
     this.topHalfSprite = new PIXI.AnimatedSprite(
       composedSpritesheet.getTextures('idle_south', 0, 0) || []
@@ -154,6 +168,11 @@ class Player extends PIXI.Container implements Entity {
       this.lastEmote?.position?.set(
         this.position.x + this.topHalfSprite.width / 2 - 8,
         this.position.y - this.topHalfSprite.height - 16
+      )
+
+      this.rightHandSlot.position.set(
+        this.playerName.position.x + this.getPlayerNameWidth() / 2 + 4,
+        this.playerName.position.y
       )
     } catch (e) {
       console.debug(e)
@@ -391,6 +410,12 @@ class Player extends PIXI.Container implements Entity {
 
         this.helmetSlot = equipment
         break
+      case EquipmentType.Wand:
+        if (this.rightHandSlot.children.length > 0) {
+          this.rightHandSlot.removeChildren()
+        }
+
+        this.rightHandSlot.addChild(equipment)
       default:
         return
     }
@@ -405,6 +430,11 @@ class Player extends PIXI.Container implements Entity {
           this.helmetSlot = undefined
         }
         break
+      case EquipmentType.Wand:
+        if (this.rightHandSlot?.children[0] === equipment) {
+          this.rightHandSlot.removeChildren()
+        }
+        break
       default:
         return
     }
@@ -412,8 +442,24 @@ class Player extends PIXI.Container implements Entity {
     this.topHalf.removeChild(equipment)
   }
 
+  getPlayerNameWidth() {
+    const style = new PIXI.TextStyle({
+      fontFamily: 'Arial',
+      fontSize: 256,
+      fill: 0x00ff00,
+      stroke: 0x000000,
+      strokeThickness: 32
+    })
+
+    return PIXI.CanvasTextMetrics.measureText(this.name, style).width * (8 / 256)
+  }
+
   getHelmet() {
     return this.helmetSlot
+  }
+
+  getRightHand() {
+    return this.rightHandSlot.children[0] as Equipment
   }
 
   emote(emote: Emote) {

@@ -149,6 +149,10 @@ const EQUIPMENTS = [
   {
     id: 'party_cone_04',
     type: EquipmentType.Helmet
+  },
+  {
+    id: 'wooden_wand',
+    type: EquipmentType.Wand
   }
 ]
 

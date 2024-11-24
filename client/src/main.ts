@@ -52,7 +52,8 @@ const i18n = createI18n({
         '100019': 'Boné Verde',
         '100020': 'Boné Branco',
         '100021': 'Boné Rosa',
-        '100022': 'Cérebro de Zumbi'
+        '100022': 'Cérebro de Zumbi',
+        '100023': 'Varinha de Madeira'
       }
     }
   }

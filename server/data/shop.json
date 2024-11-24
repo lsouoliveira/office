@@ -114,6 +114,11 @@
       "itemTypeId": "100022",
       "name": "Cérebro de Zumbi",
       "price": 80
+    },
+    {
+      "itemTypeId": "100023",
+      "name": "Varinha de madeira",
+      "price": 5
     }
   ]
 }

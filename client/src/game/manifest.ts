@@ -234,6 +234,11 @@ export default {
           alias: 'red_effects.png',
           src: 'resources/images/red_effects.png',
           data: { scaleMode: 'nearest' }
+        },
+        {
+          alias: 'wands.png',
+          src: 'resources/images/wands.png',
+          data: { scaleMode: 'nearest' }
         }
       ]
     }

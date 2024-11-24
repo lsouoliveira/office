@@ -48,10 +48,12 @@
             const mainImageIndex = 0
             const imageIndex = states.length > 1 ? 1 : 0
 
-            const imageX = states[imageIndex] % spriteData.tilesetWidth * 16
-            const imageY = Math.floor(states[imageIndex] / spriteData.tilesetWidth) * 16
-            const mainImageX = states[mainImageIndex] % spriteData.tilesetWidth * 16
-            const mainImageY = Math.floor(states[mainImageIndex] / spriteData.tilesetWidth) * 16
+            const tileSize = spriteData.tileSize || 16
+            const imageX = states[imageIndex] % spriteData.tilesetWidth * tileSize
+            const imageY = Math.floor(states[imageIndex] / spriteData.tilesetWidth) * tileSize
+            const mainImageX = states[mainImageIndex] % spriteData.tilesetWidth * tileSize
+            const mainImageY = Math.floor(states[mainImageIndex] / spriteData.tilesetWidth) * tileSize
+            const scale = (16 / tileSize) * 6
 
             return {
                 ...product,
@@ -61,9 +63,11 @@
                 imageY,
                 mainImageX,
                 mainImageY,
-                width: spriteData?.width * 16,
-                height: spriteData?.height * 16,
-                playerOwns: inventory.value?.some((item) => item.item.itemType.id === product.itemTypeId)
+                width: spriteData?.width * tileSize,
+                height: spriteData?.height * tileSize,
+                playerOwns: inventory.value?.some((item) => item.item.itemType.id === product.itemTypeId),
+                tileSize,
+                scale
             }
         })
     })
@@ -111,10 +115,10 @@
                 <section class="grid grid-cols-4 gap-6" v-if="!isLoading">
                     <div class="space-y-3" v-for="product in formattedProducts" :key="product.itemTypeId">
                         <div class="bg-neutral-100 flex items-center justify-center p-4 h-56 group">
-                            <div class="w-full h-full group-hover:hidden" :style="{ width: `${product.width}px`, height: `${product.height}px`, backgroundImage: `url(${product.imageUrl})`, backgroundPosition: `-${product.mainImageX}px -${product.mainImageY}px`, transform: 'scale(6)', imageRendering: 'pixelated' }">
+                            <div class="w-full h-full group-hover:hidden" :style="{ width: `${product.width}px`, height: `${product.height}px`, backgroundImage: `url(${product.imageUrl})`, backgroundPosition: `-${product.mainImageX}px -${product.mainImageY}px`, transform: `scale(${product.scale})`, imageRendering: 'pixelated' }">
                             </div>
 
-                            <div class="w-full h-full hidden group-hover:block" :style="{ width: `${product.width}px`, height: `${product.height}px`, backgroundImage: `url(${product.imageUrl})`, backgroundPosition: `-${product.imageX}px -${product.imageY}px`, transform: 'scale(6)', imageRendering: 'pixelated' }">
+                            <div class="w-full h-full hidden group-hover:block" :style="{ width: `${product.width}px`, height: `${product.height}px`, backgroundImage: `url(${product.imageUrl})`, backgroundPosition: `-${product.imageX}px -${product.imageY}px`, transform: `scale(${product.scale})`, imageRendering: 'pixelated' }">
                             </div>
                         </div>
 

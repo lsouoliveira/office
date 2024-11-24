@@ -4912,6 +4912,14 @@
     "equipment_id": "zombie_brain_01",
     "tileset_id": 0
   },
+  "100023": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": "wooden_wand",
+    "tileset_id": 0
+  },
   "110000": {
     "is_ground": false,
     "is_walkable": false,

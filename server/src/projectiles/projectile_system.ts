@@ -59,7 +59,7 @@ class ProjectileSystem {
     let hit = false
 
     Object.values(this.world.getOnlinePlayers()).forEach((player) => {
-      if (player.contains(projectile.Position.x, projectile.Position.y)) {
+      if (player.contains(projectile.Position.x, projectile.Position.y, projectile.Radius, projectile.Radius)) {
         projectile.onHit(player)
         hit = true
       }

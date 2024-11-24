@@ -3,6 +3,7 @@ import { Player } from '../player'
 import { World } from '../world'
 
 class FreezeProjectile extends Projectile {
+  static RADIUS = 8
   private world: World
 
   constructor(
@@ -12,7 +13,7 @@ class FreezeProjectile extends Projectile {
     speed: number,
     duration: number
   ) {
-    super('freeze', position, direction, speed, duration, 14)
+    super('freeze', position, direction, speed, duration, FreezeProjectile.RADIUS)
 
     this.world = world
   }

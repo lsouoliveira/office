@@ -37,12 +37,14 @@ interface PlayerData {
   isAdmin: boolean
   skin: string
   helmetSlot?: Item
+  rightHandSlot?: Item
   userId: number
   money: number
 }
 
 enum EquipmentType {
-  Helmet
+  Helmet,
+  Wand
 }
 
 class Equipment {
@@ -291,7 +293,7 @@ class PlayerMovement {
 }
 
 const DRINKING_TIME = 30000
-const patronoDuration = 30000
+const patronoDuration = 30
 const patronos = [
   '🐶',
   '🐺',
@@ -462,6 +464,13 @@ class Player extends EventEmitter {
 
         this.playerData.helmetSlot = eq
         break
+      case EquipmentType.Wand:
+        if (this.playerData.rightHandSlot) {
+          this.unequip(this.playerData.rightHandSlot)
+        }
+
+        this.playerData.rightHandSlot = eq
+        break
     }
 
     this.notifyChange()
@@ -474,6 +483,11 @@ class Player extends EventEmitter {
           this.playerData.helmetSlot = undefined
         }
         break
+      case EquipmentType.Wand:
+        if (this.playerData.rightHandSlot?.getId() === item.getId()) {
+          this.playerData.rightHandSlot = undefined
+        }
+        break
     }
 
     this.notifyChange()
@@ -483,6 +497,8 @@ class Player extends EventEmitter {
     switch (type) {
       case EquipmentType.Helmet:
         return this.playerData.helmetSlot
+      case EquipmentType.Wand:
+        return this.playerData.rightHandSlot
     }
   }
 
@@ -524,6 +540,7 @@ class Player extends EventEmitter {
       isAdmin: this.playerData.isAdmin,
       skin: this.playerData.skin,
       helmetSlot: this.playerData.helmetSlot?.toData(),
+      rightHandSlot: this.playerData.rightHandSlot?.toData(),
       userId: this.playerData.userId,
       money: this.playerData.money,
       patrono: this.getPatrono(),
@@ -532,6 +549,10 @@ class Player extends EventEmitter {
   }
 
   canCastSpell(spellId: number) {
+    // if (this.playerData.rightHandSlot?.getEquipmentType() !== EquipmentType.Wand) {
+    //   return false
+    // }
+
     const spell = this.spells.find((spell) => spell.Id === spellId)
 
     if (!spell) {
@@ -576,12 +597,12 @@ class Player extends EventEmitter {
     }
   }
 
-  contains(x: number, y: number) {
+  contains(x: number, y: number, width: number, height: number) {
     return (
-      x > this.playerData.position.x &&
       x < this.playerData.position.x + 16 &&
-      y > this.playerData.position.y &&
-      y < this.playerData.position.y + 32
+      x + width > this.playerData.position.x &&
+      y < this.playerData.position.y + 16 &&
+      y + height > this.playerData.position.y - 16
     )
   }
 

@@ -40,7 +40,7 @@
 
     const formattedItems = computed(() => {
         return items.value.map((item) => {
-            const isEquipped = player.value?.helmetSlot?.id === item.item.id
+            const isEquipped = player.value?.helmetSlot?.id === item.item.id || player.value?.rightHandSlot?.id === item.item.id
             const isEquipable = item.item.itemType.equipmentId !== null && !isEquipped
 
             return {

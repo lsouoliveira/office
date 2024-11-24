@@ -136,12 +136,14 @@ const loadSprites = async () => {
   for (const key in spritesData) {
     const { width, height, states, tileset } = spritesData[key]
     const tileId = states[0]
+    const tileSize = spritesData[key].tileSize || 16
 
     try {
       const image = await loadTileset(tileset)
-      const tilesWidth = image.width / 16
-      const offsetX = (tileId % tilesWidth) * 16
-      const offsetY = Math.floor(tileId / tilesWidth) * 16
+      const tilesWidth = image.width / tileSize
+      const offsetX = (tileId % tilesWidth) * tileSize
+      const offsetY = Math.floor(tileId / tilesWidth) * tileSize
+      const scale = 16 / tileSize 
 
       const sprite = {
         id: key,
@@ -149,7 +151,9 @@ const loadSprites = async () => {
         offsetX,
         offsetY,
         width,
-        height
+        height,
+        tileSize,
+        scale
       }
 
       sprites.push(sprite)
@@ -288,10 +292,11 @@ const filteredItems = computed(() => {
           >
             <div
               :style="{
-                width: `${item.width * 16}px`,
+                width: `${item.width * item.tileSize}px`,
                 aspectRatio: `${item.width}/${item.height}`,
                 backgroundImage: `url(${item.image_url})`,
-                backgroundPosition: `-${item.offsetX}px -${item.offsetY}px`
+                backgroundPosition: `-${item.offsetX}px -${item.offsetY}px`,
+                transform: `scale(${item.scale})`
               }"
             ></div>
             <div class="flex items-center justify-center text-white">

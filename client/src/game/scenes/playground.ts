@@ -22,6 +22,7 @@ import { MoneyDisplay } from './../entities/money_display'
 import { Announcement } from './../entities/announcement'
 import { Projectile, ProjectileType } from './../entities/projectile'
 import { Explosion, ExplosionType } from './../entities/explosion'
+import { extractSpriteTextures } from '../utils'
 
 const TILE_SIZE = 16
 const DEFAULT_SKIN = 'Bob'
@@ -522,6 +523,7 @@ class Playground extends Scene {
     this.layers[2].addChild(this.player.topHalf)
     this.layers[1].addChild(this.player.bottomHalf)
     this.uiLayer.addChild(this.player.playerName)
+    this.uiLayer.addChild(this.player.rightHandSlot)
 
     this.addEntity(this.player)
 
@@ -555,6 +557,7 @@ class Playground extends Scene {
     this.layers[2].addChild(player.topHalf)
     this.layers[1].addChild(player.bottomHalf)
     this.uiLayer.addChild(player.playerName)
+    this.uiLayer.addChild(player.rightHandSlot)
     this.layers[0].addChild(player)
 
     this.addEntity(player)
@@ -572,8 +575,6 @@ class Playground extends Scene {
 
     const tileX = Math.floor(x / TILE_SIZE)
     const tileY = Math.floor(y / TILE_SIZE)
-
-    console.log(tileX, tileY)
 
     if (!this.map.contains(tileX, tileY)) {
       return
@@ -631,6 +632,7 @@ class Playground extends Scene {
 
   private updatePlayerEquipment(player: Player, playerData: any) {
     this.updatePlayerHelmet(player, playerData)
+    this.updatePlayerRightHand(player, playerData)
   }
 
   private updatePlayerHelmet(player: Player, playerData: any) {
@@ -661,6 +663,31 @@ class Playground extends Scene {
     helmet.init(animator)
 
     player.equip(helmet)
+  }
+
+  private updatePlayerRightHand(player: Player, playerData: any) {
+    if (!playerData.rightHandSlot && !player.getRightHand()) {
+      return
+    }
+
+    if (!playerData.rightHandSlot) {
+      player.unequip(player.getRightHand())
+
+      return
+    }
+
+    const rightHandWeaponSprite = extractSpriteTextures(playerData.rightHandSlot.itemType.id)
+    const rightHandWeapon = new Equipment(
+      playerData.rightHandSlot.itemType.equipmentId,
+      EquipmentType.Wand,
+      undefined,
+      rightHandWeaponSprite
+    )
+    rightHandWeapon.width = 8
+    rightHandWeapon.height = 8
+    rightHandWeapon.anchor.set(0.5, 0)
+
+    player.equip(rightHandWeapon)
   }
 
   private handlePlayerDisconnected(playerData: any) {
@@ -863,7 +890,7 @@ class Playground extends Scene {
     const delay = (Date.now() - timestamp) / 1000
     const updatedPosition = {
       x: position.x + direction.x * speed * delay,
-      y: position.y + direction.y * speed
+      y: position.y + direction.y * speed * delay
     }
     const projectile = Projectile.createProjectile(
       id,
