@@ -6,7 +6,8 @@ enum ProjectileType {
   PATRONUM = 'patronum',
   DISARM = 'disarm',
   KILLING_CURSE = 'killing_curse',
-  STUNNING = 'stunning'
+  STUNNING = 'stunning',
+  LEVITATE = 'levitate'
 }
 
 const SPRITESHEET_WIDTH = 36
@@ -58,6 +59,16 @@ const PROJECTILES = {
     frames: 3,
     loop: true,
     animationSpeed: 0.1
+  },
+  [ProjectileType.LEVITATE]: {
+    assetPath: 'green_effects.png',
+    tileId: 364,
+    width: 1,
+    height: 3,
+    frames: 2,
+    loop: true,
+    animationSpeed: 0.1,
+    rotation: Math.PI / 2
   }
 }
 

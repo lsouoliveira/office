@@ -40,6 +40,7 @@ interface PlayerData {
   rightHandSlot?: Item
   userId: number
   money: number
+  isLevitating: boolean
 }
 
 enum EquipmentType {
@@ -332,6 +333,8 @@ class Player extends EventEmitter {
     super()
 
     this.playerData = playerData
+    this.playerData.isLevitating = false
+    this.isPatronoActive = false
 
     SPELLS.forEach((spellData: SpellData) => this.spells.push(new Spell(spellData)))
   }
@@ -544,7 +547,8 @@ class Player extends EventEmitter {
       userId: this.playerData.userId,
       money: this.playerData.money,
       patrono: this.getPatrono(),
-      isPatronoActive: this.isPatronoActive
+      isPatronoActive: this.isPatronoActive,
+      isLevitating: this.playerData.isLevitating
     }
   }
 
@@ -641,6 +645,16 @@ class Player extends EventEmitter {
     const patronoIndex = nameSum % patronos.length
 
     return patronos[patronoIndex]
+  }
+
+  levitate() {
+    this.playerData.isLevitating = true
+    this.notifyChange()
+
+    setTimeout(() => {
+      this.playerData.isLevitating = false
+      this.notifyChange()
+    }, 30000)
   }
 }
 

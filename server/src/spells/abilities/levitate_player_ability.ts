@@ -1,9 +1,9 @@
 import Ability from '../ability'
-import StunningProjectile from './../../projectiles/stunning_projectile'
+import LevitatePlayerProjectile from './../../projectiles/levitate_player_projectile'
 import { Player } from '../../player'
 import { World } from '../../world'
 
-class StunningAbility implements Ability {
+class LevitatePlayerAbility implements Ability {
   private world: World
 
   constructor(world: World) {
@@ -15,15 +15,15 @@ class StunningAbility implements Ability {
     const projectilePosition = {
       x:
         casterPosition.x +
-        caster.getDirectionVector().x * (16 + StunningProjectile.RADIUS) +
+        caster.getDirectionVector().x * (16 + LevitatePlayerProjectile.RADIUS) +
         Math.abs(caster.getDirectionVector().y) * 8,
       y:
         casterPosition.y +
-        caster.getDirectionVector().y * (16 + StunningProjectile.RADIUS) +
+        caster.getDirectionVector().y * (16 + LevitatePlayerProjectile.RADIUS) +
         Math.abs(caster.getDirectionVector().x) * 8
     }
 
-    const projectile = new StunningProjectile(
+    const projectile = new LevitatePlayerProjectile(
       this.world,
       projectilePosition,
       caster.getDirectionVector(),
@@ -35,4 +35,4 @@ class StunningAbility implements Ability {
   }
 }
 
-export default StunningAbility
+export default LevitatePlayerAbility

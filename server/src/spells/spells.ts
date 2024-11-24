@@ -30,6 +30,12 @@ const SPELLS = [
     spelling: 'Estupefaça',
     abilityName: 'stunning',
     cooldown: 5
+  }),
+  new SpellData({
+    id: 6,
+    spelling: 'Wingardium Leviosa',
+    abilityName: 'levitate_player',
+    cooldown: 5
   })
 ]
 

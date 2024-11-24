@@ -25,6 +25,9 @@ interface Target {
   direction: Direction
 }
 
+const LEVITATION_SPEED = 0.005
+const LEVITATION_HEIGHT = 2
+
 const lerp = (start: number, end: number, t: number) => {
   return start * (1 - t) + end * t
 }
@@ -93,6 +96,8 @@ class Player extends PIXI.Container implements Entity {
   private movedUp: boolean = false
 
   private lastEmote?: Emote
+  private isLevitating: boolean = false
+  private levitationOffset: number = 0
 
   constructor(id: string, composedSpritesheet: ComposedSpritesheet, layers: PIXI.Container[]) {
     super()
@@ -157,7 +162,6 @@ class Player extends PIXI.Container implements Entity {
       this.moveToNextTarget(dt)
 
       this.bottomHalf.position.set(this.position.x, this.position.y)
-
       this.topHalf.position.set(this.position.x, this.position.y - this.topHalfSprite.height)
 
       this.playerName.position.set(
@@ -174,6 +178,16 @@ class Player extends PIXI.Container implements Entity {
         this.playerName.position.x + this.getPlayerNameWidth() / 2 + 4,
         this.playerName.position.y
       )
+
+      if (this.isLevitating) {
+        this.levitationOffset = Math.sin(LEVITATION_SPEED * Date.now()) * LEVITATION_HEIGHT
+        this.topHalf.pivot.set(0, 4 * LEVITATION_HEIGHT + this.levitationOffset)
+        this.bottomHalf.pivot.set(0, 4 * LEVITATION_HEIGHT + this.levitationOffset)
+      } else {
+        this.levitationOffset = 0
+        this.topHalf.pivot.set(0, 0)
+        this.bottomHalf.pivot.set(0, 0)
+      }
     } catch (e) {
       console.debug(e)
     }
@@ -272,6 +286,7 @@ class Player extends PIXI.Container implements Entity {
     this.speed = data.speed
     this.isDrinking = data.isDrinking
     this.isSitting = data.state == State.Sitting
+    this.isLevitating = data.isLevitating
 
     if (data.isPatronoActive) {
       this.setName(`${data.name} ${data.patrono}`)
