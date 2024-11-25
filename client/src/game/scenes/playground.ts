@@ -793,6 +793,10 @@ class Playground extends Scene {
     this.uiLayer.addChild(chatMessage)
 
     this.chat.addMessage(player.name, message)
+
+    if (player.id !== this.player?.id) {
+      window.dispatchEvent(new CustomEvent('ui:player_message', { detail: { message } }))
+    }
   }
 
   private handlePlayerMove({ playerId, x, y, direction }) {
@@ -973,7 +977,6 @@ class Playground extends Scene {
       this.entities.splice(this.entities.indexOf(entity), 1)
     })
   }
-
 
   private async handleExplosionAdded({ position, type }) {
     const explosion = Explosion.createExplosion(

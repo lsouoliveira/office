@@ -38,12 +38,15 @@ const osApplication = ref(null)
 const piano = ref(null)
 const isAudioEnabled = ref(false)
 const itemsSearch = ref('')
+const audio = ref(null)
 
 const osRoot = useTemplateRef('osRoot')
 
 onMounted(async () => {
   const game = new Game(gameRoot.value)
   game.init()
+
+  audio.value = new Audio('resources/audio/notification.mp3')
 
   loadSprites().then((sprites) => {
     items.data = sprites
@@ -58,6 +61,13 @@ onMounted(async () => {
 
       osApplication.value = os
     }, 0)
+  })
+
+  window.addEventListener('ui:player_message', () => {
+    if (isAudioEnabled.value && !document.hasFocus()) {
+      audio.value?.fastSeek(0)
+      audio.value?.play()
+    }
   })
 
   window.addEventListener('ui:show_ping_pong', () => {
