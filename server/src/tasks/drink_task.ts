@@ -12,7 +12,7 @@ class DrinkTask extends Task {
 
   _perform() {
     this.player.drink()
-    this.player.addMoney(-2)
+    this.player.addMoney(-0.5)
     this.markAsDone()
   }
 }

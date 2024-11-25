@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { defineModel, ref, onMounted, computed, useTemplateRef } from 'vue'
+    import { defineModel, ref, onMounted, onUnmounted, computed, useTemplateRef } from 'vue'
     import { useI18n } from 'vue-i18n'
     import spriteJson from './../game/data/sprites.json'
     import { useToast } from 'vue-toast-notification';
@@ -58,6 +58,7 @@
             return {
                 ...product,
                 price: formatPrice(product.price),
+                promotional_price: formatPrice(2 * product.price),
                 imageUrl: spriteData?.tileset,
                 imageX,
                 imageY,
@@ -112,7 +113,13 @@
             </header>
 
             <div class="p-6">
-                <section class="grid grid-cols-4 gap-6" v-if="!isLoading">
+                <section class="text-center">
+                    <div class="text-xl text-red-500 bg-gray-900 p-4 font-bold uppercase">
+                        Promoção Black Friday
+                    </div>
+                </section>
+
+                <section class="grid grid-cols-4 gap-6 mt-10" v-if="!isLoading">
                     <div class="space-y-3" v-for="product in formattedProducts" :key="product.itemTypeId">
                         <div class="bg-neutral-100 flex items-center justify-center p-4 h-56 group">
                             <div class="w-full h-full group-hover:hidden" :style="{ width: `${product.width}px`, height: `${product.height}px`, backgroundImage: `url(${product.imageUrl})`, backgroundPosition: `-${product.mainImageX}px -${product.mainImageY}px`, transform: `scale(${product.scale})`, imageRendering: 'pixelated' }">
@@ -126,8 +133,12 @@
                             {{ product.name }}
                         </div>
 
-                        <div class="text-gray-500 text-center leading-none">
-                            {{ product.price }}
+                        <div class="text-gray-500 text-center leading-none text-sm">
+                            De: {{ product.promotional_price }}
+                        </div>
+
+                        <div class="text-gray-500 text-center leading-none font-bold">
+                            Por: {{ product.price }}
                         </div>
 
                         <div>
