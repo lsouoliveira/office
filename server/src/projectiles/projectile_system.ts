@@ -21,8 +21,8 @@ class ProjectileSystem {
 
       projectile.update(dt)
 
-      this.checkProjectileCollisionWithWorld(projectile) ||
-        this.checkProjectileCollisionWithPlayers(projectile) ||
+      this.checkProjectileCollisionWithPlayers(projectile) ||
+        this.checkProjectileCollisionWithWorld(projectile) ||
         this.checkProjectileCollisionWithProjectiles(projectile)
     })
   }
