@@ -96,4 +96,37 @@ const extractSpriteTextures = (spriteId: any) => {
   return extractTextures(tilesetTexture.baseTexture, spriteData, 0, 0, tileSize)
 }
 
-export { createSpriteContainer, extractSpriteTextures }
+const createAnimatedSpriteFromTexture = (
+  textureName: string,
+  tileId: number,
+  width: number,
+  height: number,
+  tileSize: number,
+  frames: number
+) => {
+  const spritesheetTexture = PIXI.Assets.get(textureName)
+  const x = tileId % (spritesheetTexture.width / tileSize)
+  const y = Math.floor(tileId / (spritesheetTexture.width / tileSize))
+  const textures = []
+
+  for (let i = 0; i < frames; i++) {
+    const textureRect = new PIXI.Rectangle(
+      (x + i) * tileSize,
+      y * tileSize,
+      width * tileSize,
+      height * tileSize
+    )
+    const texture = new PIXI.Texture({
+      source: spritesheetTexture.source,
+      frame: textureRect
+    })
+
+    textures.push(texture)
+  }
+
+  const sprite = new PIXI.AnimatedSprite(textures)
+
+  return sprite
+}
+
+export { createSpriteContainer, extractSpriteTextures, createAnimatedSpriteFromTexture }

@@ -319,6 +319,7 @@ class Playground extends Scene {
       this.client.socket.on('item:replaced', this.handleItemReplaced.bind(this))
       this.client.socket.on('projectile:added', this.handleProjectileAdded.bind(this))
       this.client.socket.on('projectile:removed', this.handleProjectileRemoved.bind(this))
+      this.client.socket.on('projectile:updated', this.handleProjectileUpdated.bind(this))
       this.client.socket.on('explosion:added', this.handleExplosionAdded.bind(this))
       this.client.socket.on('gameState', this.handleGameState.bind(this))
     })
@@ -526,6 +527,7 @@ class Playground extends Scene {
     this.layers[1].addChild(this.player.bottomHalf)
     this.uiLayer.addChild(this.player.playerName)
     this.uiLayer.addChild(this.player.rightHandSlot)
+    this.uiLayer.addChild(this.player.shieldEffect)
 
     this.addEntity(this.player)
 
@@ -560,6 +562,7 @@ class Playground extends Scene {
     this.layers[1].addChild(player.bottomHalf)
     this.uiLayer.addChild(player.playerName)
     this.uiLayer.addChild(player.rightHandSlot)
+    this.uiLayer.addChild(player.shieldEffect)
     this.layers[0].addChild(player)
 
     this.addEntity(player)
@@ -923,6 +926,42 @@ class Playground extends Scene {
     this.projectiles.set(id, projectile)
   }
 
+  private async handleProjectileRemoved({ id }) {
+    const projectile = this.projectiles.get(id)
+
+    if (!projectile) {
+      return
+    }
+
+    projectile.destroy()
+    this.projectiles.delete(id)
+  }
+
+  private async handleProjectileUpdated({
+    id,
+    name,
+    position,
+    direction,
+    speed,
+    duration,
+    timestamp
+  }) {
+    const delay = (Date.now() - timestamp) / 1000
+    const updatedPosition = {
+      x: position.x + direction.x * speed * delay,
+      y: position.y + direction.y * speed * delay
+    }
+
+    const projectile = this.projectiles.get(id)
+
+    if (!projectile) {
+      return
+    }
+
+    projectile.position.set(updatedPosition.x, updatedPosition.y)
+    projectile.setDirection(direction)
+  }
+
   addEntity(entity: any) {
     this.entities.push(entity)
 
@@ -935,16 +974,6 @@ class Playground extends Scene {
     })
   }
 
-  private async handleProjectileRemoved({ id }) {
-    const projectile = this.projectiles.get(id)
-
-    if (!projectile) {
-      return
-    }
-
-    projectile.destroy()
-    this.projectiles.delete(id)
-  }
 
   private async handleExplosionAdded({ position, type }) {
     const explosion = Explosion.createExplosion(

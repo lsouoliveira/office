@@ -40,6 +40,27 @@ class DefaultProjectile extends Projectile {
   }
 
   onHit(target: any) {
+    if (target instanceof Player && target.isProtegoActive()) {
+      this.direction = {
+        x: -this.direction.x,
+        y: -this.direction.y
+      }
+
+      const targetPosition = target.getPosition()
+
+      this.position = {
+        x:
+          targetPosition.x + this.direction.x * (16 + this.radius) + Math.abs(this.direction.y) * 8,
+        y: targetPosition.y + this.direction.y * (16 + this.radius) + Math.abs(this.direction.x) * 8
+      }
+
+      this.world.sendMessage('projectile:updated', this.toData())
+
+      target.dispelProtego()
+
+      return
+    }
+
     this.destroy()
 
     if (target instanceof Player) {

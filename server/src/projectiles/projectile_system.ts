@@ -73,7 +73,6 @@ class ProjectileSystem {
       ) {
         projectile.onHit(player)
         hit = true
-          console.log('hit players')
       }
     })
 
@@ -95,7 +94,7 @@ class ProjectileSystem {
       ) {
         projectile.onHit(p)
         hit = true
-          console.log('hit projectiles')
+        console.log('hit projectiles')
       }
     })
 

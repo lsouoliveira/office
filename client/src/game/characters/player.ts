@@ -5,6 +5,7 @@ import { type Animator } from './../animation/animator'
 import { PlayerMessage } from './../entities/player_message'
 import { Emote } from './../entities/emote'
 import { type Entity } from './../entities/entity'
+import { createAnimatedSpriteFromTexture } from './../utils'
 
 enum Direction {
   North,
@@ -89,6 +90,8 @@ class Player extends PIXI.Container implements Entity {
 
   public rightHandSlot: PIXI.Container
 
+  public shieldEffect: PIXI.AnimatedSprite
+
   private offsetX: number = 0
   private offsetY: number = 0
 
@@ -132,6 +135,12 @@ class Player extends PIXI.Container implements Entity {
     this.playerName.scale.set(8 / 256)
     this.playerName.anchor.set(0.5, 0)
     this.playerName.zIndex = 1
+
+    this.shieldEffect = createAnimatedSpriteFromTexture('blue_effects.png', 122, 1, 1, 16, 4)
+    this.shieldEffect.anchor.set(0.5, 0.5)
+    this.shieldEffect.animationSpeed = 0.1
+    this.shieldEffect.play()
+    this.shieldEffect.visible = false
 
     this.topHalf.addChild(this.topHalfSprite)
     this.bottomHalf.addChild(this.bottomHalfSprite)
@@ -178,6 +187,8 @@ class Player extends PIXI.Container implements Entity {
         this.playerName.position.x + this.getPlayerNameWidth() / 2 + 4,
         this.playerName.position.y
       )
+
+      this.shieldEffect.position.set(this.position.x + 8, this.position.y + 8)
 
       if (this.isLevitating) {
         this.levitationOffset = Math.sin(LEVITATION_SPEED * Date.now()) * LEVITATION_HEIGHT
@@ -292,6 +303,12 @@ class Player extends PIXI.Container implements Entity {
       this.setName(`${data.name} ${data.patrono}`)
     } else {
       this.setName(data.name)
+    }
+
+    if (data.isProtegoActive) {
+      this.shieldEffect.visible = true
+    } else {
+      this.shieldEffect.visible = false
     }
 
     if (data.state == State.Sitting) {
@@ -410,6 +427,8 @@ class Player extends PIXI.Container implements Entity {
     this.playerName.destroy()
     this.topHalf.destroy()
     this.bottomHalf.destroy()
+    this.shieldEffect.destroy()
+    this.rightHandSlot.destroy()
   }
 
   setAnimator(animator: Animator) {

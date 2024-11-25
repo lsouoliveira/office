@@ -41,6 +41,7 @@ interface PlayerData {
   userId: number
   money: number
   isLevitating: boolean
+  isProtegoActive: boolean
 }
 
 enum EquipmentType {
@@ -317,6 +318,7 @@ const patronos = [
   '🦢',
   '🦉'
 ]
+const PROTEGO_DURATION = 2500
 
 class Player extends EventEmitter {
   public playerData: PlayerData
@@ -328,12 +330,15 @@ class Player extends EventEmitter {
   private spells: Spell[] = []
   private patronoTimer: number
   private isPatronoActive: boolean
+  private levitateTimeout: NodeJS.Timeout
+  private protegoTimeout: NodeJS.Timeout
 
   constructor(playerData: PlayerData) {
     super()
 
     this.playerData = playerData
     this.playerData.isLevitating = false
+    this.playerData.isProtegoActive = false
     this.isPatronoActive = false
 
     SPELLS.forEach((spellData: SpellData) => this.spells.push(new Spell(spellData)))
@@ -553,7 +558,8 @@ class Player extends EventEmitter {
       money: this.playerData.money,
       patrono: this.getPatrono(),
       isPatronoActive: this.isPatronoActive,
-      isLevitating: this.playerData.isLevitating
+      isLevitating: this.playerData.isLevitating,
+      isProtegoActive: this.playerData.isProtegoActive
     }
   }
 
@@ -653,10 +659,12 @@ class Player extends EventEmitter {
   }
 
   levitate() {
+    clearTimeout(this.levitateTimeout)
+
     this.playerData.isLevitating = true
     this.notifyChange()
 
-    setTimeout(() => {
+    this.levitateTimeout = setTimeout(() => {
       this.playerData.isLevitating = false
       this.notifyChange()
     }, 30000)
@@ -665,6 +673,29 @@ class Player extends EventEmitter {
   setPosition(position: Position) {
     this.playerData.position = position
     this.notifyChange()
+  }
+
+  protego() {
+    clearTimeout(this.protegoTimeout)
+
+    this.playerData.isProtegoActive = true
+
+    this.protegoTimeout = setTimeout(() => {
+      this.playerData.isProtegoActive = false
+      this.notifyChange()
+    }, PROTEGO_DURATION)
+
+    this.notifyChange()
+  }
+
+  isProtegoActive() {
+    return this.playerData.isProtegoActive
+  }
+
+  dispelProtego() {
+    this.playerData.isProtegoActive = false
+    this.notifyChange()
+    clearTimeout(this.protegoTimeout)
   }
 }
 

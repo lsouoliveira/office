@@ -97,12 +97,14 @@ class Projectile extends PIXI.Container implements Entity {
   private sprite: PIXI.AnimatedSprite
   private speed: number
   private direction: { x: number; y: number }
+  private baseRotation: number
 
   constructor(
     id: string,
     sprite: PIXI.AnimatedSprite,
     speed: number,
-    direction: { x: number; y: number }
+    direction: { x: number; y: number },
+    baseRotation: number
   ) {
     super()
 
@@ -110,6 +112,7 @@ class Projectile extends PIXI.Container implements Entity {
     this.sprite = sprite
     this.speed = speed
     this.direction = direction
+    this.baseRotation = baseRotation
 
     this.addChild(this.sprite)
   }
@@ -124,6 +127,13 @@ class Projectile extends PIXI.Container implements Entity {
   destroy() {
     this.emit('destroy')
     super.destroy()
+  }
+
+  setDirection(direction: { x: number; y: number }) {
+    const rotation = Math.atan2(direction.y, direction.x) + 1.5 * Math.PI
+
+    this.direction = direction
+    this.sprite.rotation = this.baseRotation + rotation
   }
 
   static createProjectile(
@@ -162,7 +172,7 @@ class Projectile extends PIXI.Container implements Entity {
     sprite.rotation = defaultRotation + (rotation || 0)
     sprite.play()
 
-    const projectile = new Projectile(id, sprite, speed, direction)
+    const projectile = new Projectile(id, sprite, speed, direction, rotation || 0)
     projectile.position.set(x, y)
 
     return projectile
