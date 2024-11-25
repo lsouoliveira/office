@@ -27,7 +27,7 @@ class DisarmPlayerAbility implements Ability {
       this.world,
       projectilePosition,
       caster.getDirectionVector(),
-      70,
+      90,
       100
     )
 
