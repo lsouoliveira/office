@@ -310,6 +310,7 @@ class Playground extends Scene {
       this.client.socket.on('player:notePlayed', this.handleNotePlayed.bind(this))
       this.client.socket.on('player:noteReleased', this.handleNoteReleased.bind(this))
       this.client.socket.on('player:emotePlayed', this.handlePlayEmote.bind(this))
+      this.client.socket.on('player:memory_charm', this.handleMemoryCharm.bind(this))
       this.client.socket.on('computer:open', this.handleComputerOpen.bind(this))
       this.client.socket.on('world:announcement', this.handleWorldAnnouncement.bind(this))
       this.client.socket.on('ping_pong:open', this.handlePingPongOpen.bind(this))
@@ -758,6 +759,14 @@ class Playground extends Scene {
 
     this.addEntity(emote)
     this.uiLayer.addChild(emote)
+  }
+
+  private handleMemoryCharm({ playerId }: { playerId: string }) {
+    if (this.player?.id != playerId) {
+      return
+    }
+
+    this.chat.clear()
   }
 
   private handleKeyDown(e) {

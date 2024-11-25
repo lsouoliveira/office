@@ -8,7 +8,8 @@ enum ProjectileType {
   KILLING_CURSE = 'killing_curse',
   STUNNING = 'stunning',
   LEVITATE = 'levitate',
-  SUMMON_OBJECT = 'summon_object'
+  SUMMON_OBJECT = 'summon_object',
+  MEMORY_CHARM = 'memory_charm'
 }
 
 const SPRITESHEET_WIDTH = 36
@@ -77,6 +78,15 @@ const PROJECTILES = {
     width: 1,
     height: 1,
     frames: 2,
+    loop: true,
+    animationSpeed: 0.05
+  },
+  [ProjectileType.MEMORY_CHARM]: {
+    assetPath: 'blue_effects.png',
+    tileId: 158,
+    width: 1,
+    height: 1,
+    frames: 4,
     loop: true,
     animationSpeed: 0.05
   }

@@ -14,7 +14,9 @@ enum ExplosionType {
   GREEN_2 = 'green_2',
   GREEN_3 = 'green_3',
   GREEN_4 = 'green_4',
-  BLUE_2 = 'blue_2'
+  BLUE_1 = 'blue_1',
+  BLUE_2 = 'blue_2',
+  BLUE_3 = 'blue_3'
 }
 
 const EXPLOSIONS = {
@@ -99,6 +101,15 @@ const EXPLOSIONS = {
     loop: false,
     animationSpeed: 0.25
   },
+  [ExplosionType.BLUE_1]: {
+    assetPath: 'blue_effects.png',
+    tileId: 354,
+    width: 1,
+    height: 1,
+    frames: 6,
+    loop: false,
+    animationSpeed: 0.1
+  },
   [ExplosionType.BLUE_2]: {
     assetPath: 'blue_effects.png',
     tileId: 354,
@@ -107,6 +118,15 @@ const EXPLOSIONS = {
     frames: 6,
     loop: false,
     animationSpeed: 0.1
+  },
+  [ExplosionType.BLUE_3]: {
+    assetPath: 'blue_effects.png',
+    tileId: 138,
+    width: 1,
+    height: 1,
+    frames: 6,
+    loop: false,
+    animationSpeed: 0.25
   }
 }
 

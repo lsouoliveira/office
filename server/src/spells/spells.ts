@@ -48,6 +48,12 @@ const SPELLS = [
     spelling: 'Accio',
     abilityName: 'summon_object',
     cooldown: 5
+  }),
+  new SpellData({
+    id: 9,
+    spelling: 'Obliviate',
+    abilityName: 'memory_charm',
+    cooldown: 5
   })
 ]
 

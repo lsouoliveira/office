@@ -49,6 +49,11 @@ class Chat extends Container implements Entity {
     this.position.set(this.position.x, window.innerHeight - 8 - y)
   }
 
+  clear() {
+    this.messages.forEach((message) => message.destroy())
+    this.messages = []
+  }
+
   createMessage(playerName: string, message: string) {
     const now = new Date()
     const time = formatTime(now)
