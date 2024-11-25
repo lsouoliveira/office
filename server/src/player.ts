@@ -434,10 +434,15 @@ class Player extends EventEmitter {
   }
 
   teleport(x, y) {
+    this.movement.stop()
     this.playerData.position.x = x
     this.playerData.position.y = y
 
     this.notifyChange()
+  }
+
+  isSitting() {
+    return this.playerData.state === PlayerState.Sitting
   }
 
   setSpeed(speed: number) {
@@ -655,6 +660,11 @@ class Player extends EventEmitter {
       this.playerData.isLevitating = false
       this.notifyChange()
     }, 30000)
+  }
+
+  setPosition(position: Position) {
+    this.playerData.position = position
+    this.notifyChange()
   }
 }
 

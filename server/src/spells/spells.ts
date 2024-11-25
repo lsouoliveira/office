@@ -42,6 +42,12 @@ const SPELLS = [
     spelling: 'Alohomora',
     abilityName: 'unlock_door',
     cooldown: 5
+  }),
+  new SpellData({
+    id: 8,
+    spelling: 'Accio',
+    abilityName: 'summon_object',
+    cooldown: 5
   })
 ]
 

@@ -1009,10 +1009,6 @@ class World {
   }
 
   private handlePlayerSpeedCommand(socket, parts) {
-    if (!this.isAdmin(socket)) {
-      return
-    }
-
     const session = this.sessions[socket.sessionId]
 
     if (!session) {

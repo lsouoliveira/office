@@ -7,7 +7,8 @@ enum ProjectileType {
   DISARM = 'disarm',
   KILLING_CURSE = 'killing_curse',
   STUNNING = 'stunning',
-  LEVITATE = 'levitate'
+  LEVITATE = 'levitate',
+  SUMMON_OBJECT = 'summon_object'
 }
 
 const SPRITESHEET_WIDTH = 36
@@ -69,6 +70,15 @@ const PROJECTILES = {
     loop: true,
     animationSpeed: 0.1,
     rotation: Math.PI / 2
+  },
+  [ProjectileType.SUMMON_OBJECT]: {
+    assetPath: 'red_effects.png',
+    tileId: 14,
+    width: 1,
+    height: 1,
+    frames: 2,
+    loop: true,
+    animationSpeed: 0.05
   }
 }
 
