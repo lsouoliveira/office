@@ -1,10 +1,9 @@
-import Projectile from './projectile'
 import { Player } from '../player'
 import { World } from '../world'
+import DefaultProjectile from './default_projectile'
 
-class StunningProjectile extends Projectile {
+class StunningProjectile extends DefaultProjectile {
   static RADIUS = 8
-  private world: World
 
   constructor(
     world: World,
@@ -13,37 +12,25 @@ class StunningProjectile extends Projectile {
     speed: number,
     duration: number
   ) {
-    super('stunning', position, direction, speed, duration, StunningProjectile.RADIUS, true)
-
-    this.world = world
+    super(
+      'stunning',
+      world,
+      position,
+      direction,
+      speed,
+      duration,
+      StunningProjectile.RADIUS,
+      true,
+      {
+        hitPlayerExplosionType: 'blue_4',
+        hitOtherExplosionType: 'blue_1'
+      }
+    )
   }
 
-  onHit(target: any) {
+  onEffect(target: any) {
     if (target instanceof Player) {
       target.stun()
-    }
-
-    this.destroy()
-
-    if (target instanceof Player) {
-      this.world.sendMessage('explosion:added', {
-        position: target.getCenterPosition(),
-        type: 'blue_2'
-      })
-    } else {
-      this.world.sendMessage('explosion:added', {
-        position: this.position,
-        type: 'blue_1'
-      })
-    }
-
-    if (target instanceof Projectile) {
-      target.destroy()
-
-      this.world.sendMessage('explosion:added', {
-        position: this.position,
-        type: 'fire_3'
-      })
     }
   }
 }

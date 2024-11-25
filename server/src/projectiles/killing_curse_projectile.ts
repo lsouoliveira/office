@@ -1,10 +1,9 @@
-import Projectile from './projectile'
-import { Player, EquipmentType } from '../player'
+import { Player } from '../player'
 import { World } from '../world'
+import DefaultProjectile from './default_projectile'
 
-class KillingCurseProjectile extends Projectile {
+class KillingCurseProjectile extends DefaultProjectile {
   static RADIUS = 8
-  private world: World
 
   constructor(
     world: World,
@@ -15,43 +14,23 @@ class KillingCurseProjectile extends Projectile {
   ) {
     super(
       'killing_curse',
+      world,
       position,
       direction,
       speed,
       duration,
       KillingCurseProjectile.RADIUS,
-      true
+      true,
+      {
+        hitPlayerExplosionType: 'green_4',
+        hitOtherExplosionType: 'green_1'
+      }
     )
-
-    this.world = world
   }
 
-  onHit(target: any) {
+  onEffect(target: any) {
     if (target instanceof Player) {
       target.setName(target.getName() + ' 💀')
-    }
-
-    this.destroy()
-
-    if (target instanceof Player) {
-      this.world.sendMessage('explosion:added', {
-        position: target.getCenterPosition(),
-        type: 'green_4'
-      })
-    } else {
-      this.world.sendMessage('explosion:added', {
-        position: this.position,
-        type: 'green_1'
-      })
-    }
-
-    if (target instanceof Projectile) {
-      target.destroy()
-
-      this.world.sendMessage('explosion:added', {
-        position: this.position,
-        type: 'fire_3'
-      })
     }
   }
 }

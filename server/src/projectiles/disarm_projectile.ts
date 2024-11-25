@@ -1,10 +1,9 @@
-import Projectile from './projectile'
 import { Player, EquipmentType } from '../player'
 import { World } from '../world'
+import DefaultProjectile from './default_projectile'
 
-class DisarmProjectile extends Projectile {
+class DisarmProjectile extends DefaultProjectile {
   static RADIUS = 8
-  private world: World
 
   constructor(
     world: World,
@@ -13,41 +12,20 @@ class DisarmProjectile extends Projectile {
     speed: number,
     duration: number
   ) {
-    super('disarm', position, direction, speed, duration, DisarmProjectile.RADIUS, true)
-
-    this.world = world
+    super('disarm', world, position, direction, speed, duration, DisarmProjectile.RADIUS, true, {
+      hitPlayerExplosionType: 'fire_2',
+      hitOtherExplosionType: 'fire_1',
+      clashExplosionType: 'fire_3'
+    })
   }
 
-  onHit(target: any) {
+  onEffect(target: any) {
     if (target instanceof Player) {
       const item = target.getEquipment(EquipmentType.Wand)
 
       if (item) {
         target.unequip(item)
       }
-    }
-
-    this.destroy()
-
-    if (target instanceof Player) {
-      this.world.sendMessage('explosion:added', {
-        position: target.getCenterPosition(),
-        type: 'fire_2'
-      })
-    } else {
-      this.world.sendMessage('explosion:added', {
-        position: this.position,
-        type: 'fire_1'
-      })
-    }
-
-    if (target instanceof Projectile) {
-      target.destroy()
-
-      this.world.sendMessage('explosion:added', {
-        position: this.position,
-        type: 'fire_3'
-      })
     }
   }
 }

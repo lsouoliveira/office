@@ -1,10 +1,8 @@
 import Projectile from './projectile'
-import { Player } from '../player'
 import { World } from '../world'
 
 class PatronumProjectile extends Projectile {
   static RADIUS = 8
-
   private world: World
 
   constructor(

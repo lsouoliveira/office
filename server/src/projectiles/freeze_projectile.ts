@@ -1,10 +1,9 @@
-import Projectile from './projectile'
 import { Player } from '../player'
 import { World } from '../world'
+import DefaultProjectile from './default_projectile'
 
-class FreezeProjectile extends Projectile {
+class FreezeProjectile extends DefaultProjectile {
   static RADIUS = 8
-  private world: World
 
   constructor(
     world: World,
@@ -13,37 +12,15 @@ class FreezeProjectile extends Projectile {
     speed: number,
     duration: number
   ) {
-    super('freeze', position, direction, speed, duration, FreezeProjectile.RADIUS, true)
-
-    this.world = world
+    super('freeze', world, position, direction, speed, duration, FreezeProjectile.RADIUS, true, {
+      hitPlayerExplosionType: 'purple_2',
+      hitOtherExplosionType: 'purple_1'
+    })
   }
 
-  onHit(target: any) {
+  onEffect(target: any) {
     if (target instanceof Player) {
       target.freeze()
-    }
-
-    this.destroy()
-
-    if (target instanceof Player) {
-      this.world.sendMessage('explosion:added', {
-        position: target.getCenterPosition(),
-        type: 'purple_2'
-      })
-    } else {
-      this.world.sendMessage('explosion:added', {
-        position: this.position,
-        type: 'purple_1'
-      })
-    }
-
-    if (target instanceof Projectile) {
-      target.destroy()
-
-      this.world.sendMessage('explosion:added', {
-        position: this.position,
-        type: 'fire_3'
-      })
     }
   }
 }

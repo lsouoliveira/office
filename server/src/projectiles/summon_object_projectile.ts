@@ -1,10 +1,9 @@
-import Projectile from './projectile'
-import { Player, EquipmentType } from '../player'
+import { Player } from '../player'
 import { World } from '../world'
+import DefaultProjectile from './default_projectile'
 
-class SummonObjectProjectile extends Projectile {
+class SummonObjectProjectile extends DefaultProjectile {
   static RADIUS = 8
-  private world: World
   private summonPosition: { x: number; y: number }
 
   constructor(
@@ -17,44 +16,25 @@ class SummonObjectProjectile extends Projectile {
   ) {
     super(
       'summon_object',
+      world,
       position,
       direction,
       speed,
       duration,
       SummonObjectProjectile.RADIUS,
-      true
+      true,
+      {
+        hitPlayerExplosionType: 'fire_2',
+        hitOtherExplosionType: 'fire_1'
+      }
     )
 
-    this.world = world
     this.summonPosition = summonPosition
   }
 
-  onHit(target: any) {
+  onEffect(target: any) {
     if (target instanceof Player && !target.isSitting()) {
       target.teleport(this.summonPosition.x, this.summonPosition.y)
-    }
-
-    this.destroy()
-
-    if (target instanceof Player) {
-      this.world.sendMessage('explosion:added', {
-        position: target.getCenterPosition(),
-        type: 'fire_2'
-      })
-    } else {
-      this.world.sendMessage('explosion:added', {
-        position: this.position,
-        type: 'fire_1'
-      })
-    }
-
-    if (target instanceof Projectile) {
-      target.destroy()
-
-      this.world.sendMessage('explosion:added', {
-        position: this.position,
-        type: 'fire_3'
-      })
     }
   }
 }

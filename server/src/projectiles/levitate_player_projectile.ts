@@ -1,10 +1,10 @@
 import Projectile from './projectile'
 import { Player } from '../player'
 import { World } from '../world'
+import DefaultProjectile from './default_projectile'
 
-class LevitatePlayerProjectile extends Projectile {
+class LevitatePlayerProjectile extends DefaultProjectile {
   static RADIUS = 8
-  private world: World
 
   constructor(
     world: World,
@@ -13,37 +13,25 @@ class LevitatePlayerProjectile extends Projectile {
     speed: number,
     duration: number
   ) {
-    super('levitate', position, direction, speed, duration, LevitatePlayerProjectile.RADIUS, true)
-
-    this.world = world
+    super(
+      'levitate',
+      world,
+      position,
+      direction,
+      speed,
+      duration,
+      LevitatePlayerProjectile.RADIUS,
+      true,
+      {
+        hitPlayerExplosionType: 'green_2',
+        hitOtherExplosionType: 'green_1'
+      }
+    )
   }
 
-  onHit(target: any) {
+  onEffect(target: any) {
     if (target instanceof Player) {
       target.levitate()
-    }
-
-    this.destroy()
-
-    if (target instanceof Player) {
-      this.world.sendMessage('explosion:added', {
-        position: target.getCenterPosition(),
-        type: 'green_2'
-      })
-    } else {
-      this.world.sendMessage('explosion:added', {
-        position: this.position,
-        type: 'green_1'
-      })
-    }
-
-    if (target instanceof Projectile) {
-      target.destroy()
-
-      this.world.sendMessage('explosion:added', {
-        position: this.position,
-        type: 'fire_3'
-      })
     }
   }
 }

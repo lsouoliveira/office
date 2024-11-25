@@ -1,10 +1,10 @@
 import Projectile from './projectile'
 import { Player, EquipmentType } from '../player'
 import { World } from '../world'
+import DefaultProjectile from './default_projectile'
 
-class MemoryCharmProjectile extends Projectile {
+class MemoryCharmProjectile extends DefaultProjectile {
   static RADIUS = 8
-  private world: World
 
   constructor(
     world: World,
@@ -13,38 +13,26 @@ class MemoryCharmProjectile extends Projectile {
     speed: number,
     duration: number
   ) {
-    super('memory_charm', position, direction, speed, duration, MemoryCharmProjectile.RADIUS, true)
-
-    this.world = world
+    super(
+      'memory_charm',
+      world,
+      position,
+      direction,
+      speed,
+      duration,
+      MemoryCharmProjectile.RADIUS,
+      true,
+      {
+        hitPlayerExplosionType: 'blue_2',
+        hitOtherExplosionType: 'blue_1'
+      }
+    )
   }
 
-  onHit(target: any) {
+  onEffect(target: any) {
     if (target instanceof Player) {
       this.world.sendMessage('player:memory_charm', {
         playerId: target.getId()
-      })
-    }
-
-    this.destroy()
-
-    if (target instanceof Player) {
-      this.world.sendMessage('explosion:added', {
-        position: target.getCenterPosition(),
-        type: 'blue_2'
-      })
-    } else {
-      this.world.sendMessage('explosion:added', {
-        position: this.position,
-        type: 'blue_1'
-      })
-    }
-
-    if (target instanceof Projectile) {
-      target.destroy()
-
-      this.world.sendMessage('explosion:added', {
-        position: this.position,
-        type: 'fire_1'
       })
     }
   }
