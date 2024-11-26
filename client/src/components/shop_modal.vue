@@ -48,12 +48,12 @@
             const mainImageIndex = 0
             const imageIndex = states.length > 1 ? 1 : 0
 
-            const tileSize = spriteData.tileSize || 16
+            const tileSize = spriteData.tileSize || 48
             const imageX = states[imageIndex] % spriteData.tilesetWidth * tileSize
             const imageY = Math.floor(states[imageIndex] / spriteData.tilesetWidth) * tileSize
             const mainImageX = states[mainImageIndex] % spriteData.tilesetWidth * tileSize
             const mainImageY = Math.floor(states[mainImageIndex] / spriteData.tilesetWidth) * tileSize
-            const scale = (16 / tileSize) * 6
+            const scale = (48 / tileSize) * 2
 
             return {
                 ...product,

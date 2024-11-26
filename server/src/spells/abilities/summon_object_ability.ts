@@ -2,6 +2,7 @@ import Ability from '../ability'
 import SummonObjectProjectile from './../../projectiles/summon_object_projectile'
 import { Player } from '../../player'
 import { World } from '../../world'
+import { TILE_SIZE } from '../../config'
 
 class SummonObjectAbility implements Ability {
   private world: World
@@ -13,18 +14,18 @@ class SummonObjectAbility implements Ability {
   cast(caster: Player) {
     const casterPosition = caster.getPosition()
     const summonPosition = {
-      x: casterPosition.x + caster.getDirectionVector().x * 16,
-      y: casterPosition.y + caster.getDirectionVector().y * 16
+      x: casterPosition.x + caster.getDirectionVector().x * TILE_SIZE,
+      y: casterPosition.y + caster.getDirectionVector().y * TILE_SIZE
     }
     const projectilePosition = {
       x:
         casterPosition.x +
-        caster.getDirectionVector().x * (16 + SummonObjectProjectile.RADIUS) +
-        Math.abs(caster.getDirectionVector().y) * 8,
+        caster.getDirectionVector().x * (TILE_SIZE + SummonObjectProjectile.RADIUS) +
+        (Math.abs(caster.getDirectionVector().y) * TILE_SIZE) / 2,
       y:
         casterPosition.y +
-        caster.getDirectionVector().y * (16 + SummonObjectProjectile.RADIUS) +
-        Math.abs(caster.getDirectionVector().x) * 8
+        caster.getDirectionVector().y * (TILE_SIZE + SummonObjectProjectile.RADIUS) +
+        (Math.abs(caster.getDirectionVector().x) * TILE_SIZE) / 2
     }
 
     const projectile = new SummonObjectProjectile(

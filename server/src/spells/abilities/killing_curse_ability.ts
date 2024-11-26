@@ -2,6 +2,7 @@ import Ability from '../ability'
 import KillingCurseProjectile from './../../projectiles/killing_curse_projectile'
 import { Player } from '../../player'
 import { World } from '../../world'
+import { TILE_SIZE } from '../../config'
 
 class KillingCurseAbility implements Ability {
   private world: World
@@ -15,12 +16,12 @@ class KillingCurseAbility implements Ability {
     const projectilePosition = {
       x:
         casterPosition.x +
-        caster.getDirectionVector().x * (16 + KillingCurseProjectile.RADIUS) +
-        Math.abs(caster.getDirectionVector().y) * 8,
+        caster.getDirectionVector().x * (TILE_SIZE + KillingCurseProjectile.RADIUS) +
+        (Math.abs(caster.getDirectionVector().y) * TILE_SIZE) / 2,
       y:
         casterPosition.y +
-        caster.getDirectionVector().y * (16 + KillingCurseProjectile.RADIUS) +
-        Math.abs(caster.getDirectionVector().x) * 8
+        caster.getDirectionVector().y * (TILE_SIZE + KillingCurseProjectile.RADIUS) +
+        (Math.abs(caster.getDirectionVector().x) * TILE_SIZE) / 2
     }
 
     console.log(projectilePosition)

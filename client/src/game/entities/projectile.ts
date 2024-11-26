@@ -1,5 +1,6 @@
 import * as PIXI from 'pixi.js'
 import { type Entity } from './entity'
+import { TILE_SIZE } from '../map/tile'
 
 enum ProjectileType {
   FREEZE = 'freeze',
@@ -170,6 +171,8 @@ class Projectile extends PIXI.Container implements Entity {
     sprite.animationSpeed = animationSpeed
     sprite.loop = loop
     sprite.rotation = defaultRotation + (rotation || 0)
+    sprite.width = TILE_SIZE * width
+    sprite.height = TILE_SIZE * height
     sprite.play()
 
     const projectile = new Projectile(id, sprite, speed, direction, rotation || 0)

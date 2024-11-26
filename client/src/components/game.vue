@@ -166,14 +166,14 @@ const loadSprites = async () => {
   for (const key in spritesData) {
     const { width, height, states, tileset } = spritesData[key]
     const tileId = states[0]
-    const tileSize = spritesData[key].tileSize || 16
+    const tileSize = spritesData[key].tileSize || 48
 
     try {
       const image = await loadTileset(tileset)
       const tilesWidth = image.width / tileSize
       const offsetX = (tileId % tilesWidth) * tileSize
       const offsetY = Math.floor(tileId / tilesWidth) * tileSize
-      const scale = 16 / tileSize 
+      const scale = 48 / tileSize 
 
       const sprite = {
         id: key,

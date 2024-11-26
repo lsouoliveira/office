@@ -4,6 +4,7 @@ import { World } from '../../world'
 import { ItemType } from '../../items/item_type'
 import { Item } from '../../items/item'
 import { Tile } from '../../map/tile'
+import { TILE_SIZE } from '../../config'
 
 class UnlockDoorAbility implements Ability {
   private world: World
@@ -89,8 +90,8 @@ class UnlockDoorAbility implements Ability {
 
     this.world.sendMessage('explosion:added', {
       position: {
-        x: tile.getX() * 16 + 8,
-        y: tile.getY() * 16 + 8
+        x: tile.getX() * TILE_SIZE + TILE_SIZE / 2,
+        y: tile.getY() * TILE_SIZE + TILE_SIZE / 2
       },
       type: 'blue_2'
     })

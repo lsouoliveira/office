@@ -23,26 +23,26 @@ import { Announcement } from './../entities/announcement'
 import { Projectile, ProjectileType } from './../entities/projectile'
 import { Explosion, ExplosionType } from './../entities/explosion'
 import { extractSpriteTextures } from '../utils'
+import { TILE_SIZE } from './../map/tile'
 
-const TILE_SIZE = 16
 const DEFAULT_SKIN = 'Bob'
 
 const SKINS = [
   {
     name: 'Bob',
-    sprite: 'Bob_16x16.png'
+    sprite: 'Bob_48x48.png'
   },
   {
     name: 'Alex',
-    sprite: 'Alex_16x16.png'
+    sprite: 'Alex_48x48.png'
   },
   {
     name: 'Amelia',
-    sprite: 'Amelia_16x16.png'
+    sprite: 'Amelia_48x48.png'
   },
   {
     name: 'Adam',
-    sprite: 'Adam_16x16.png'
+    sprite: 'Adam_48x48.png'
   }
 ]
 
@@ -61,11 +61,6 @@ const EQUIPMENTS = [
     id: 'bee_01',
     type: EquipmentType.Helmet,
     sprite: 'bee_01.png'
-  },
-  {
-    id: 'bob_16x16',
-    type: EquipmentType.Helmet,
-    sprite: 'Bob_16x16.png'
   },
   {
     id: 'bolt_01',
@@ -216,12 +211,12 @@ class Playground extends Scene {
 
       const spritesheet = new Spritesheet(
         Assets.get(sprite),
-        Assets.get('default_spritesheet.json').data
+        Assets.get('default_spritesheet_48x48.json').data
       )
       await spritesheet.parse()
 
       const splitter = new SpritesheetSplitter(spritesheet)
-      const composedSpritesheet = splitter.split(16, 32, 16)
+      const composedSpritesheet = splitter.split(TILE_SIZE, 2 * TILE_SIZE, TILE_SIZE)
 
       this.playerSkins.set(name, composedSpritesheet)
     }
@@ -229,7 +224,7 @@ class Playground extends Scene {
     EQUIPMENTS.forEach(({ id, type, sprite }) => {
       this.equipmentSpritesheets.set(
         id,
-        new Spritesheet(Assets.get(sprite), Assets.get('default_spritesheet.json').data)
+        new Spritesheet(Assets.get(sprite), Assets.get('default_spritesheet_48x48.json').data)
       )
     })
 
@@ -237,7 +232,7 @@ class Playground extends Scene {
       await spritesheet.parse()
     }
 
-    this.emoteSpritesheet = Assets.get('ui_16x16.png')
+    this.emoteSpritesheet = Assets.get('ui_48x48.png')
 
     this.camera = new Camera(this)
     this.camera.scale = Math.min(
@@ -688,8 +683,8 @@ class Playground extends Scene {
       undefined,
       rightHandWeaponSprite
     )
-    rightHandWeapon.width = 8
-    rightHandWeapon.height = 8
+    rightHandWeapon.width = TILE_SIZE / 2
+    rightHandWeapon.height = TILE_SIZE / 2
     rightHandWeapon.anchor.set(0.5, 0)
 
     player.equip(rightHandWeapon)

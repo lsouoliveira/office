@@ -54,6 +54,7 @@ class ComposedAnimator implements Animator {
   }
 
   play(name: string) {
+    console.log(name)
     for (const animator of this.animators) {
       animator.play(name)
     }

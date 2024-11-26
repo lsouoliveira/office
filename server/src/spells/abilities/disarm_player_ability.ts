@@ -2,6 +2,7 @@ import Ability from '../ability'
 import DisarmProjectile from './../../projectiles/disarm_projectile'
 import { Player } from '../../player'
 import { World } from '../../world'
+import { TILE_SIZE } from '../../config'
 
 class DisarmPlayerAbility implements Ability {
   private world: World
@@ -15,12 +16,12 @@ class DisarmPlayerAbility implements Ability {
     const projectilePosition = {
       x:
         casterPosition.x +
-        caster.getDirectionVector().x * (16 + DisarmProjectile.RADIUS) +
-        Math.abs(caster.getDirectionVector().y) * 8,
+        caster.getDirectionVector().x * (TILE_SIZE + DisarmProjectile.RADIUS) +
+        (Math.abs(caster.getDirectionVector().y) * TILE_SIZE) / 2,
       y:
         casterPosition.y +
-        caster.getDirectionVector().y * (16 + DisarmProjectile.RADIUS) +
-        Math.abs(caster.getDirectionVector().x) * 8
+        caster.getDirectionVector().y * (TILE_SIZE + DisarmProjectile.RADIUS) +
+        (Math.abs(caster.getDirectionVector().x) * TILE_SIZE) / 2
     }
 
     const projectile = new DisarmProjectile(

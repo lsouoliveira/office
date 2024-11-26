@@ -7,6 +7,7 @@ import { Inventory } from './inventory/inventory'
 import Spell from './spells/spell'
 import { SPELLS } from './spells/spells'
 import SpellData from './spells/spell_data'
+import { TILE_SIZE } from './config'
 
 interface Position {
   x: number
@@ -106,7 +107,7 @@ class PlayerMovement {
       } else {
         const player = this.player.playerData
         const target = this.nextTile
-        const targetPos = [target[0] * 16, target[1] * 16]
+        const targetPos = [target[0] * TILE_SIZE, target[1] * TILE_SIZE]
 
         player.direction = this.directionFor(target[0], target[1])
 
@@ -249,11 +250,11 @@ class PlayerMovement {
   }
 
   gridX() {
-    return Math.floor(this.player.playerData.position.x / 16)
+    return Math.floor(this.player.playerData.position.x / TILE_SIZE)
   }
 
   gridY() {
-    return Math.floor(this.player.playerData.position.y / 16)
+    return Math.floor(this.player.playerData.position.y / TILE_SIZE)
   }
 
   isMoving() {
@@ -342,6 +343,7 @@ class Player extends EventEmitter {
     this.playerData = playerData
     this.playerData.isLevitating = false
     this.playerData.isProtegoActive = false
+    this.playerData.isDrinking = false
     this.isPatronoActive = false
     this.originalSpeed = this.playerData.speed
 
@@ -407,8 +409,8 @@ class Player extends EventEmitter {
 
     this.playerData.state = PlayerState.Sitting
     this.playerData.direction = item.getFacing()
-    this.playerData.position.x = tile.x * 16
-    this.playerData.position.y = tile.y * 16
+    this.playerData.position.x = tile.x * TILE_SIZE
+    this.playerData.position.y = tile.y * TILE_SIZE
     this.occupiedItem = item
 
     this.notifyChange()
@@ -619,10 +621,10 @@ class Player extends EventEmitter {
 
   contains(x: number, y: number, width: number, height: number) {
     return (
-      x < this.playerData.position.x + 16 &&
+      x < this.playerData.position.x + TILE_SIZE &&
       x + width > this.playerData.position.x &&
-      y < this.playerData.position.y + 16 &&
-      y + height > this.playerData.position.y - 16
+      y < this.playerData.position.y + TILE_SIZE &&
+      y + height > this.playerData.position.y - TILE_SIZE
     )
   }
 

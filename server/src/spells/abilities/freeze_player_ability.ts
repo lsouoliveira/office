@@ -2,6 +2,7 @@ import Ability from '../ability'
 import FreezeProjectile from './../../projectiles/freeze_projectile'
 import { Player } from '../../player'
 import { World } from '../../world'
+import { TILE_SIZE } from '../../config'
 
 class FreezePlayerAbility implements Ability {
   private world: World
@@ -15,12 +16,12 @@ class FreezePlayerAbility implements Ability {
     const projectilePosition = {
       x:
         casterPosition.x +
-        caster.getDirectionVector().x * (16 + FreezeProjectile.RADIUS) +
-        Math.abs(caster.getDirectionVector().y) * 8,
+        caster.getDirectionVector().x * (TILE_SIZE + FreezeProjectile.RADIUS) +
+        (Math.abs(caster.getDirectionVector().y) * TILE_SIZE) / 2,
       y:
         casterPosition.y +
-        caster.getDirectionVector().y * (16 + FreezeProjectile.RADIUS) +
-        Math.abs(caster.getDirectionVector().x) * 8
+        caster.getDirectionVector().y * (TILE_SIZE + FreezeProjectile.RADIUS) +
+        (Math.abs(caster.getDirectionVector().x) * TILE_SIZE) / 2
     }
 
     const projectile = new FreezeProjectile(

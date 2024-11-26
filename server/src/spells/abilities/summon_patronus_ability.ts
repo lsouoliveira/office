@@ -2,6 +2,7 @@ import Ability from '../ability'
 import { Player } from '../../player'
 import { World } from '../../world'
 import PatronumProjectile from '../../projectiles/patronum_projectile'
+import { TILE_SIZE } from '../../config'
 
 class SummonPatronusAbility implements Ability {
   private world: World
@@ -17,12 +18,12 @@ class SummonPatronusAbility implements Ability {
     const projectilePosition = {
       x:
         casterPosition.x +
-        caster.getDirectionVector().x * (16 + PatronumProjectile.RADIUS) +
-        Math.abs(caster.getDirectionVector().y) * 8,
+        caster.getDirectionVector().x * (TILE_SIZE + PatronumProjectile.RADIUS) +
+        (Math.abs(caster.getDirectionVector().y) * TILE_SIZE) / 2,
       y:
         casterPosition.y +
-        caster.getDirectionVector().y * (16 + PatronumProjectile.RADIUS) +
-        Math.abs(caster.getDirectionVector().x) * 8
+        caster.getDirectionVector().y * (TILE_SIZE + PatronumProjectile.RADIUS) +
+        (Math.abs(caster.getDirectionVector().x) * TILE_SIZE) / 2
     }
 
     const projectile = new PatronumProjectile(

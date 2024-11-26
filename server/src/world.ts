@@ -33,6 +33,7 @@ import SpawnZone from './rewards/spawn_zone'
 import { getSpellData, spellExists } from './spells/spells'
 import SpellSystem from './spells/spell_system'
 import ProjectileSystem from './projectiles/projectile_system'
+import { TILE_SIZE } from './config'
 
 import jsonwebtoken from 'jsonwebtoken'
 import { db } from './db'
@@ -617,8 +618,8 @@ class World {
     const player = new Player({
       id: crypto.randomUUID(),
       position: {
-        x: 3 * 16,
-        y: 3 * 16
+        x: 3 * TILE_SIZE,
+        y: 3 * TILE_SIZE
       },
       direction: Direction.South,
       state: PlayerState.Idle,
@@ -691,8 +692,8 @@ class World {
     }
 
     const { x, y } = data
-    const tileX = Math.floor(x / 16)
-    const tileY = Math.floor(y / 16)
+    const tileX = Math.floor(x / TILE_SIZE)
+    const tileY = Math.floor(y / TILE_SIZE)
 
     const task = new MoveTask(player, [tileX, tileY])
 
@@ -955,8 +956,8 @@ class World {
       return
     }
 
-    const x = parseInt(parts[1]) * 16
-    const y = parseInt(parts[2]) * 16
+    const x = parseInt(parts[1]) * TILE_SIZE
+    const y = parseInt(parts[2]) * TILE_SIZE
 
     player.movement.stop()
     player.teleport(x, y)
@@ -978,8 +979,8 @@ class World {
     let playerName = parts.slice(1, parts.length - 2).join(' ')
     playerName = playerName.substring(1, playerName.length - 1)
 
-    const x = parseInt(parts[2]) * 16
-    const y = parseInt(parts[3]) * 16
+    const x = parseInt(parts[2]) * TILE_SIZE
+    const y = parseInt(parts[3]) * TILE_SIZE
 
     for (const player of Object.values(this.players)) {
       if (player.playerData.name === playerName) {
@@ -1066,8 +1067,8 @@ class World {
       return
     }
 
-    const tileX = Math.floor(data.x / 16)
-    const tileY = Math.floor(data.y / 16)
+    const tileX = Math.floor(data.x / TILE_SIZE)
+    const tileY = Math.floor(data.y / TILE_SIZE)
 
     if (!this.map.contains(tileX, tileY)) {
       return
@@ -1115,8 +1116,8 @@ class World {
       return
     }
 
-    const tileX = Math.floor(data.x / 16)
-    const tileY = Math.floor(data.y / 16)
+    const tileX = Math.floor(data.x / TILE_SIZE)
+    const tileY = Math.floor(data.y / TILE_SIZE)
 
     if (!this.map.contains(tileX, tileY)) {
       return
@@ -1192,8 +1193,8 @@ class World {
       return
     }
 
-    const tileX = Math.floor(data.x / 16)
-    const tileY = Math.floor(data.y / 16)
+    const tileX = Math.floor(data.x / TILE_SIZE)
+    const tileY = Math.floor(data.y / TILE_SIZE)
 
     if (!this.map.contains(tileX, tileY)) {
       return

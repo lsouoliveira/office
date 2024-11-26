@@ -1,5 +1,6 @@
 import Projectile from './projectile'
 import { World } from '../world'
+import { TILE_SIZE } from '../config'
 
 class ProjectileSystem {
   private projectiles: Projectile[]
@@ -43,8 +44,8 @@ class ProjectileSystem {
   }
 
   private checkProjectileCollisionWithWorld(projectile: Projectile) {
-    const tileX = Math.floor(projectile.Position.x / 16)
-    const tileY = Math.floor(projectile.Position.y / 16)
+    const tileX = Math.floor(projectile.Position.x / TILE_SIZE)
+    const tileY = Math.floor(projectile.Position.y / TILE_SIZE)
 
     if (this.world.getMap().contains(tileX, tileY)) {
       const tile = this.world.getMap().getTile(tileX, tileY)

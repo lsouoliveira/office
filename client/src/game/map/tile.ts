@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js'
 import { Item } from './../items/item'
 
-const TILE_SIZE = 16
+const TILE_SIZE = 48
 
 class Tile {
   private x: number

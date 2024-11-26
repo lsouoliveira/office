@@ -2,10 +2,10 @@
 import { onMounted, defineModel, ref, computed } from 'vue'
 
 const SKIN_URLS = [
-  { url: '/resources/images/Adam_16x16.png', name: 'Adam' },
-  { url: '/resources/images/Alex_16x16.png', name: 'Alex' },
-  { url: '/resources/images/Amelia_16x16.png', name: 'Amelia' },
-  { url: '/resources/images/Bob_16x16.png', name: 'Bob' }
+  { url: '/resources/images/Adam_48x48.png', name: 'Adam' },
+  { url: '/resources/images/Alex_48x48.png', name: 'Alex' },
+  { url: '/resources/images/Amelia_48x48.png', name: 'Amelia' },
+  { url: '/resources/images/Bob_48x48.png', name: 'Bob' }
 ]
 
 const SKINS_ORDER = ['Bob', 'Amelia', 'Alex', 'Adam']

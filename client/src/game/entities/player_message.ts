@@ -51,9 +51,9 @@ class PlayerMessage extends Text implements Entity {
     const messageColor = COLORS[color] || 0xffff00
     const playerMessage = new PlayerMessage(formattedMessage, duration, messageColor)
 
-    playerMessage.position.set(player.x + 8, player.y - 16)
+    playerMessage.position.set(player.x + 24, player.y - 48)
     playerMessage.anchor.set(0.5, 1)
-    playerMessage.scale.set(8 / 256)
+    playerMessage.scale.set(24 / 256)
 
     return playerMessage
   }

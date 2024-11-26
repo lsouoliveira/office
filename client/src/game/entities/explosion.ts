@@ -1,5 +1,6 @@
 import * as PIXI from 'pixi.js'
 import { type Entity } from './entity'
+import { TILE_SIZE } from '../map/tile'
 
 const EXPLOSION_SPRITESHEET_WIDTH = 36
 const EXPLOSION_SPRITESHEET_HEIGHT = 13
@@ -178,6 +179,8 @@ class Explosion extends PIXI.Container implements Entity {
     sprite.anchor.set(0.5)
     sprite.animationSpeed = animationSpeed
     sprite.loop = loop
+    sprite.width = TILE_SIZE * width
+    sprite.height = TILE_SIZE * height
     sprite.play()
 
     const explosion = new Explosion(id, sprite)
