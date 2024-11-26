@@ -139,7 +139,7 @@ export default {
         },
         {
           alias: 'snapback_mclaren.png',
-          src: 'resources/images/Accessory_04_Snapback_48x48_06.png',
+          src: 'resources/images/snapback_mclaren.png',
           data: { scaleMode: 'nearest' }
         },
         {
