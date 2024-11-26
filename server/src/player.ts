@@ -332,6 +332,9 @@ class Player extends EventEmitter {
   private isPatronoActive: boolean
   private levitateTimeout: NodeJS.Timeout
   private protegoTimeout: NodeJS.Timeout
+  private freezeTimeout: NodeJS.Timeout
+  private stunTimeout: NodeJS.Timeout
+  private originalSpeed: number
 
   constructor(playerData: PlayerData) {
     super()
@@ -340,6 +343,7 @@ class Player extends EventEmitter {
     this.playerData.isLevitating = false
     this.playerData.isProtegoActive = false
     this.isPatronoActive = false
+    this.originalSpeed = this.playerData.speed
 
     SPELLS.forEach((spellData: SpellData) => this.spells.push(new Spell(spellData)))
   }
@@ -452,6 +456,7 @@ class Player extends EventEmitter {
 
   setSpeed(speed: number) {
     this.playerData.speed = speed
+
     this.notifyChange()
   }
 
@@ -622,23 +627,33 @@ class Player extends EventEmitter {
   }
 
   freeze() {
-    const speed = this.playerData.speed
+    this.clearSlowDown()
+
+    this.originalSpeed = this.playerData.speed
 
     this.setSpeed(0)
 
-    setTimeout(() => {
-      this.setSpeed(speed)
+    this.freezeTimeout = setTimeout(() => {
+      this.setSpeed(this.originalSpeed)
     }, 5000)
   }
 
   stun() {
-    const speed = this.playerData.speed
+    this.clearSlowDown()
+
+    this.originalSpeed = this.playerData.speed
 
     this.setSpeed(10)
 
-    setTimeout(() => {
-      this.setSpeed(speed)
+    this.stunTimeout = setTimeout(() => {
+      this.setSpeed(this.originalSpeed)
     }, 5000)
+  }
+
+  clearSlowDown() {
+    clearTimeout(this.freezeTimeout)
+    clearTimeout(this.stunTimeout)
+    this.setSpeed(this.originalSpeed)
   }
 
   patrono() {

@@ -788,7 +788,7 @@ class World {
     })
   }
 
-  private handleCommand(socket, message) {
+  private async handleCommand(socket, message) {
     const parts = message.split(' ')
     const command = parts[0].substring(1)
 
@@ -813,8 +813,7 @@ class World {
     }
 
     if (command === 'tp') {
-      logger.warn('Teleport command is disabled')
-      // this.handleTeleportCommand(socket, parts)
+      this.handleTeleportCommand(socket, parts)
     } else if (command == 'tp_player') {
       // this.handleTeleportPlayerCommand(socket, parts)
     } else if (command == 'clear_map') {
@@ -959,6 +958,7 @@ class World {
     const x = parseInt(parts[1]) * 16
     const y = parseInt(parts[2]) * 16
 
+    player.movement.stop()
     player.teleport(x, y)
   }
 
