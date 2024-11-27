@@ -58,7 +58,8 @@ const i18n = createI18n({
         '100025': 'Varinha de Salgueiro',
         '100026': 'Varinha de Nogueira',
         '100027': 'Varinha de Teixo',
-        '100028': 'Varinha de Carvalho'
+        '100028': 'Varinha de Carvalho',
+        '100029': 'Boné Nacional'
       }
     }
   }

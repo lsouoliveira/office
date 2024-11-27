@@ -11,6 +11,11 @@
       "price": 500
     },
     {
+      "itemTypeId": "100029",
+      "name": "Boné Nacional",
+      "price": 500
+    },
+    {
       "itemTypeId": "100002",
       "name": "Balaclava",
       "price": 200

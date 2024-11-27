@@ -143,6 +143,11 @@ export default {
           data: { scaleMode: 'nearest' }
         },
         {
+          alias: 'snapback_nacional.png',
+          src: 'resources/images/snapback_nacional.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
           alias: 'policeman_hat_01.png',
           src: 'resources/images/Accessory_06_Policeman_Hat_48x48_01.png',
           data: { scaleMode: 'nearest' }

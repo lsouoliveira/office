@@ -96,6 +96,10 @@ const EQUIPMENTS = [
     type: EquipmentType.Helmet
   },
   {
+    id: 'snapback_nacional',
+    type: EquipmentType.Helmet
+  },
+  {
     id: 'policeman_hat_01',
     type: EquipmentType.Helmet
   },

@@ -7933,6 +7933,19 @@
     "tilesetWidth": 56,
     "tilesetHeight": 41
   },
+  "100029": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      3,
+      0
+    ],
+    "tileset": "resources/images/snapback_nacional.png",
+    "tileset_id": 0,
+    "tilesetWidth": 56,
+    "tilesetHeight": 41
+  },
   "100002": {
     "y": 0,
     "width": 1,
