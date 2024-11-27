@@ -16,6 +16,11 @@
       "price": 500
     },
     {
+      "itemTypeId": "100030",
+      "name": "Capacete Lendário",
+      "price": 800
+    },
+    {
       "itemTypeId": "100002",
       "name": "Balaclava",
       "price": 200

@@ -67,10 +67,10 @@ const addSkin = (skin, image) => {
   const canvas = document.createElement('canvas')
   const ctx = canvas.getContext('2d')
 
-  canvas.width = 16
-  canvas.height = 32
+  canvas.width = 48
+  canvas.height = 96
 
-  ctx.drawImage(image, 48, 0, 16, 32, 0, 0, 16, 32)
+  ctx.drawImage(image, 144, 0, 48, 96, 0, 0, 48, 96)
 
   skins.value.push({
     id: crypto.randomUUID(),

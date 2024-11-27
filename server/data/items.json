@@ -4968,6 +4968,14 @@
     "equipment_id": "snapback_nacional",
     "tileset_id": 0
   },
+  "100030": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": "helmet",
+    "tileset_id": 0
+  },
   "110000": {
     "is_ground": false,
     "is_walkable": false,

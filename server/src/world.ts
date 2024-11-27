@@ -100,6 +100,10 @@ const EQUIPMENTS = [
     type: EquipmentType.Helmet
   },
   {
+    id: 'helmet',
+    type: EquipmentType.Helmet
+  },
+  {
     id: 'policeman_hat_01',
     type: EquipmentType.Helmet
   },

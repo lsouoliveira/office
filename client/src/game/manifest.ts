@@ -145,7 +145,12 @@ export default {
         {
           alias: 'snapback_nacional.png',
           src: 'resources/images/snapback_nacional.png',
-          data: { scaleMode: 'nearest' }
+          data: { scalemode: 'nearest' }
+        },
+        {
+          alias: 'helmet.png',
+          src: 'resources/images/helmet.png',
+          data: { scalemode: 'nearest' }
         },
         {
           alias: 'policeman_hat_01.png',
