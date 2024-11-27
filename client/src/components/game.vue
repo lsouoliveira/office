@@ -99,12 +99,12 @@ onMounted(async () => {
         return
     }
 
-    if (!e.ctrlKey && EMOTES.includes(e.key) && !chatMessage.show) {
+    if (e.ctrlKey && EMOTES.includes(e.key) && !chatMessage.show) {
       window.dispatchEvent(new CustomEvent('ui:emote', { detail: { id: e.key } }))
       return
     }
 
-    if (e.ctrlKey && e.key >= '1' && e.key <= '5') {
+    if (!e.ctrlKey && e.key >= '1' && e.key <= '6' && !chatMessage.show) {
         const hotkeys = getHotkeys()
         const hotkey = hotkeys.find((h) => h.name === `ctrl${e.key}`)
 

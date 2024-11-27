@@ -51,7 +51,7 @@ class Emote extends PIXI.Sprite implements Entity {
     const x = EMOTE_INDEX[id][1]
     const y = EMOTE_INDEX[id][0]
 
-    const textureRect = new PIXI.Rectangle(x * 16, y * 32, 16, 32)
+    const textureRect = new PIXI.Rectangle(x * 48, y * 96, 48, 96)
     const texture = new PIXI.Texture({ source: spritesheet.source, frame: textureRect })
 
     return new Emote(id, texture, duration)

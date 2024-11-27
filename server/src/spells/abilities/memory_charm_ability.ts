@@ -28,7 +28,7 @@ class MemoryCharmAbility implements Ability {
       this.world,
       projectilePosition,
       caster.getDirectionVector(),
-      70,
+      250,
       100
     )
 

@@ -89,7 +89,7 @@ const PROJECTILES = {
     height: 1,
     frames: 4,
     loop: true,
-    animationSpeed: 0.05
+    animationSpeed: 0.1
   }
 }
 

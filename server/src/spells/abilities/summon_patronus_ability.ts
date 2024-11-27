@@ -30,7 +30,7 @@ class SummonPatronusAbility implements Ability {
       this.world,
       projectilePosition,
       caster.getDirectionVector(),
-      40,
+      250,
       10
     )
 

@@ -28,7 +28,7 @@ class StunningAbility implements Ability {
       this.world,
       projectilePosition,
       caster.getDirectionVector(),
-      120,
+      300,
       100
     )
 

@@ -33,7 +33,7 @@ class SummonObjectAbility implements Ability {
       summonPosition,
       projectilePosition,
       caster.getDirectionVector(),
-      100,
+      300,
       100
     )
 

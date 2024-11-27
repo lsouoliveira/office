@@ -28,7 +28,7 @@ class LevitatePlayerAbility implements Ability {
       this.world,
       projectilePosition,
       caster.getDirectionVector(),
-      80,
+      300,
       100
     )
 

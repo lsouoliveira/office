@@ -28,7 +28,7 @@ class FreezePlayerAbility implements Ability {
       this.world,
       projectilePosition,
       caster.getDirectionVector(),
-      90,
+      300,
       100
     )
 

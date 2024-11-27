@@ -6,29 +6,34 @@
     const { t } = useI18n()
     const hotkeys = ref([
         {
-            label: 'ctrl + 1',
+            label: '1',
             value: '',
             name: 'ctrl1'
         },
         {
-            label: 'ctrl + 2',
+            label: '2',
             value: '',
             name: 'ctrl2'
         },
         {
-            label: 'ctrl + 3',
+            label: '3',
             value: '',
             name: 'ctrl3'
         },
         {
-            label: 'ctrl + 4',
+            label: '4',
             value: '',
             name: 'ctrl4'
         },
         {
-            label: 'ctrl + 5',
+            label: '5',
             value: '',
             name: 'ctrl5'
+        },
+        {
+            label: '6',
+            value: '',
+            name: 'ctrl6'
         },
     ])
 

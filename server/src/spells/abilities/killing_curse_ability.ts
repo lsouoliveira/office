@@ -30,7 +30,7 @@ class KillingCurseAbility implements Ability {
       this.world,
       projectilePosition,
       caster.getDirectionVector(),
-      70,
+      300,
       100
     )
 
