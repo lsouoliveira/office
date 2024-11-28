@@ -103,6 +103,8 @@ class Player extends PIXI.Container implements Entity {
   private isLevitating: boolean = false
   private levitationOffset: number = 0
 
+  private isHiding: boolean
+
   constructor(id: string, composedSpritesheet: ComposedSpritesheet, layers: PIXI.Container[]) {
     super()
 
@@ -205,6 +207,9 @@ class Player extends PIXI.Container implements Entity {
         this.topHalf.pivot.set(0, 0)
         this.bottomHalf.pivot.set(0, 0)
       }
+
+      this.topHalfSprite.visible = !this.isHiding && !this.helmetSlot
+      this.bottomHalf.visible = !this.isHiding
     } catch (e) {
       console.debug(e)
     }
@@ -376,13 +381,11 @@ class Player extends PIXI.Container implements Entity {
   }
 
   show() {
-    this.topHalfSprite.visible = true
-    this.bottomHalf.visible = true
+    this.isHiding = false
   }
 
   hide() {
-    this.topHalfSprite.visible = false
-    this.bottomHalf.visible = false
+    this.isHiding = true
   }
 
   moveTo(x: number, y: number, direction: Direction) {
