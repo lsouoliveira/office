@@ -339,7 +339,7 @@ class World {
       () => {
         this.saveServer()
       },
-      10000
+      5 * 60 * 1000
     )
   }
 
