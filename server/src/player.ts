@@ -38,6 +38,8 @@ interface PlayerData {
   isAdmin: boolean
   skin: string
   helmetSlot?: Item
+  glassesSlot?: Item
+  faceMaskSlot?: Item
   rightHandSlot?: Item
   userId: number
   money: number
@@ -47,16 +49,20 @@ interface PlayerData {
 
 enum EquipmentType {
   Helmet,
-  Wand
+  Wand,
+  Glasses,
+  FaceMask
 }
 
 class Equipment {
   private id: string
   private type: EquipmentType
+  private hideHair: boolean
 
-  constructor(id: string, type: EquipmentType) {
+  constructor(id: string, type: EquipmentType, hideHair: boolean) {
     this.id = id
     this.type = type
+    this.hideHair = hideHair
   }
 
   getId() {
@@ -65,6 +71,18 @@ class Equipment {
 
   getType() {
     return this.type
+  }
+
+  getHideHair() {
+    return this.hideHair
+  }
+
+  toData() {
+    return {
+      id: this.id,
+      type: this.type,
+      hideHair: this.hideHair
+    }
   }
 }
 
@@ -484,6 +502,20 @@ class Player extends EventEmitter {
 
         this.playerData.helmetSlot = eq
         break
+      case EquipmentType.Glasses:
+        if (this.playerData.glassesSlot) {
+          this.unequip(this.playerData.glassesSlot)
+        }
+
+        this.playerData.glassesSlot = eq
+        break
+      case EquipmentType.FaceMask:
+        if (this.playerData.faceMaskSlot) {
+          this.unequip(this.playerData.faceMaskSlot)
+        }
+
+        this.playerData.faceMaskSlot = eq
+        break
       case EquipmentType.Wand:
         if (this.playerData.rightHandSlot) {
           this.unequip(this.playerData.rightHandSlot)
@@ -503,6 +535,16 @@ class Player extends EventEmitter {
           this.playerData.helmetSlot = undefined
         }
         break
+      case EquipmentType.Glasses:
+        if (this.playerData.glassesSlot?.getId() === item.getId()) {
+          this.playerData.glassesSlot = undefined
+        }
+        break
+      case EquipmentType.FaceMask:
+        if (this.playerData.faceMaskSlot?.getId() === item.getId()) {
+          this.playerData.faceMaskSlot = undefined
+        }
+        break
       case EquipmentType.Wand:
         if (this.playerData.rightHandSlot?.getId() === item.getId()) {
           this.playerData.rightHandSlot = undefined
@@ -517,6 +559,10 @@ class Player extends EventEmitter {
     switch (type) {
       case EquipmentType.Helmet:
         return this.playerData.helmetSlot
+      case EquipmentType.Glasses:
+        return this.playerData.glassesSlot
+      case EquipmentType.FaceMask:
+        return this.playerData.faceMaskSlot
       case EquipmentType.Wand:
         return this.playerData.rightHandSlot
     }
@@ -560,6 +606,8 @@ class Player extends EventEmitter {
       isAdmin: this.playerData.isAdmin,
       skin: this.playerData.skin,
       helmetSlot: this.playerData.helmetSlot?.toData(),
+      glassesSlot: this.playerData.glassesSlot?.toData(),
+      faceMaskSlot: this.playerData.faceMaskSlot?.toData(),
       rightHandSlot: this.playerData.rightHandSlot?.toData(),
       userId: this.playerData.userId,
       money: this.playerData.money,

@@ -99,7 +99,7 @@ const EQUIPMENTS = [
   },
   {
     id: 'glasses_01',
-    type: EquipmentType.Helmet,
+    type: EquipmentType.Glasses,
     sprite: 'glasses_01.png'
   },
   {
@@ -109,22 +109,22 @@ const EQUIPMENTS = [
   },
   {
     id: 'medical_mask_01',
-    type: EquipmentType.Helmet,
+    type: EquipmentType.FaceMask,
     sprite: 'medical_mask_01.png'
   },
   {
     id: 'monocle_01',
-    type: EquipmentType.Helmet,
+    type: EquipmentType.Glasses,
     sprite: 'monocle_01.png'
   },
   {
     id: 'mustache_01',
-    type: EquipmentType.Helmet,
+    type: EquipmentType.FaceMask,
     sprite: 'mustache_01.png'
   },
   {
     id: 'beard_01',
-    type: EquipmentType.Helmet,
+    type: EquipmentType.FaceMask,
     sprite: 'beard_01.png'
   },
   {
@@ -642,22 +642,26 @@ class Playground extends Scene {
 
   private updatePlayerEquipment(player: Player, playerData: any) {
     this.updatePlayerHelmet(player, playerData)
+    this.updatePlayerGlasses(player, playerData)
+    this.updatePlayerFaceMask(player, playerData)
     this.updatePlayerRightHand(player, playerData)
   }
 
   private updatePlayerHelmet(player: Player, playerData: any) {
-    if (!playerData.helmetSlot && !player.getHelmet()) {
+    const playerHelmet = player.getHelmet()
+
+    if (!playerData.helmetSlot && !playerHelmet) {
       return
     }
 
-    if (!playerData.helmetSlot) {
-      player.unequip(player.getHelmet())
+    if (!playerData.helmetSlot && playerHelmet) {
+      player.unequip(playerHelmet)
 
       return
     }
 
     const helmetSpritesheet = this.equipmentSpritesheets.get(
-      playerData.helmetSlot.itemType.equipmentId
+      playerData.helmetSlot.itemType.equipment.id
     )
 
     if (!helmetSpritesheet) {
@@ -665,14 +669,81 @@ class Playground extends Scene {
     }
 
     const helmet = new Equipment(
-      playerData.helmetSlot.itemType.equipmentId,
+      playerData.helmetSlot.itemType.equipment.id,
       EquipmentType.Helmet,
+      playerData.helmetSlot.itemType.equipment.hideHair,
       helmetSpritesheet
     )
     const animator = this.createBaseAnimator(helmet as AnimatedSprite, helmetSpritesheet)
     helmet.init(animator)
 
     player.equip(helmet)
+  }
+
+  private updatePlayerGlasses(player: Player, playerData: any) {
+    const playerGlasses = player.getGlasses()
+
+    if (!playerData.glassesSlot && !playerGlasses) {
+      return
+    }
+
+    if (!playerData.glassesSlot && playerGlasses) {
+      player.unequip(playerGlasses)
+
+      return
+    }
+
+    const glassesSpritesheet = this.equipmentSpritesheets.get(
+      playerData.glassesSlot.itemType.equipment.id
+    )
+
+    if (!glassesSpritesheet) {
+      return
+    }
+
+    const glasses = new Equipment(
+      playerData.glassesSlot.itemType.equipment.id,
+      EquipmentType.Glasses,
+      playerData.glassesSlot.itemType.equipment.hideHair,
+      glassesSpritesheet
+    )
+    const animator = this.createBaseAnimator(glasses as AnimatedSprite, glassesSpritesheet)
+    glasses.init(animator)
+
+    player.equip(glasses)
+  }
+
+  private updatePlayerFaceMask(player: Player, playerData: any) {
+    const playerFaceMask = player.getFaceMask()
+
+    if (!playerData.faceMaskSlot && !playerFaceMask) {
+      return
+    }
+
+    if (!playerData.faceMaskSlot && playerFaceMask) {
+      player.unequip(playerFaceMask)
+
+      return
+    }
+
+    const faceMaskSpritesheet = this.equipmentSpritesheets.get(
+      playerData.faceMaskSlot.itemType.equipment.id
+    )
+
+    if (!faceMaskSpritesheet) {
+      return
+    }
+
+    const faceMask = new Equipment(
+      playerData.faceMaskSlot.itemType.equipment.id,
+      EquipmentType.FaceMask,
+      playerData.faceMaskSlot.itemType.equipment.hideHair,
+      faceMaskSpritesheet
+    )
+    const animator = this.createBaseAnimator(faceMask as AnimatedSprite, faceMaskSpritesheet)
+    faceMask.init(animator)
+
+    player.equip(faceMask)
   }
 
   private updatePlayerRightHand(player: Player, playerData: any) {
@@ -688,8 +759,9 @@ class Playground extends Scene {
 
     const rightHandWeaponSprite = extractSpriteTextures(playerData.rightHandSlot.itemType.id)
     const rightHandWeapon = new Equipment(
-      playerData.rightHandSlot.itemType.equipmentId,
+      playerData.rightHandSlot.itemType.equipment.id,
       EquipmentType.Wand,
+      playerData.rightHandSlot.itemType.equipment.hideHair,
       undefined,
       rightHandWeaponSprite
     )

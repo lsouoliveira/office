@@ -36,17 +36,21 @@ const lerp = (start: number, end: number, t: number) => {
 
 enum EquipmentType {
   Helmet,
-  Wand
+  Wand,
+  Glasses,
+  FaceMask
 }
 
 class Equipment extends AnimatedSprite {
   public readonly id: string
   public readonly type: EquipmentType
+  public readonly hideHair: boolean
   private animator?: Animator
 
   constructor(
     id: string,
     type: EquipmentType,
+    hideHair: boolean,
     spriteSheet?: Spritesheet,
     textures?: PIXI.Texture[]
   ) {
@@ -58,6 +62,7 @@ class Equipment extends AnimatedSprite {
 
     this.id = id
     this.type = type
+    this.hideHair = hideHair
   }
 
   init(animator: Animator) {
@@ -79,6 +84,8 @@ class Player extends PIXI.Container implements Entity {
   private direction: Direction
   private isDrinking: boolean
   private helmetSlot?: Equipment
+  private glassesSlot?: Equipment
+  private faceMaskSlot?: Equipment
   private isSitting: boolean
 
   public playerName: PIXI.Text
@@ -208,7 +215,7 @@ class Player extends PIXI.Container implements Entity {
         this.bottomHalf.pivot.set(0, 0)
       }
 
-      this.topHalfSprite.visible = !this.isHiding && !this.helmetSlot
+      this.topHalfSprite.visible = !this.isHiding && (!this.helmetSlot || !this.helmetSlot.hideHair)
       this.bottomHalf.visible = !this.isHiding
     } catch (e) {
       console.debug(e)
@@ -250,22 +257,24 @@ class Player extends PIXI.Container implements Entity {
   }
 
   playAnimation(animation: string) {
+    const items = [this.helmetSlot, this.glassesSlot, this.faceMaskSlot]
+
     switch (this.direction) {
       case Direction.North:
         this.animator.play(animation + '_north')
-        this.helmetSlot?.getAnimator().play(animation + '_north')
+        items.forEach((item) => item?.getAnimator()?.play(animation + '_north'))
         break
       case Direction.South:
         this.animator.play(animation + '_south')
-        this.helmetSlot?.getAnimator().play(animation + '_south')
+        items.forEach((item) => item?.getAnimator()?.play(animation + '_south'))
         break
       case Direction.East:
         this.animator.play(animation + '_east')
-        this.helmetSlot?.getAnimator().play(animation + '_east')
+        items.forEach((item) => item?.getAnimator()?.play(animation + '_east'))
         break
       case Direction.West:
         this.animator.play(animation + '_west')
-        this.helmetSlot?.getAnimator().play(animation + '_west')
+        items.forEach((item) => item?.getAnimator()?.play(animation + '_west'))
         break
     }
   }
@@ -452,6 +461,23 @@ class Player extends PIXI.Container implements Entity {
         }
 
         this.helmetSlot = equipment
+        equipment.zIndex = 3
+        break
+      case EquipmentType.Glasses:
+        if (this.glassesSlot) {
+          this.topHalf.removeChild(this.glassesSlot)
+        }
+
+        this.glassesSlot = equipment
+        equipment.zIndex = 2
+        break
+      case EquipmentType.FaceMask:
+        if (this.faceMaskSlot) {
+          this.topHalf.removeChild(this.faceMaskSlot)
+        }
+
+        this.faceMaskSlot = equipment
+        equipment.zIndex = 1
         break
       case EquipmentType.Wand:
         if (this.rightHandSlot.children.length > 0) {
@@ -471,6 +497,16 @@ class Player extends PIXI.Container implements Entity {
       case EquipmentType.Helmet:
         if (this.helmetSlot?.id === equipment.id) {
           this.helmetSlot = undefined
+        }
+        break
+      case EquipmentType.Glasses:
+        if (this.glassesSlot?.id === equipment.id) {
+          this.glassesSlot = undefined
+        }
+        break
+      case EquipmentType.FaceMask:
+        if (this.faceMaskSlot?.id === equipment.id) {
+          this.faceMaskSlot = undefined
         }
         break
       case EquipmentType.Wand:
@@ -499,6 +535,14 @@ class Player extends PIXI.Container implements Entity {
 
   getHelmet() {
     return this.helmetSlot
+  }
+
+  getGlasses() {
+    return this.glassesSlot
+  }
+
+  getFaceMask() {
+    return this.faceMaskSlot
   }
 
   getRightHand() {

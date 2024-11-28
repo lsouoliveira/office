@@ -83,6 +83,7 @@ class ItemType {
       isWall: this._isWall,
       actionId: this.actionId,
       facing: this.facing,
+      equipment: this.equipment?.toData(),
       equipmentId: this.equipment?.getId(),
       nextItemId: this.nextItemId,
       isDoor: this._isDoor

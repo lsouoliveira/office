@@ -61,11 +61,13 @@ enum MessageColor {
 const EQUIPMENTS = [
   {
     id: 'ladybug_01',
-    type: EquipmentType.Helmet
+    type: EquipmentType.Helmet,
+    hideHair: false
   },
   {
     id: 'bee_01',
-    type: EquipmentType.Helmet
+    type: EquipmentType.Helmet,
+    hideHair: false
   },
   {
     id: 'snapback_01',
@@ -117,11 +119,13 @@ const EQUIPMENTS = [
   },
   {
     id: 'zombie_brain_01',
-    type: EquipmentType.Helmet
+    type: EquipmentType.Helmet,
+    hideHair: false
   },
   {
     id: 'bolt_01',
-    type: EquipmentType.Helmet
+    type: EquipmentType.Helmet,
+    hideHair: false
   },
   {
     id: 'beanie_01',
@@ -129,35 +133,38 @@ const EQUIPMENTS = [
   },
   {
     id: 'mustache_01',
-    type: EquipmentType.Helmet
+    type: EquipmentType.FaceMask
   },
   {
     id: 'beard_01',
-    type: EquipmentType.Helmet
+    type: EquipmentType.FaceMask
   },
   {
     id: 'glasses_01',
-    type: EquipmentType.Helmet
+    type: EquipmentType.Glasses
   },
   {
     id: 'monocle_01',
-    type: EquipmentType.Helmet
+    type: EquipmentType.Glasses
   },
   {
     id: 'medical_mask_01',
-    type: EquipmentType.Helmet
+    type: EquipmentType.FaceMask
   },
   {
     id: 'chef_01',
-    type: EquipmentType.Helmet
+    type: EquipmentType.Helmet,
+    hideHair: false
   },
   {
     id: 'party_cone_01',
-    type: EquipmentType.Helmet
+    type: EquipmentType.Helmet,
+    hideHair: false
   },
   {
     id: 'party_cone_04',
-    type: EquipmentType.Helmet
+    type: EquipmentType.Helmet,
+    hideHair: false
   },
   {
     id: 'wooden_wand',
@@ -332,7 +339,7 @@ class World {
       () => {
         this.saveServer()
       },
-      5 * 60 * 1000
+      10000
     )
   }
 
@@ -432,12 +439,16 @@ class World {
       const playerObject = playerData.player
       const inventoryData = playerData.inventory
 
-      const { helmetSlot, rightHandSlot, ...data } = playerObject
+      const { helmetSlot, glassesSlot, faceMaskSlot, rightHandSlot, ...data } = playerObject
       const helmetSlotItem = helmetSlot ? this.createItemFromData(helmetSlot) : null
+      const glassesSlotItem = glassesSlot ? this.createItemFromData(glassesSlot) : null
+      const faceMaskSlotItem = faceMaskSlot ? this.createItemFromData(faceMaskSlot) : null
       const rightHandSlotItem = rightHandSlot ? this.createItemFromData(rightHandSlot) : null
 
       const player = new Player({
         helmetSlot: helmetSlotItem,
+        glassesSlot: glassesSlotItem,
+        faceMaskSlot: faceMaskSlotItem,
         rightHandSlot: rightHandSlotItem,
         ...data
       })
@@ -631,7 +642,7 @@ class World {
       },
       direction: Direction.South,
       state: PlayerState.Idle,
-      speed: 50,
+      speed: 250,
       name: user.name,
       skin: DEFAULT_SKIN,
       userId: user.id,
@@ -1685,7 +1696,9 @@ class World {
       return
     }
 
-    return new Equipment(equipmentId, equipmentData.type)
+    const hideHair = equipmentData.hideHair === undefined ? true : equipmentData.hideHair
+
+    return new Equipment(equipmentId, equipmentData.type, hideHair)
   }
 
   getItemById(id) {
