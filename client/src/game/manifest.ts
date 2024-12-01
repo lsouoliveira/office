@@ -24,6 +24,16 @@ export default {
           data: { scaleMode: 'nearest' }
         },
         {
+          alias: '15_Christmas_Black_Shadow_48x48.png',
+          src: 'resources/maps/15_Christmas_Black_Shadow_48x48.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
+          alias: '18_Jail_Black_Shadow_48x48.png',
+          src: 'resources/maps/18_Jail_Black_Shadow_48x48.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
           alias: 'animated_cat_48x48.png',
           src: 'resources/images/animated_cat_48x48.png',
           data: { scaleMode: 'nearest' }
@@ -240,6 +250,16 @@ export default {
         {
           alias: 'animated_door_1_48x48.png',
           src: 'resources/images/animated_door_1_48x48.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
+          alias: 'animated_Christmas_chimney_48x48.png',
+          src: 'resources/images/animated_Christmas_chimney_48x48.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
+          alias: 'animated_Christmas_tree_lights_48x48.png',
+          src: 'resources/images/animated_Christmas_tree_lights_48x48.png',
           data: { scaleMode: 'nearest' }
         }
       ]

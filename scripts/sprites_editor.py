@@ -41,7 +41,16 @@ TILESETS = {
         "id": 80000,
         "path": "resources/maps/basement.png",
     },
+    "christmas": {
+        "id": 130000,
+        "path": "resources/maps/15_Christmas_Black_Shadow_48x48.png"
+    },
+    "jail": {
+        "id": 160000,
+        "path": "resources/maps/18_Jail_Black_Shadow_48x48.png"
+    }
 }
+
 
 
 @dataclass

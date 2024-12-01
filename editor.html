@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas Grid Image App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #canvas-container {
+            position: relative;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        canvas {
+            display: block;
+            border: 1px solid #ccc;
+        }
+        #output {
+            margin-top: 20px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <h1>Image Grid Selector</h1>
+    <p>Drop an image below:</p>
+    <input type="file" id="imageInput" accept="image/*">
+
+    <div id="canvas-container">
+        <canvas id="gridCanvas"></canvas>
+    </div>
+
+    <div id="output">
+        <label for="selectedTiles">Selected Tile IDs:</label>
+        <input type="text" id="selectedTiles" readonly>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gridCanvas');
+        const ctx = canvas.getContext('2d');
+        const imageInput = document.getElementById('imageInput');
+        const selectedTilesInput = document.getElementById('selectedTiles');
+
+        const TILE_SIZE = 48;
+        const selectedTiles = new Set();
+        let currentImage = null
+
+        // Handle image file input
+        imageInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        canvas.width = Math.ceil(img.width / TILE_SIZE) * TILE_SIZE;
+                        canvas.height = Math.ceil(img.height / TILE_SIZE) * TILE_SIZE;
+
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        ctx.drawImage(img, 0, 0);
+                        drawGrid();
+
+                        currentImage = img
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Draw grid lines on the canvas
+        function drawGrid() {
+            ctx.strokeStyle = 'rgba(0, 0, 0, 0.2)';
+            for (let x = 0; x < canvas.width; x += TILE_SIZE) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas.height);
+                ctx.stroke();
+            }
+            for (let y = 0; y < canvas.height; y += TILE_SIZE) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.stroke();
+            }
+        }
+
+        // Get tile ID based on click coordinates
+        function getTileId(x, y) {
+            const col = Math.floor(x / TILE_SIZE);
+            const row = Math.floor(y / TILE_SIZE);
+            const tilesPerRow = Math.floor(canvas.width / TILE_SIZE);
+            return row * tilesPerRow + col;
+        }
+
+        canvas.addEventListener('click', (event) => {
+            const rect = canvas.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+
+            const tileId = getTileId(x, y);
+
+            // Toggle the tile's selection
+            if (selectedTiles.has(tileId)) {
+                selectedTiles.delete(tileId); // Deselect
+            } else {
+                selectedTiles.add(tileId); // Select
+            }
+
+            // Redraw everything
+            redrawCanvas();
+            selectedTilesInput.value = Array.from(selectedTiles).sort((a, b) => a - b).join(',');
+        });
+
+        // Function to redraw everything
+        function redrawCanvas() {
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Redraw the image
+            if (currentImage) {
+                ctx.drawImage(currentImage, 0, 0);
+            }
+
+            // Redraw the grid
+            drawGrid();
+
+            // Highlight selected tiles
+            selectedTiles.forEach((tileId) => highlightTile(tileId));
+        }
+
+        function highlightTile(tileId) {
+            const tilesPerRow = Math.floor(canvas.width / TILE_SIZE);
+            const row = Math.floor(tileId / tilesPerRow);
+            const col = tileId % tilesPerRow;
+
+            ctx.fillStyle = 'rgba(255, 255, 0, 0.5)';
+            ctx.fillRect(
+                col * TILE_SIZE,
+                row * TILE_SIZE,
+                TILE_SIZE,
+                TILE_SIZE
+            );
+        }
+    </script>
+</body>
+</html>
