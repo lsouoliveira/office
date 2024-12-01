@@ -463,6 +463,7 @@ class Player extends EventEmitter {
   }
 
   teleport(x, y) {
+    this.clearTasks()
     this.movement.stop()
     this.playerData.position.x = x
     this.playerData.position.y = y

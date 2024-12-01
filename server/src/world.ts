@@ -835,7 +835,7 @@ class World {
     if (command === 'tp') {
       this.handleTeleportCommand(socket, parts)
     } else if (command == 'tp_player') {
-      // this.handleTeleportPlayerCommand(socket, parts)
+      this.handleTeleportPlayerCommand(socket, parts)
     } else if (command == 'clear_map') {
       this.handleClearMapCommand(socket)
     } else if (command.match(/^a\d+$/)) {
@@ -978,7 +978,6 @@ class World {
     const x = parseInt(parts[1]) * TILE_SIZE
     const y = parseInt(parts[2]) * TILE_SIZE
 
-    player.movement.stop()
     player.teleport(x, y)
   }
 
@@ -989,23 +988,23 @@ class World {
       return
     }
 
-    const player = this.players[session.playerId]
+    const admin = this.players[session.playerId]
 
-    if (!player) {
+    if (!admin) {
       return
     }
 
-    let playerName = parts.slice(1, parts.length - 2).join(' ')
-    playerName = playerName.substring(1, playerName.length - 1)
+    if (parts.length <= 1) {
+      return
+    }
 
-    const x = parseInt(parts[2]) * TILE_SIZE
-    const y = parseInt(parts[3]) * TILE_SIZE
+    let playerName = parts[1]
+    playerName = playerName.substring(1, playerName.length - 1)
 
     for (const player of Object.values(this.players)) {
       if (player.playerData.name === playerName) {
-        player.teleport(x, y)
         player.clearTasks()
-        player.movement.stop()
+        player.teleport(TILE_SIZE * admin.movement.gridX(), TILE_SIZE * admin.movement.gridY())
 
         return
       }
