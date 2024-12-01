@@ -51,6 +51,8 @@ class Item {
         const tilesetX = tileId % tilesWidth
         const tilesetY = Math.floor(tileId / tilesWidth)
 
+        const divY = spriteData.divY || 0
+
         const textures = this.extractTextures(
           tilesetTexture.baseTexture,
           spriteData,
@@ -59,7 +61,7 @@ class Item {
           tileSize
         )
         const spriteX = x
-        const spriteY = y + i * tileSize - spriteData.height * tileSize + tileSize
+        const spriteY = y + i * tileSize - spriteData.height * tileSize + tileSize - divY * tileSize
 
         let sprite
 
@@ -75,7 +77,7 @@ class Item {
         if (this.type.isGround()) {
           layers[0].addChild(sprite)
         } else {
-          layers[spriteData.height - i + spriteData.y + index].addChild(sprite)
+          layers[spriteData.height - i + spriteData.y + divY + index].addChild(sprite)
         }
 
         this.sprites.push(sprite)
