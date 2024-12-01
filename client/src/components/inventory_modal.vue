@@ -44,7 +44,7 @@
                                  player.value?.glassesSlot?.id === item.item.id || 
                                  player.value?.faceMaskSlot?.id === item.item.id || 
                                  player.value?.rightHandSlot?.id === item.item.id
-            const isEquipable = item.item.itemType.equipmentId !== null && !isEquipped
+            const isEquipable = item.item.itemType.equipmentId && !isEquipped
 
             return {
                 id: item.item.id,

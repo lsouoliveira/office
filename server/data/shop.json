@@ -31,6 +31,11 @@
       "price": 50
     },
     {
+      "itemTypeId": "100031",
+      "name": "Capa da Invisibilidade",
+      "price": 100
+    },
+    {
       "itemTypeId": "100004",
       "name": "Barba",
       "price": 25
