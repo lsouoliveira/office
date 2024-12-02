@@ -1109,6 +1109,7 @@ class World {
         actionId: itemTypeData.action_id,
         facing: itemTypeData.facing,
         nextItemId: itemTypeData.next_item_id,
+        description: itemTypeData.description,
         isDoor: itemTypeData.is_door
       },
       equipment
@@ -1366,6 +1367,8 @@ class World {
       this.performReplaceItemAction(socket, player, tile, item)
     } else if (item.getActionId() == 'claimReward') {
       this.performClaimRewardAction(socket, player, tile, item)
+    } else if (item.getActionId() == 'inspect') {
+      this.performInspectAction(item)
     } else if (item.getActionId() == 'equipTempItem') {
       logger.info(
         `[ Server ] Equipping temporary item ${item.getType().getId()} to player ${player.playerData.name}`
@@ -1386,6 +1389,7 @@ class World {
           actionId: item.getType().getActionId(),
           facing: item.getType().getFacing(),
           nextItemId: item.getType().getNextItemId(),
+          description: item.getType().getDescription(),
           isDoor: item.getType().isDoor()
         },
         equipment
@@ -1539,6 +1543,7 @@ class World {
         actionId: itemData.action_id,
         facing: itemData.facing,
         nextItemId: itemData.next_item_id,
+        description: itemData.description,
         isDoor: itemData.is_door
       },
       equipment
@@ -1566,6 +1571,13 @@ class World {
 
     const claimRewardTask = new ClaimRewardTask(this, player, item.getId())
     player.addTask(claimRewardTask)
+  }
+
+  private async performInspectAction(item: Item) {
+    this.io.emit('item:inspect', {
+      itemId: item.getId(),
+      description: item.getDescription()
+    })
   }
 
   private performEquipTempEquipment(socket, player, tile, item) {

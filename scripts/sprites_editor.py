@@ -48,6 +48,10 @@ TILESETS = {
     "jail": {
         "id": 160000,
         "path": "resources/maps/18_Jail_Black_Shadow_48x48.png"
+    },
+    "museum": {
+        "id": 170000,
+        "path": "resources/maps/22_Museum_Black_Shadow_48x48.png"
     }
 }
 

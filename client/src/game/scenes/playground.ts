@@ -20,6 +20,7 @@ import { Equipment, EquipmentType } from './../characters/player'
 import { SpritesheetSplitter, ComposedSpritesheet } from './../animation/spritesheet'
 import { MoneyDisplay } from './../entities/money_display'
 import { Announcement } from './../entities/announcement'
+import { Inspect } from './../entities/inspect'
 import { Projectile, ProjectileType } from './../entities/projectile'
 import { Explosion, ExplosionType } from './../entities/explosion'
 import { extractSpriteTextures } from '../utils'
@@ -197,6 +198,7 @@ class Playground extends Scene {
   private emoteSpritesheet: PIXI.Texture
   private moneyDisplay: MoneyDisplay
   private announcement: Announcement
+  private inspect: Inspect
   private projectiles: Map<string, Projectile> = new Map()
 
   async onStart() {
@@ -215,6 +217,11 @@ class Playground extends Scene {
     this.announcement.position.set(window.innerWidth / 2, 8)
     this.app.stage.addChild(this.announcement)
     this.addEntity(this.announcement)
+
+    this.inspect = new Inspect()
+    this.inspect.position.set(window.innerWidth / 2, window.innerHeight / 2)
+    this.app.stage.addChild(this.inspect)
+    this.addEntity(this.inspect)
 
     for (let i = 0; i < SKINS.length; i++) {
       const { name, sprite } = SKINS[i]
@@ -322,6 +329,7 @@ class Playground extends Scene {
       this.client.socket.on('item:added', this.handleItemAdded.bind(this))
       this.client.socket.on('item:removed', this.handleItemRemoved.bind(this))
       this.client.socket.on('item:replaced', this.handleItemReplaced.bind(this))
+      this.client.socket.on('item:inspect', this.handleItemInspect.bind(this))
       this.client.socket.on('projectile:added', this.handleProjectileAdded.bind(this))
       this.client.socket.on('projectile:removed', this.handleProjectileRemoved.bind(this))
       this.client.socket.on('projectile:updated', this.handleProjectileUpdated.bind(this))
@@ -976,6 +984,10 @@ class Playground extends Scene {
     if (oldItem.isDoor()) {
       itemToAdd.play()
     }
+  }
+
+  private handleItemInspect({ description }: { description: string }) {
+    this.inspect.show(description)
   }
 
   private async handleProjectileAdded({

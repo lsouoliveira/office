@@ -7,6 +7,7 @@ interface ItemTypeOptions {
   actionId?: string
   facing?: string
   nextItemId?: string
+  description?: string
   isDoor: boolean
 }
 
@@ -18,11 +19,13 @@ class ItemType {
   private actionId?: string
   private facing?: string
   private nextItemId?: string
+  private description?: string
   private equipment?: Equipment
   private _isDoor: boolean
 
   constructor(id: string, options: ItemTypeOptions, equipment?: Equipment) {
-    const { isGround, isWalkable, actionId, facing, isWall, nextItemId, isDoor } = options
+    const { isGround, isWalkable, actionId, facing, isWall, nextItemId, isDoor, description } =
+      options
 
     this.id = id
     this._isGround = isGround
@@ -32,6 +35,7 @@ class ItemType {
     this.facing = facing
     this.equipment = equipment
     this.nextItemId = nextItemId
+    this.description = description
     this._isDoor = isDoor || false
   }
 
@@ -71,6 +75,10 @@ class ItemType {
     return this.nextItemId
   }
 
+  getDescription(): string | undefined {
+    return this.description
+  }
+
   isDoor() {
     return this._isDoor
   }
@@ -86,6 +94,7 @@ class ItemType {
       equipment: this.equipment?.toData(),
       equipmentId: this.equipment?.getId(),
       nextItemId: this.nextItemId,
+      description: this.description,
       isDoor: this._isDoor
     }
   }

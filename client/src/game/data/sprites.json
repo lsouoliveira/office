@@ -9994,5 +9994,608 @@
       "y": 0
     },
     "tileset_id": 160000
+  },
+  "170160": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      160
+    ],
+    "tileset": "resources/maps/22_Museum_Black_Shadow_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 170000
+  },
+  "170161": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      161
+    ],
+    "tileset": "resources/maps/22_Museum_Black_Shadow_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 170000
+  },
+  "170168": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      168
+    ],
+    "tileset": "resources/maps/22_Museum_Black_Shadow_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 170000
+  },
+  "170169": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      169
+    ],
+    "tileset": "resources/maps/22_Museum_Black_Shadow_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 170000
+  },
+  "170272": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      272
+    ],
+    "tileset": "resources/maps/22_Museum_Black_Shadow_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 170000
+  },
+  "170273": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      273
+    ],
+    "tileset": "resources/maps/22_Museum_Black_Shadow_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 170000
+  },
+  "170274": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      274
+    ],
+    "tileset": "resources/maps/22_Museum_Black_Shadow_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 170000
+  },
+  "170275": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      275
+    ],
+    "tileset": "resources/maps/22_Museum_Black_Shadow_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 170000
+  },
+  "170276": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      276
+    ],
+    "tileset": "resources/maps/22_Museum_Black_Shadow_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 170000
+  },
+  "170277": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      277
+    ],
+    "tileset": "resources/maps/22_Museum_Black_Shadow_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 170000
+  },
+  "170278": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      278
+    ],
+    "tileset": "resources/maps/22_Museum_Black_Shadow_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 170000
+  },
+  "170279": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      279
+    ],
+    "tileset": "resources/maps/22_Museum_Black_Shadow_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 170000
+  },
+  "170280": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      280
+    ],
+    "tileset": "resources/maps/22_Museum_Black_Shadow_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 170000
+  },
+  "170281": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      281
+    ],
+    "tileset": "resources/maps/22_Museum_Black_Shadow_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 170000
+  },
+  "170282": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      282
+    ],
+    "tileset": "resources/maps/22_Museum_Black_Shadow_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 170000
+  },
+  "170283": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      283
+    ],
+    "tileset": "resources/maps/22_Museum_Black_Shadow_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 170000
+  },
+  "170284": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      284
+    ],
+    "tileset": "resources/maps/22_Museum_Black_Shadow_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 170000
+  },
+  "170285": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      285
+    ],
+    "tileset": "resources/maps/22_Museum_Black_Shadow_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 170000
+  },
+  "170286": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      286
+    ],
+    "tileset": "resources/maps/22_Museum_Black_Shadow_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 170000
+  },
+  "170306": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      306
+    ],
+    "tileset": "resources/maps/22_Museum_Black_Shadow_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 170000
+  },
+  "170752": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      752
+    ],
+    "tileset": "resources/maps/22_Museum_Black_Shadow_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 170000
+  },
+  "171731": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      1731
+    ],
+    "tileset": "resources/maps/22_Museum_Black_Shadow_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 170000
+  },
+  "171732": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      1732
+    ],
+    "tileset": "resources/maps/22_Museum_Black_Shadow_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 170000
+  },
+  "171733": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      1733
+    ],
+    "tileset": "resources/maps/22_Museum_Black_Shadow_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 170000
+  },
+  "171734": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      1734
+    ],
+    "tileset": "resources/maps/22_Museum_Black_Shadow_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 170000
+  },
+  "171735": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      1735
+    ],
+    "tileset": "resources/maps/22_Museum_Black_Shadow_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 170000
+  },
+  "171736": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      1736
+    ],
+    "tileset": "resources/maps/22_Museum_Black_Shadow_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 170000
+  },
+  "171737": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      1737
+    ],
+    "tileset": "resources/maps/22_Museum_Black_Shadow_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 170000
+  },
+  "171738": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      1738
+    ],
+    "tileset": "resources/maps/22_Museum_Black_Shadow_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 170000
+  },
+  "171739": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      1739
+    ],
+    "tileset": "resources/maps/22_Museum_Black_Shadow_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 170000
+  },
+  "171740": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      1740
+    ],
+    "tileset": "resources/maps/22_Museum_Black_Shadow_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 170000
+  },
+  "171747": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      1747
+    ],
+    "tileset": "resources/maps/22_Museum_Black_Shadow_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 170000
+  },
+  "171748": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      1748
+    ],
+    "tileset": "resources/maps/22_Museum_Black_Shadow_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 170000
+  },
+  "171749": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      1749
+    ],
+    "tileset": "resources/maps/22_Museum_Black_Shadow_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 170000
+  },
+  "171750": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      1750
+    ],
+    "tileset": "resources/maps/22_Museum_Black_Shadow_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 170000
+  },
+  "171751": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      1751
+    ],
+    "tileset": "resources/maps/22_Museum_Black_Shadow_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 170000
+  },
+  "171752": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      1752
+    ],
+    "tileset": "resources/maps/22_Museum_Black_Shadow_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 170000
+  },
+  "171753": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      1753
+    ],
+    "tileset": "resources/maps/22_Museum_Black_Shadow_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 170000
+  },
+  "171754": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      1754
+    ],
+    "tileset": "resources/maps/22_Museum_Black_Shadow_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 170000
+  },
+  "171755": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      1755
+    ],
+    "tileset": "resources/maps/22_Museum_Black_Shadow_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 170000
+  },
+  "171756": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      1756
+    ],
+    "tileset": "resources/maps/22_Museum_Black_Shadow_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 170000
+  },
+  "171889": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      1889
+    ],
+    "tileset": "resources/maps/22_Museum_Black_Shadow_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 170000
+  },
+  "180000": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      1889
+    ],
+    "tileset": "resources/maps/22_Museum_Black_Shadow_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 180000
   }
 }
+

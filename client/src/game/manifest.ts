@@ -34,6 +34,11 @@ export default {
           data: { scaleMode: 'nearest' }
         },
         {
+          alias: '22_Museum_Black_Shadow_48x48.png',
+          src: 'resources/maps/22_Museum_Black_Shadow_48x48.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
           alias: 'animated_cat_48x48.png',
           src: 'resources/images/animated_cat_48x48.png',
           data: { scaleMode: 'nearest' }

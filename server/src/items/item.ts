@@ -61,6 +61,10 @@ class Item {
     return this.type.getNextItemId()
   }
 
+  getDescription(): string | undefined {
+    return this.type.getDescription()
+  }
+
   isDoor(): boolean {
     return this.type.isDoor()
   }
