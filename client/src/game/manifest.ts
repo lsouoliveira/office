@@ -103,6 +103,51 @@ export default {
           data: { scaleMode: 'nearest' }
         },
         {
+          alias: 'Conference_woman_48x48.png',
+          src: 'resources/images/Conference_woman_48x48.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
+          alias: 'Edward_48x48.png',
+          src: 'resources/images/Edward_48x48.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
+          alias: 'Molly_48x48.png',
+          src: 'resources/images/Molly_48x48.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
+          alias: 'Pier_48x48.png',
+          src: 'resources/images/Pier_48x48.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
+          alias: 'Prisoner_1_48x48.png',
+          src: 'resources/images/Prisoner_1_48x48.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
+          alias: 'Prisoner_2_48x48.png',
+          src: 'resources/images/Prisoner_2_48x48.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
+          alias: 'Rob_48x48.png',
+          src: 'resources/images/Rob_48x48.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
+          alias: 'Samuel_48x48.png',
+          src: 'resources/images/Samuel_48x48.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
+          alias: 'Santa_Claus_48x48.png',
+          src: 'resources/images/Santa_Claus_48x48.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
           alias: 'party_cone_01.png',
           src: 'resources/images/Accessory_19_Party_Cone_48x48_01.png',
           data: { scaleMode: 'nearest' }
@@ -165,6 +210,11 @@ export default {
         {
           alias: 'helmet.png',
           src: 'resources/images/helmet.png',
+          data: { scalemode: 'nearest' }
+        },
+        {
+          alias: 'santa_hat.png',
+          src: 'resources/images/santa_hat.png',
           data: { scalemode: 'nearest' }
         },
         {

@@ -8317,7 +8317,20 @@
     "states": [
       0
     ],
-    "tileset": "resources/images/maps/collision_tileset.png",
+    "tileset": "resources/maps/collision_tileset.png",
+    "tileset_id": 0,
+    "tilesetWidth": 56,
+    "tilesetHeight": 41
+  },
+  "100032": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      3,
+      0
+    ],
+    "tileset": "resources/images/santa_hat.png",
     "tileset_id": 0,
     "tilesetWidth": 56,
     "tilesetHeight": 41
@@ -10598,4 +10611,3 @@
     "tileset_id": 180000
   }
 }
-

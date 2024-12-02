@@ -4984,6 +4984,14 @@
     "equipment_id": null,
     "tileset_id": 0
   },
+  "100032": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": "santa_hat",
+    "tileset_id": 0
+  },
   "110000": {
     "is_ground": false,
     "is_walkable": false,
@@ -6373,4 +6381,3 @@
     "tileset_id": 180000
   }
 }
-

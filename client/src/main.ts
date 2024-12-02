@@ -61,7 +61,8 @@ const i18n = createI18n({
         '100028': 'Varinha de Carvalho',
         '100029': 'Boné Nacional',
         '100030': 'Capacete Lendário',
-        '100031': 'Tijolo'
+        '100031': 'Tijolo',
+        '100032': 'Gorro de Natal'
       }
     }
   }

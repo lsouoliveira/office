@@ -44,6 +44,42 @@ const SKINS = [
   {
     name: 'Adam',
     sprite: 'Adam_48x48.png'
+  },
+  {
+    name: 'Conference Woman',
+    sprite: 'Conference_woman_48x48.png'
+  },
+  {
+    name: 'Edward',
+    sprite: 'Edward_48x48.png'
+  },
+  {
+    name: 'Molly',
+    sprite: 'Molly_48x48.png'
+  },
+  {
+    name: 'Pier',
+    sprite: 'Pier_48x48.png'
+  },
+  {
+    name: 'Prisoner 1',
+    sprite: 'Prisoner_1_48x48.png'
+  },
+  {
+    name: 'Prisoner 2',
+    sprite: 'Prisoner_2_48x48.png'
+  },
+  {
+    name: 'Rob',
+    sprite: 'Rob_48x48.png'
+  },
+  {
+    name: 'Samuel',
+    sprite: 'Samuel_48x48.png'
+  },
+  {
+    name: 'Santa Claus',
+    sprite: 'Santa_Claus_48x48.png'
   }
 ]
 
@@ -97,6 +133,11 @@ const EQUIPMENTS = [
     id: 'helmet',
     type: EquipmentType.Helmet,
     sprite: 'helmet.png'
+  },
+  {
+    id: 'santa_hat',
+    type: EquipmentType.Helmet,
+    sprite: 'santa_hat.png'
   },
   {
     id: 'glasses_01',

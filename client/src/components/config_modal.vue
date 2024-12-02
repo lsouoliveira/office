@@ -5,10 +5,33 @@ const SKIN_URLS = [
   { url: '/resources/images/Adam_48x48.png', name: 'Adam' },
   { url: '/resources/images/Alex_48x48.png', name: 'Alex' },
   { url: '/resources/images/Amelia_48x48.png', name: 'Amelia' },
-  { url: '/resources/images/Bob_48x48.png', name: 'Bob' }
+  { url: '/resources/images/Bob_48x48.png', name: 'Bob' },
+  { url: '/resources/images/Conference_woman_48x48.png', name: 'Conference Woman' },
+  { url: '/resources/images/Edward_48x48.png', name: 'Edward' },
+  { url: '/resources/images/Molly_48x48.png', name: 'Molly' },
+  { url: '/resources/images/Pier_48x48.png', name: 'Pier' },
+  { url: '/resources/images/Prisoner_1_48x48.png', name: 'Prisoner 1' },
+  { url: '/resources/images/Prisoner_2_48x48.png', name: 'Prisoner 2' },
+  { url: '/resources/images/Rob_48x48.png', name: 'Rob' },
+  { url: '/resources/images/Samuel_48x48.png', name: 'Samuel' },
+  { url: '/resources/images/Santa_Claus_48x48.png', name: 'Santa Claus' }
 ]
 
-const SKINS_ORDER = ['Bob', 'Amelia', 'Alex', 'Adam']
+const SKINS_ORDER = [
+  'Bob',
+  'Amelia',
+  'Alex',
+  'Adam',
+  'Conference Woman',
+  'Edward',
+  'Molly',
+  'Pier',
+  'Prisoner 1',
+  'Prisoner 2',
+  'Rob',
+  'Samuel',
+  'Santa Claus'
+]
 
 const model = defineModel()
 
