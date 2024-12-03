@@ -245,11 +245,11 @@ const topPadName = computed(() => {
     return getOponentUser()?.username
   }
 
-  if (pad1.value && !pad2.value) {
-    return getUser(pad1.value.userId)?.username
+  if (!pad1.value) {
+      return null
   }
 
-  return getUser(pad2.value.userId)?.username
+  return getUser(pad1.value.userId)?.username
 })
 
 const getPlayerPad = () => {
