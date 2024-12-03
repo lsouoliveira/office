@@ -1372,7 +1372,7 @@ class World {
     } else if (item.getActionId() == 'claimReward') {
       this.performClaimRewardAction(socket, player, tile, item)
     } else if (item.getActionId() == 'inspect') {
-      this.performInspectAction(item)
+      this.performInspectAction(socket, item)
     } else if (item.getActionId() == 'equipTempItem') {
       logger.info(
         `[ Server ] Equipping temporary item ${item.getType().getId()} to player ${player.playerData.name}`
@@ -1577,8 +1577,8 @@ class World {
     player.addTask(claimRewardTask)
   }
 
-  private async performInspectAction(item: Item) {
-    this.io.emit('item:inspect', {
+  private async performInspectAction(socket: any, item: Item) {
+    socket.emit('item:inspect', {
       itemId: item.getId(),
       description: item.getDescription()
     })

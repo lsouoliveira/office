@@ -31,6 +31,7 @@ class SummonObjectAbility implements Ability {
     const projectile = new SummonObjectProjectile(
       this.world,
       summonPosition,
+      caster,
       projectilePosition,
       caster.getDirectionVector(),
       300,

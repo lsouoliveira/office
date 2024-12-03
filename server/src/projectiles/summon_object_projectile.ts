@@ -1,14 +1,17 @@
 import { Player } from '../player'
 import { World } from '../world'
 import DefaultProjectile from './default_projectile'
+import { Tile } from '../map/tile'
 
 class SummonObjectProjectile extends DefaultProjectile {
   static RADIUS = 8
   private summonPosition: { x: number; y: number }
+  private caster: Player
 
   constructor(
     world: World,
     summonPosition: { x: number; y: number },
+    caster: Player,
     position: { x: number; y: number },
     direction: { x: number; y: number },
     speed: number,
@@ -30,11 +33,30 @@ class SummonObjectProjectile extends DefaultProjectile {
     )
 
     this.summonPosition = summonPosition
+    this.caster = caster
   }
 
   onEffect(target: any) {
     if (target instanceof Player && !target.isSitting()) {
       target.teleport(this.summonPosition.x, this.summonPosition.y)
+
+      return
+    }
+
+    if (target instanceof Tile) {
+      const item = target.getTopItemWithAction()
+
+      if (!item) {
+        return
+      }
+
+      const itemType = item.getType()
+
+      if (itemType.getId() != '90001') {
+        return
+      }
+
+      this.caster.drink()
     }
   }
 }

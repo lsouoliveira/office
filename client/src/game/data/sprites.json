@@ -7907,6 +7907,20 @@
     },
     "tileset_id": 0
   },
+  "90001": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      9
+    ],
+    "tileset": "resources/maps/Room_Builder_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 0
+  },
   "100000": {
     "y": 0,
     "width": 1,
@@ -10597,6 +10611,20 @@
     "tileset_id": 170000
   },
   "180000": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      1889
+    ],
+    "tileset": "resources/maps/22_Museum_Black_Shadow_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 180000
+  },
+  "180001": {
     "y": 0,
     "width": 1,
     "height": 1,

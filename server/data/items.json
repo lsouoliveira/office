@@ -2842,7 +2842,7 @@
   "10632": {
     "is_ground": false,
     "is_walkable": false,
-    "action_id": "drink",
+    "action_id": null,
     "facing": null,
     "equipment_id": null,
     "tileset_id": 10000
@@ -4728,6 +4728,14 @@
     "equipment_id": null,
     "tileset_id": 0
   },
+  "90001": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": "drink",
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 0
+  },
   "100000": {
     "is_ground": false,
     "is_walkable": false,
@@ -6376,6 +6384,15 @@
     "is_walkable": false,
     "action_id": "inspect",
     "description": "1° Campeonato de Ping-Pong do Office (02/12/2024)\n\n1° Feijão\n2° Karine\n3° Lucas",
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 180000
+  },
+  "180001": {
+    "is_ground": false,
+    "is_walkable": false,
+    "action_id": "inspect",
+    "description": "2° Campeonato de Ping-Pong do Office (03/12/2024)\n\n1° Greg\n2° Lucas\n3° Karine",
     "facing": null,
     "equipment_id": null,
     "tileset_id": 180000
