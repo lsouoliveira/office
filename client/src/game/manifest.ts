@@ -318,6 +318,16 @@ export default {
           data: { scaleMode: 'nearest' }
         }
       ]
+    },
+    {
+      name: 'kart',
+      assets: [
+        {
+          alias: 'red_kart.png',
+          src: 'resources/images/red_kart.png',
+          data: { scaleMode: 'nearest' }
+        }
+      ]
     }
   ]
 }
