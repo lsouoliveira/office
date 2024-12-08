@@ -308,7 +308,7 @@ class Playground extends Scene {
       this.addChild(layer)
     }
 
-    this.connectToServer()
+    // this.connectToServer()
   }
 
   update() {

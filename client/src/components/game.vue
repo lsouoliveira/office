@@ -12,6 +12,7 @@ import InventoryModal from './inventory_modal.vue'
 import ShopModal from './shop_modal.vue'
 import LotteryModal from './lottery_modal.vue'
 import HotkeysModal from './hotkeys_modal.vue'
+import KartModal from './kart_modal.vue'
 
 const EMOTES = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', '=']
 
@@ -32,6 +33,7 @@ const showInventoryModal = ref(false)
 const showShopModal = ref(false)
 const showLotteryModal = ref(false)
 const showHotkeysModal = ref(false)
+const showKartModal = ref(false)
 const showOs = ref(false)
 const showPianoModal = ref(false)
 const osApplication = ref(null)
@@ -142,6 +144,8 @@ const handleChatMessage = ({ target: { value } }) => {
     showPianoModal.value = true
   } else if (message === '/tennis') {
     showTennisModal.value = true
+  } else if (message === '/kart') {
+    showKartModal.value = true
   } else {
     window.dispatchEvent(new CustomEvent('ui:send_message', { detail: { message } }))
   }
@@ -262,6 +266,7 @@ const filteredItems = computed(() => {
   <shop-modal @close="showShopModal = false" v-model="showShopModal" v-if="showShopModal" />
   <lottery-modal @close="showLotteryModal = false" v-model="showLotteryModal" v-if="showLotteryModal" />
   <hotkeys-modal @close="showHotkeysModal = false" v-model="showHotkeysModal" v-if="showHotkeysModal" />
+  <kart-modal @close="showKartModal = false" v-model="showKartModal" v-if="showKartModal" />
 
   <div class="fixed top-0 left-0 w-full">
     <div class="flex items-center justify-end p-4 gap-2">
