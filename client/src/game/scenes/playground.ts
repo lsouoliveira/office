@@ -944,7 +944,13 @@ class Playground extends Scene {
     }
 
     if (player.id !== this.player.id || broadcast) {
-      window.dispatchEvent(new CustomEvent('ui:note_played', { detail: { note } }))
+      if (note instanceof Array) {
+        note.forEach((n) => {
+          window.dispatchEvent(new CustomEvent('ui:note_played', { detail: { note: n } }))
+        })
+      } else {
+        window.dispatchEvent(new CustomEvent('ui:note_played', { detail: { note } }))
+      }
     }
   }
 

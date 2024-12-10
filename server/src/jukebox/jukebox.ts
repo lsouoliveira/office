@@ -362,8 +362,18 @@ class Jukebox {
       const symbol = this.sheet.getSymbol(this.currentNoteIndex)
 
       if (symbol instanceof NoteSymbol) {
-        this.playNoteSymbol(symbol as NoteSymbol)
-        this.currentNoteIndex++
+        const notesToPlay: NoteSymbol[] = []
+
+        while (
+          this.currentNoteIndex < this.sheet.getSymbolCount() &&
+          this.sheet.getSymbol(this.currentNoteIndex) instanceof NoteSymbol
+        ) {
+          const note = this.sheet.getSymbol(this.currentNoteIndex) as NoteSymbol
+          notesToPlay.push(note)
+          this.currentNoteIndex++
+        }
+
+        this.playNoteSymbol(notesToPlay)
       } else if (symbol instanceof PauseSymbol) {
         const pauseSymbol = symbol as PauseSymbol
 
@@ -416,16 +426,16 @@ class Jukebox {
     }
   }
 
-  private playNoteSymbol(note: NoteSymbol) {
-    const noteName = this.getNoteName(note.key)
+  private playNoteSymbol(notes: NoteSymbol[]) {
+    const noteNames = notes.map((note) => this.getNoteName(note.key)).filter((noteName) => noteName)
 
-    if (!noteName) {
+    if (!noteNames.length) {
       return
     }
 
     this.io.emit('player:notePlayed', {
       playerId: this.requesterId,
-      note: noteName,
+      note: noteNames,
       broadcast: true
     })
   }
