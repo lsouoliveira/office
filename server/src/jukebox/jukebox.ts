@@ -135,18 +135,19 @@ const BLACK_KEY_SHORTCUTS = [
 ]
 
 enum PauseDuration {
-  SHORTEST = 50,
-  SHORTER = 150,
-  SHORT = 250,
-  PAUSE = 400,
-  LONG = 500,
-  LONGER = 600,
-  LONGEST = 700,
-  BREAK = 700
+  SHORTEST = 100,
+  SHORTER = 180,
+  SHORT = 360,
+  PAUSE = 800,
+  LONG = 1000,
+  LONGER = 1100,
+  LONGEST = 1600,
+  BREAK = 400
 }
 
 enum SymbolType {
   NOTE,
+  COMPOUND_NOTE,
   PAUSE
 }
 
@@ -175,6 +176,16 @@ class NoteSymbol extends Symbol {
     super(SymbolType.NOTE)
 
     this.key = key
+  }
+}
+
+class CompoundNoteSymbol extends Symbol {
+  readonly notes: NoteSymbol[]
+
+  constructor(notes: NoteSymbol[]) {
+    super(SymbolType.COMPOUND_NOTE)
+
+    this.notes = notes
   }
 }
 
@@ -214,20 +225,40 @@ class SheetParser {
     let currentIndex = 0
 
     while (currentIndex < this.input.length) {
-      const remainingInput = this.input.slice(currentIndex)
+      let remainingInput = this.input.slice(currentIndex)
 
       if (remainingInput.match(/^\[[1-9a-z0-9!@$%^()*QWERTYUIOPASDFGHJZCVBNM]+\]/)) {
         currentIndex = this.parseSimultaneousNotes(remainingInput, symbols, currentIndex)
+        remainingInput = this.input.slice(currentIndex)
+
+        if (this.hasNoteNext(remainingInput)) {
+          symbols.push(new PauseSymbol(PauseDuration.SHORTER))
+        }
       } else if (
         remainingInput.match(
           /^\[([1-9a-z0-9!@$%^()*QWERTYUIOPASDFGHJZCVBNM] *)*[1-9a-z0-9!@$%^()*QWERTYUIOPASDFGHJZCVBNM]\]/
         )
       ) {
         currentIndex = this.parseShortestPauseNotes(remainingInput, symbols, currentIndex)
+        remainingInput = this.input.slice(currentIndex)
+
+        if (this.hasNoteNext(remainingInput)) {
+          symbols.push(new PauseSymbol(PauseDuration.SHORTER))
+        }
       } else if (remainingInput.match(/^[1-9a-z0-9!@$%^()*QWERTYUIOPASDFGHJZCVBNM]+/)) {
         currentIndex = this.parseShorterPauseNotes(remainingInput, symbols, currentIndex)
+        remainingInput = this.input.slice(currentIndex)
+
+        if (this.hasNoteNext(remainingInput)) {
+          symbols.push(new PauseSymbol(PauseDuration.SHORTER))
+        }
       } else if (remainingInput.match(/^[1-9a-z0-9!@$%^()*QWERTYUIOPASDFGHJZCVBNM]/)) {
         currentIndex = this.parseSingleNote(remainingInput, symbols, currentIndex)
+        remainingInput = this.input.slice(currentIndex)
+
+        if (this.hasNoteNext(remainingInput)) {
+          symbols.push(new PauseSymbol(PauseDuration.SHORTER))
+        }
       } else if (remainingInput.match(/^\| +\|/)) {
         currentIndex = this.parseLongestPause(remainingInput, symbols, currentIndex)
       } else if (remainingInput.match(/^ +\| +/)) {
@@ -239,7 +270,9 @@ class SheetParser {
       } else if (remainingInput.match(/^ +/)) {
         currentIndex = this.parseShortPause(remainingInput, symbols, currentIndex)
       } else if (remainingInput.match(/^\n/)) {
-        symbols.push(new PauseSymbol(PauseDuration.BREAK))
+        if (symbols.length > 0 && !(symbols[symbols.length - 1] instanceof PauseSymbol)) {
+          symbols.push(new PauseSymbol(PauseDuration.BREAK))
+        }
         currentIndex++
       } else {
         return new Sheet(symbols)
@@ -249,11 +282,21 @@ class SheetParser {
     return new Sheet(symbols)
   }
 
+  private hasNoteNext(remainingInput: string) {
+    return (
+      remainingInput.match(/^\[[1-9a-z0-9!@$%^()*QWERTYUIOPASDFGHJZCVBNM]+\]/) ||
+      remainingInput.match(
+        /^\[([1-9a-z0-9!@$%^()*QWERTYUIOPASDFGHJZCVBNM] *)*[1-9a-z0-9!@$%^()*QWERTYUIOPASDFGHJZCVBNM]\]/
+      ) ||
+      remainingInput.match(/^[1-9a-z0-9!@$%^()*QWERTYUIOPASDFGHJZCVBNM]/)
+    )
+  }
+
   private parseSimultaneousNotes(input: string, symbols: Symbol[], currentIndex: number): number {
     const match = input.match(/^\[([1-9a-z0-9!@$%^()*QWERTYUIOPASDFGHJZCVBNM]+)\]/)
     if (match) {
       const notes = match[1].split('')
-      notes.forEach((note) => symbols.push(new NoteSymbol(note)))
+      symbols.push(new CompoundNoteSymbol(notes.map((note) => new NoteSymbol(note))))
       return currentIndex + match[0].length
     }
     throw new Error('Unexpected parsing error for simultaneous notes.')
@@ -362,18 +405,11 @@ class Jukebox {
       const symbol = this.sheet.getSymbol(this.currentNoteIndex)
 
       if (symbol instanceof NoteSymbol) {
-        const notesToPlay: NoteSymbol[] = []
-
-        while (
-          this.currentNoteIndex < this.sheet.getSymbolCount() &&
-          this.sheet.getSymbol(this.currentNoteIndex) instanceof NoteSymbol
-        ) {
-          const note = this.sheet.getSymbol(this.currentNoteIndex) as NoteSymbol
-          notesToPlay.push(note)
-          this.currentNoteIndex++
-        }
-
-        this.playNoteSymbol(notesToPlay)
+        this.currentNoteIndex++
+        this.playNoteSymbol([symbol])
+      } else if (symbol instanceof CompoundNoteSymbol) {
+        this.currentNoteIndex++
+        this.playNoteSymbol(symbol.notes)
       } else if (symbol instanceof PauseSymbol) {
         const pauseSymbol = symbol as PauseSymbol
 
@@ -453,4 +489,12 @@ class Jukebox {
   }
 }
 
-export { Jukebox, SheetParser, SymbolType, NoteSymbol, PauseSymbol, PauseDuration }
+export {
+  Jukebox,
+  SheetParser,
+  SymbolType,
+  NoteSymbol,
+  CompoundNoteSymbol,
+  PauseSymbol,
+  PauseDuration
+}

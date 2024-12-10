@@ -1,12 +1,21 @@
-import { SheetParser, SymbolType, NoteSymbol, PauseSymbol, PauseDuration } from './jukebox'
+import {
+  SheetParser,
+  SymbolType,
+  NoteSymbol,
+  CompoundNoteSymbol,
+  PauseSymbol,
+  PauseDuration
+} from './jukebox'
 
 test('parses notes played together', () => {
   const input = '[abc]'
   const parser = new SheetParser(input)
   const sheet = parser.parse()
-  const expectedSymbols = [SymbolType.NOTE, SymbolType.NOTE, SymbolType.NOTE]
+  const expectedSymbols = [
+    new CompoundNoteSymbol([new NoteSymbol('a'), new NoteSymbol('b'), new NoteSymbol('c')])
+  ]
 
-  expect(sheet.toSymbolTypes()).toStrictEqual(expectedSymbols)
+  expect(sheet.getSymbols()).toStrictEqual(expectedSymbols)
 })
 
 test('parses notes played as fast as possible', () => {
@@ -105,9 +114,7 @@ test('parses a combination of simultaneous notes, shortest pauses, quick notes, 
   const sheet = parser.parse()
 
   const expectedSymbols = [
-    new NoteSymbol('a'),
-    new NoteSymbol('b'),
-    new NoteSymbol('c'),
+    new CompoundNoteSymbol([new NoteSymbol('a'), new NoteSymbol('b'), new NoteSymbol('c')]),
     new PauseSymbol(PauseDuration.SHORT),
     new NoteSymbol('a'),
     new PauseSymbol(PauseDuration.SHORTEST),
