@@ -25,6 +25,7 @@ import { Projectile, ProjectileType } from './../entities/projectile'
 import { Explosion, ExplosionType } from './../entities/explosion'
 import { extractSpriteTextures } from '../utils'
 import { TILE_SIZE } from './../map/tile'
+import { Jukebox } from '../jukebox/jukebox'
 
 const DEFAULT_SKIN = 'Bob'
 
@@ -241,6 +242,7 @@ class Playground extends Scene {
   private announcement: Announcement
   private inspect: Inspect
   private projectiles: Map<string, Projectile> = new Map()
+  private jukebox: Jukebox
 
   async onStart() {
     // const stats = new Stats(this.app.renderer)
@@ -308,10 +310,12 @@ class Playground extends Scene {
       this.addChild(layer)
     }
 
+    this.jukebox = new Jukebox()
+
     this.connectToServer()
   }
 
-  update() {
+  update(dt: any) {
     if (this.isLoading) {
       return
     }
@@ -328,6 +332,7 @@ class Playground extends Scene {
     }
 
     this.camera.update()
+    this.jukebox.update(dt.deltaMS / 1000)
   }
 
   fixedUpdate(dt: number) {
@@ -366,6 +371,7 @@ class Playground extends Scene {
       this.client.socket.on('player:memory_charm', this.handleMemoryCharm.bind(this))
       this.client.socket.on('computer:open', this.handleComputerOpen.bind(this))
       this.client.socket.on('jukebox:open', this.handleJukeboxOpen.bind(this))
+      this.client.socket.on('jukebox:nextTrack', this.handleJukeboxNextTrack.bind(this))
       this.client.socket.on('world:announcement', this.handleWorldAnnouncement.bind(this))
       this.client.socket.on('ping_pong:open', this.handlePingPongOpen.bind(this))
       this.client.socket.on('item:added', this.handleItemAdded.bind(this))
@@ -596,6 +602,10 @@ class Playground extends Scene {
 
     this.isLoading = false
     this.isConnectingText.destroy()
+
+    if (gameState.currentTrack) {
+      this.jukebox.play(gameState.currentTrack)
+    }
   }
 
   private addPlayer(playerData: any) {
@@ -972,6 +982,10 @@ class Playground extends Scene {
 
   private handleJukeboxOpen() {
     window.dispatchEvent(new CustomEvent('ui:show_jukebox'))
+  }
+
+  private handleJukeboxNextTrack(track: any) {
+    this.jukebox.play(track)
   }
 
   private async handleWorldAnnouncement({ message, level }: { message: string; level: number }) {

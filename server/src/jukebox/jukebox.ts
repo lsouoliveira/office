@@ -1,4 +1,5 @@
 import logger from '../logger'
+import * as crypto from 'crypto'
 
 const WHITE_KEYS = [
   'C2',
@@ -171,11 +172,13 @@ class PauseSymbol extends Symbol {
 
 class NoteSymbol extends Symbol {
   readonly key: string
+  readonly noteName?: string | null
 
   constructor(key: string) {
     super(SymbolType.NOTE)
 
     this.key = key
+    this.noteName = getNoteName(key)
   }
 }
 
@@ -190,10 +193,16 @@ class CompoundNoteSymbol extends Symbol {
 }
 
 class Sheet {
+  private id: string
   private symbols: Symbol[]
 
   constructor(symbols: Symbol[]) {
+    this.id = crypto.randomUUID()
     this.symbols = symbols
+  }
+
+  getId() {
+    return this.id
   }
 
   getSymbolCount() {
@@ -378,6 +387,18 @@ class SheetParser {
   }
 }
 
+const getNoteName = (key: string) => {
+  if (WHITE_KEY_SHORCUTS.indexOf(key) != -1) {
+    return WHITE_KEYS.at(WHITE_KEY_SHORCUTS.indexOf(key))
+  }
+
+  if (BLACK_KEY_SHORTCUTS.indexOf(key) != -1) {
+    return BLACK_KEYS.at(BLACK_KEY_SHORTCUTS.indexOf(key))
+  }
+
+  return null
+}
+
 enum JukeboxState {
   PAUSED,
   PLAYING
@@ -406,10 +427,8 @@ class Jukebox {
 
       if (symbol instanceof NoteSymbol) {
         this.currentNoteIndex++
-        this.playNoteSymbol([symbol])
       } else if (symbol instanceof CompoundNoteSymbol) {
         this.currentNoteIndex++
-        this.playNoteSymbol(symbol.notes)
       } else if (symbol instanceof PauseSymbol) {
         const pauseSymbol = symbol as PauseSymbol
 
@@ -445,6 +464,17 @@ class Jukebox {
     this.playNextSheet()
   }
 
+  getCurrentTrack() {
+    if (!this.sheet) {
+      return null
+    }
+
+    return {
+      id: this.sheet.getId(),
+      symbols: this.sheet.getSymbols().slice(this.currentNoteIndex)
+    }
+  }
+
   private playNextSheet() {
     if (this.sheetQueue.length > 0 && this.state === JukeboxState.PAUSED) {
       const nextSheet = this.sheetQueue.shift()
@@ -458,34 +488,13 @@ class Jukebox {
 
         const sheetParser = new SheetParser(sheet)
         this.sheet = sheetParser.parse()
+
+        this.io.emit('jukebox:nextTrack', {
+          id: this.sheet.getId(),
+          symbols: this.sheet.getSymbols()
+        })
       }
     }
-  }
-
-  private playNoteSymbol(notes: NoteSymbol[]) {
-    const noteNames = notes.map((note) => this.getNoteName(note.key)).filter((noteName) => noteName)
-
-    if (!noteNames.length) {
-      return
-    }
-
-    this.io.emit('player:notePlayed', {
-      playerId: this.requesterId,
-      note: noteNames,
-      broadcast: true
-    })
-  }
-
-  private getNoteName(key: string) {
-    if (WHITE_KEY_SHORCUTS.indexOf(key) != -1) {
-      return WHITE_KEYS.at(WHITE_KEY_SHORCUTS.indexOf(key))
-    }
-
-    if (BLACK_KEY_SHORTCUTS.indexOf(key) != -1) {
-      return BLACK_KEYS.at(BLACK_KEY_SHORTCUTS.indexOf(key))
-    }
-
-    return null
   }
 }
 

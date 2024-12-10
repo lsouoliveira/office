@@ -704,7 +704,8 @@ class World {
 
     return {
       players: connectedPlayers,
-      map: this.map.toData()
+      map: this.map.toData(),
+      currentTrack: this.jukebox.getCurrentTrack()
     }
   }
 

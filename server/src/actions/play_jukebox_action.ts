@@ -1,6 +1,6 @@
 import { ActionHandler } from './action_handler'
 
-const JUKEBOX_PRICE = 25
+const JUKEBOX_PRICE = 0.01
 const MAX_MUSIC_SHEET_LENGTH = 2000
 
 class PlayJukeboxAction extends ActionHandler {
