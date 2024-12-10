@@ -52,6 +52,10 @@ TILESETS = {
     "museum": {
         "id": 170000,
         "path": "resources/maps/22_Museum_Black_Shadow_48x48.png"
+    },
+    "music": {
+        "id": 190000,
+        "path": "resources/maps/6_Music_and_sport_Black_Shadow_48x48.png"
     }
 }
 

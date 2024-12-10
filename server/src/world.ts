@@ -5,6 +5,7 @@ import { Item } from './items/item'
 import { ItemType } from './items/item_type'
 import { MoveTask } from './tasks/move_task'
 import { SitTask } from './tasks/sit_task'
+import { JukeboxTask } from './tasks/jukebox_task'
 import { ComputerTask } from './tasks/computer_task'
 import { PingPongTask } from './tasks/ping_pong_task'
 import { DrinkTask } from './tasks/drink_task'
@@ -27,12 +28,14 @@ import { GetPlayerLotteryTicketAction } from './actions/get_player_lottery_ticke
 import { GetLastLotteryResultsAction } from './actions/get_last_lottery_results_action'
 import { BuyLotteryTicketAction } from './actions/buy_lottery_ticket_action'
 import { GetNextLotteryAction } from './actions/get_next_lottery_action'
+import { PlayJukeboxAction } from './actions/play_jukebox_action'
 import RewardSpawnerSystem from './rewards/reward_spawner_system'
 import Reward from './rewards/reward'
 import SpawnZone from './rewards/spawn_zone'
 import { getSpellData, spellExists } from './spells/spells'
 import SpellSystem from './spells/spell_system'
 import ProjectileSystem from './projectiles/projectile_system'
+import { Jukebox, SheetParser } from './jukebox/jukebox'
 import { TILE_SIZE } from './config'
 
 import jsonwebtoken from 'jsonwebtoken'
@@ -207,7 +210,8 @@ const ACTION_HANDLER = {
   getPlayerLotteryTicket: GetPlayerLotteryTicketAction,
   getLastLotteryResults: GetLastLotteryResultsAction,
   buyLotteryTicket: BuyLotteryTicketAction,
-  getNextLottery: GetNextLotteryAction
+  getNextLottery: GetNextLotteryAction,
+  playJukebox: PlayJukeboxAction
 }
 
 const spawnPoints = [
@@ -252,6 +256,7 @@ class World {
   private rewardSpawnerSystem: RewardSpawnerSystem
   private spellSystem: SpellSystem
   private projectileSystem: ProjectileSystem
+  private jukebox: Jukebox
 
   constructor(io: Server) {
     this.io = io
@@ -266,6 +271,7 @@ class World {
     )
     this.spellSystem = new SpellSystem(this)
     this.projectileSystem = new ProjectileSystem(this)
+    this.jukebox = new Jukebox(this.io)
 
     for (const spawnPoint of spawnPoints) {
       const x = spawnPoint.start.x
@@ -299,6 +305,7 @@ class World {
 
     this.rewardSpawnerSystem.update(TICK_RATE)
     this.projectileSystem.update(TICK_RATE)
+    this.jukebox.update(TICK_RATE)
   }
 
   start() {
@@ -842,6 +849,8 @@ class World {
       this.handleTeleportPlayerCommand(socket, parts)
     } else if (command == 'clear_map') {
       this.handleClearMapCommand(socket)
+    } else if (command == 'skip') {
+      this.jukebox.skip()
     } else if (command.match(/^a\d+$/)) {
       // this.handleEquipItem(socket, command)
     } else {
@@ -1361,6 +1370,8 @@ class World {
 
     if (item.getActionId() == 'sit') {
       this.performSitAction(socket, player, tile, item)
+    } else if (item.getActionId() == 'jukebox') {
+      this.performJukeboxAction(socket, player, tile, item)
     } else if (item.getActionId() == 'computer') {
       this.performComputerAction(socket, player, tile)
     } else if (item.getActionId() == 'ping_pong') {
@@ -1459,6 +1470,24 @@ class World {
 
     const sitTask = new SitTask(player, item, tile)
     player.addTask(sitTask)
+  }
+
+  private performJukeboxAction(socket, player, tile, item) {
+    player.clearTasks()
+
+    if (!player.movement.isNeighbour(tile.getX(), tile.getY())) {
+      const target = this.findAvailableNeighbourTile(player, tile)
+
+      if (!target) {
+        return
+      }
+
+      const moveTask = new MoveTask(player, [target[0], target[1]])
+      player.addTask(moveTask)
+    }
+
+    const jukeboxTask = new JukeboxTask(socket)
+    player.addTask(jukeboxTask)
   }
 
   private performComputerAction(socket, player, tile) {
@@ -1758,6 +1787,12 @@ class World {
 
   sendMessage(message, data) {
     this.io.emit(message, data)
+  }
+
+  playJukebox(requesterId: string, musicSheet: string) {
+    logger.info(`Player ${requesterId} is playing the jukebox`)
+
+    this.jukebox.play(requesterId, musicSheet)
   }
 }
 

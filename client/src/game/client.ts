@@ -118,6 +118,10 @@ class Client {
     return this.sendAction('getNextLottery', {})
   }
 
+  playJukebox(musicSheet: string) {
+    return this.sendAction('playJukebox', { musicSheet })
+  }
+
   private sendAction(action: string, data: any): Promise<any> {
     return new Promise((resolve, reject) => {
       const requestId = Math.random().toString(36).substring(7)

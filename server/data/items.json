@@ -4736,6 +4736,14 @@
     "equipment_id": null,
     "tileset_id": 0
   },
+  "90002": {
+    "is_ground": false,
+    "is_walkable": true,
+    "action_id": "jukebox",
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 0
+  },
   "100000": {
     "is_ground": false,
     "is_walkable": false,
@@ -6405,5 +6413,14 @@
     "facing": null,
     "equipment_id": null,
     "tileset_id": 180000
+  },
+  "190624": {
+    "is_ground": false,
+    "is_walkable": true,
+    "action_id": null,
+    "facing": null,
+    "equipment_id": null,
+    "tileset_id": 190000
   }
 }
+

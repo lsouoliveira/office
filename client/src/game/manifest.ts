@@ -316,6 +316,11 @@ export default {
           alias: 'animated_Christmas_tree_lights_48x48.png',
           src: 'resources/images/animated_Christmas_tree_lights_48x48.png',
           data: { scaleMode: 'nearest' }
+        },
+        {
+          alias: '6_Music_and_sport_Black_Shadow_48x48.png',
+          src: 'resources/maps/6_Music_and_sport_Black_Shadow_48x48.png',
+          data: { scaleMode: 'nearest' }
         }
       ]
     }

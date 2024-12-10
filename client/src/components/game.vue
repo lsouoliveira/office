@@ -12,6 +12,7 @@ import InventoryModal from './inventory_modal.vue'
 import ShopModal from './shop_modal.vue'
 import LotteryModal from './lottery_modal.vue'
 import HotkeysModal from './hotkeys_modal.vue'
+import JukeboxModal from './jukebox_modal.vue'
 
 const EMOTES = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', '=']
 
@@ -32,6 +33,7 @@ const showInventoryModal = ref(false)
 const showShopModal = ref(false)
 const showLotteryModal = ref(false)
 const showHotkeysModal = ref(false)
+const showJukeboxModal = ref(false)
 const showOs = ref(false)
 const showPianoModal = ref(false)
 const osApplication = ref(null)
@@ -72,6 +74,10 @@ onMounted(async () => {
 
   window.addEventListener('ui:show_ping_pong', () => {
     showTennisModal.value = true
+  })
+
+  window.addEventListener('ui:show_jukebox', () => {
+    showJukeboxModal.value = true
   })
 
   window.addEventListener('keydown', (e) => {
@@ -142,6 +148,8 @@ const handleChatMessage = ({ target: { value } }) => {
     showPianoModal.value = true
   } else if (message === '/tennis') {
     showTennisModal.value = true
+  } else if (message === '/jukebox') {
+    showJukeboxModal.value = true
   } else {
     window.dispatchEvent(new CustomEvent('ui:send_message', { detail: { message } }))
   }
@@ -235,8 +243,6 @@ const toggleAudio = () => {
           return
         }
 
-        console.log('Playing note:', note)
-
         pianoInstance.play(note)
       })
 
@@ -262,6 +268,7 @@ const filteredItems = computed(() => {
   <shop-modal @close="showShopModal = false" v-model="showShopModal" v-if="showShopModal" />
   <lottery-modal @close="showLotteryModal = false" v-model="showLotteryModal" v-if="showLotteryModal" />
   <hotkeys-modal @close="showHotkeysModal = false" v-model="showHotkeysModal" v-if="showHotkeysModal" />
+  <jukebox-modal @close="showJukeboxModal = false" v-model="showJukeboxModal" v-if="showJukeboxModal" />
 
   <div class="fixed top-0 left-0 w-full">
     <div class="flex items-center justify-end p-4 gap-2">

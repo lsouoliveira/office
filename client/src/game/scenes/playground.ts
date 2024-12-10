@@ -365,6 +365,7 @@ class Playground extends Scene {
       this.client.socket.on('player:emotePlayed', this.handlePlayEmote.bind(this))
       this.client.socket.on('player:memory_charm', this.handleMemoryCharm.bind(this))
       this.client.socket.on('computer:open', this.handleComputerOpen.bind(this))
+      this.client.socket.on('jukebox:open', this.handleJukeboxOpen.bind(this))
       this.client.socket.on('world:announcement', this.handleWorldAnnouncement.bind(this))
       this.client.socket.on('ping_pong:open', this.handlePingPongOpen.bind(this))
       this.client.socket.on('item:added', this.handleItemAdded.bind(this))
@@ -935,14 +936,14 @@ class Playground extends Scene {
     player.moveTo(x, y, direction)
   }
 
-  private handleNotePlayed({ playerId, note }) {
+  private handleNotePlayed({ playerId, note, broadcast }) {
     const player = this.players[playerId]
 
     if (!player) {
       return
     }
 
-    if (player.id !== this.player.id) {
+    if (player.id !== this.player.id || broadcast) {
       window.dispatchEvent(new CustomEvent('ui:note_played', { detail: { note } }))
     }
   }
@@ -961,6 +962,10 @@ class Playground extends Scene {
 
   private handleComputerOpen() {
     window.dispatchEvent(new CustomEvent('ui:show_os'))
+  }
+
+  private handleJukeboxOpen() {
+    window.dispatchEvent(new CustomEvent('ui:show_jukebox'))
   }
 
   private async handleWorldAnnouncement({ message, level }: { message: string; level: number }) {
