@@ -83,6 +83,7 @@ class Player extends PIXI.Container implements Entity {
   private speed = 1
   private direction: Direction
   private isDrinking: boolean
+  private isEating: boolean
   private helmetSlot?: Equipment
   private glassesSlot?: Equipment
   private faceMaskSlot?: Equipment
@@ -253,6 +254,12 @@ class Player extends PIXI.Container implements Entity {
       return
     }
 
+    if (this.isEating && this.direction == Direction.South) {
+      this.playAnimation('eat')
+
+      return
+    }
+
     return this.playAnimation('idle')
   }
 
@@ -316,6 +323,7 @@ class Player extends PIXI.Container implements Entity {
     this.direction = data.direction
     this.speed = data.speed
     this.isDrinking = data.isDrinking
+    this.isEating = data.isEating
     this.isSitting = data.state == State.Sitting
     this.isLevitating = data.isLevitating
 
@@ -358,6 +366,8 @@ class Player extends PIXI.Container implements Entity {
       case Direction.South:
         if (this.isDrinking) {
           this.playAnimation('drink')
+        } else if (this.isEating) {
+          this.playAnimation('eat')
         } else {
           this.playAnimation('idle')
         }

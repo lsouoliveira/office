@@ -507,7 +507,8 @@ class Playground extends Scene {
       new Animation('walk_west', composedSpritesheet.getTextures('walk_west', x, y), 0.2),
       new Animation('sit_west', composedSpritesheet.getTextures('sit_west', x, y), 0.025),
       new Animation('sit_east', composedSpritesheet.getTextures('sit_east', x, y), 0.025),
-      new Animation('drink_south', composedSpritesheet.getTextures('drink_south', x, y), 0.025)
+      new Animation('drink_south', composedSpritesheet.getTextures('drink_south', x, y), 0.025),
+      new Animation('eat_south', composedSpritesheet.getTextures('eat_south', x, y), 0.025)
     ])
   }
 
@@ -524,7 +525,8 @@ class Playground extends Scene {
       new Animation('walk_west', spritesheet.animations.walk_west, 0.2),
       new Animation('sit_west', spritesheet.animations.sit_west, 0.025),
       new Animation('sit_east', spritesheet.animations.sit_east, 0.025),
-      new Animation('drink_south', spritesheet.animations.drink_south, 0.025)
+      new Animation('drink_south', spritesheet.animations.drink_south, 0.025),
+      new Animation('eat_south', spritesheet.animations.drink_south, 0.025)
     ])
   }
 

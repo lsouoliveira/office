@@ -35,6 +35,7 @@ interface PlayerData {
   speed: number
   name: string
   isDrinking: boolean
+  isEating: boolean
   isAdmin: boolean
   skin: string
   helmetSlot?: Item
@@ -314,6 +315,7 @@ class PlayerMovement {
 }
 
 const DRINKING_TIME = 30000
+const EATING_TIME = 5 * 60 * 1000
 const patronoDuration = 30
 const patronos = [
   '🐶',
@@ -345,6 +347,7 @@ class Player extends EventEmitter {
   private tasks: Task[] = []
   private occupiedItem: Item
   private drinkingTimeout: NodeJS.Timeout
+  private eatingTimeout: NodeJS.Timeout
   private inventory: Inventory = new Inventory()
   private spells: Spell[] = []
   private patronoTimer: number
@@ -362,6 +365,7 @@ class Player extends EventEmitter {
     this.playerData.isLevitating = false
     this.playerData.isProtegoActive = false
     this.playerData.isDrinking = false
+    this.playerData.isEating = false
     this.isPatronoActive = false
     this.originalSpeed = this.playerData.speed
 
@@ -445,6 +449,8 @@ class Player extends EventEmitter {
   }
 
   drink() {
+    this.clearEatingStatus()
+
     clearTimeout(this.drinkingTimeout)
 
     this.playerData.isDrinking = true
@@ -455,6 +461,29 @@ class Player extends EventEmitter {
     }, DRINKING_TIME)
 
     this.notifyChange()
+  }
+
+  eat() {
+    this.clearEatingStatus()
+
+    clearTimeout(this.eatingTimeout)
+
+    this.playerData.isEating = true
+
+    this.eatingTimeout = setTimeout(() => {
+      this.playerData.isEating = false
+      this.notifyChange()
+    }, EATING_TIME)
+
+    this.notifyChange()
+  }
+
+  clearEatingStatus() {
+    clearTimeout(this.drinkingTimeout)
+    clearTimeout(this.eatingTimeout)
+
+    this.playerData.isDrinking = false
+    this.playerData.isEating = false
   }
 
   setSkin(skin: string) {
@@ -604,6 +633,7 @@ class Player extends EventEmitter {
       speed: this.playerData.speed,
       name: this.playerData.name,
       isDrinking: this.playerData.isDrinking,
+      isEating: this.playerData.isEating,
       isAdmin: this.playerData.isAdmin,
       skin: this.playerData.skin,
       helmetSlot: this.playerData.helmetSlot?.toData(),
