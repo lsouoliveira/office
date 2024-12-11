@@ -1,6 +1,7 @@
 import EventEmitter from 'events'
 import { Grid, AStarFinder } from 'pathfinding'
-import { GameMap } from './map'
+import { GameMap } from './map/game_map'
+import { Tile } from './map/tile'
 import { Task } from './tasks/task'
 import { Item } from './items/item'
 import { Inventory } from './inventory/inventory'
@@ -8,6 +9,51 @@ import Spell from './spells/spell'
 import { SPELLS } from './spells/spells'
 import SpellData from './spells/spell_data'
 import { TILE_SIZE } from './config'
+
+const getTileBehindPlayer = (player: Player): number[] => {
+  const playerX = player.movement.gridX()
+  const playerY = player.movement.gridY()
+
+  switch (player.playerData.direction) {
+    case Direction.North:
+      return [playerX, playerY + 1]
+    case Direction.South:
+      return [playerX, playerY - 1]
+    case Direction.East:
+      return [playerX - 1, playerY]
+    case Direction.West:
+      return [playerX + 1, playerY]
+    default:
+      throw new Error('Invalid direction')
+  }
+}
+
+const findAvailableNeighbourTile = (player: Player, map: GameMap): number[] | null => {
+  const tileBehind = getTileBehindPlayer(player)
+  const possibleTileNeighbors = [
+    tileBehind,
+    [tileBehind[0] + 1, tileBehind[1]],
+    [tileBehind[0] + 1, tileBehind[1] - 1],
+    [tileBehind[0], tileBehind[1] - 1],
+    [tileBehind[0] - 1, tileBehind[1] - 1],
+    [tileBehind[0] - 1, tileBehind[1]],
+    [tileBehind[0] - 1, tileBehind[1] + 1],
+    [tileBehind[0], tileBehind[1] + 1],
+    [tileBehind[0] + 1, tileBehind[1] + 1]
+  ]
+
+  for (const neighbourTile of possibleTileNeighbors) {
+    if (!map.contains(neighbourTile[0], neighbourTile[1])) {
+      continue
+    }
+
+    if (player.movement.canReach(neighbourTile[0], neighbourTile[1])) {
+      return neighbourTile
+    }
+  }
+
+  return null
+}
 
 interface Position {
   x: number
@@ -141,6 +187,34 @@ class PlayerMovement {
         }
       }
     }
+
+    if (this.player.isFollowing()) {
+      this.follow()
+    }
+  }
+
+  follow() {
+    try {
+      if (!this.nextTile && this.player.followee) {
+        const followee = this.player.followee
+
+        if (!this.map.contains(followee.movement.gridX(), followee.movement.gridY())) {
+          this.player.stopFollowing()
+
+          return
+        }
+
+        const targetTile = findAvailableNeighbourTile(this.player.followee, this.map)
+
+        if (!targetTile) {
+          this.player.stopFollowing()
+
+          return
+        }
+
+        this.moveTo(targetTile[0], targetTile[1])
+      }
+    } catch (_) {}
   }
 
   stop() {
@@ -342,8 +416,10 @@ const patronos = [
 const PROTEGO_DURATION = 2500
 
 class Player extends EventEmitter {
-  public playerData: PlayerData
-  public movement: PlayerMovement
+  playerData: PlayerData
+  movement: PlayerMovement
+  followee?: Player
+
   private tasks: Task[] = []
   private occupiedItem: Item
   private drinkingTimeout: NodeJS.Timeout
@@ -355,6 +431,7 @@ class Player extends EventEmitter {
   private levitateTimeout: NodeJS.Timeout
   private protegoTimeout: NodeJS.Timeout
   private freezeTimeout: NodeJS.Timeout
+  private followTimeout: NodeJS.Timeout
   private stunTimeout: NodeJS.Timeout
   private originalSpeed: number
 
@@ -792,6 +869,30 @@ class Player extends EventEmitter {
     this.playerData.isProtegoActive = false
     this.notifyChange()
     clearTimeout(this.protegoTimeout)
+  }
+
+  follow(player: Player) {
+    this.followee = player
+  }
+
+  followForDuration(player: Player, duration: number) {
+    clearTimeout(this.followTimeout)
+    this.follow(player)
+
+    this.followTimeout = setTimeout(() => {
+      if (player.getId() == this.followee?.getId()) {
+        this.stopFollowing()
+      }
+    }, duration)
+  }
+
+  isFollowing() {
+    return this.followee != null
+  }
+
+  stopFollowing() {
+    this.followee = undefined
+    this.movement.stop()
   }
 }
 

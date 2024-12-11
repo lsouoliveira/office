@@ -11,6 +11,7 @@ import UnlockDoorAbility from './abilities/unlock_door_ability'
 import SummonObjectAbility from './abilities/summon_object_ability'
 import MemoryCharmAbility from './abilities/memory_charm_ability'
 import ShieldPlayerAbility from './abilities/shield_player_ability'
+import ControlPlayerAbility from './abilities/control_player_ability'
 import { World } from './../world'
 
 class SpellSystem {
@@ -31,6 +32,7 @@ class SpellSystem {
     this.abilities['summon_object'] = new SummonObjectAbility(world)
     this.abilities['memory_charm'] = new MemoryCharmAbility(world)
     this.abilities['shield_player'] = new ShieldPlayerAbility(world)
+    this.abilities['control_player'] = new ControlPlayerAbility(world)
   }
 
   cast(player: Player, spellId: number) {

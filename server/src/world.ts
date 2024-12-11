@@ -1360,6 +1360,8 @@ class World {
 
       item.vacate()
     }
+
+    player.stopFollowing()
   }
 
   handleItemUse(socket, player, tile, item) {

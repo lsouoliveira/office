@@ -14,6 +14,11 @@ class MoveTask extends Task {
   }
 
   _perform() {
+    if (this.player.isFollowing()) {
+      this.markAsDone()
+      return
+    }
+
     if (!this.isMoving) {
       this.isMoving = true
 

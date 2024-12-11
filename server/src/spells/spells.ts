@@ -60,6 +60,12 @@ const SPELLS = [
     spelling: 'Protego',
     abilityName: 'shield_player',
     cooldown: 5
+  }),
+  new SpellData({
+    id: 11,
+    spelling: 'Imperio',
+    abilityName: 'control_player',
+    cooldown: 5
   })
 ]
 

@@ -10,7 +10,8 @@ enum ProjectileType {
   STUNNING = 'stunning',
   LEVITATE = 'levitate',
   SUMMON_OBJECT = 'summon_object',
-  MEMORY_CHARM = 'memory_charm'
+  MEMORY_CHARM = 'memory_charm',
+  CONTROL_PLAYER = 'control_player'
 }
 
 const SPRITESHEET_WIDTH = 36
@@ -90,7 +91,16 @@ const PROJECTILES = {
     frames: 4,
     loop: true,
     animationSpeed: 0.1
-  }
+  },
+  [ProjectileType.CONTROL_PLAYER]: {
+    assetPath: 'yellow_effects.png',
+    tileId: 370,
+    width: 1,
+    height: 3,
+    frames: 3,
+    loop: true,
+    animationSpeed: 0.1
+  },
 }
 
 class Projectile extends PIXI.Container implements Entity {

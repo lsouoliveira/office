@@ -52,11 +52,11 @@ class SummonObjectProjectile extends DefaultProjectile {
 
       const itemType = item.getType()
 
-      if (itemType.getId() != '90001') {
-        return
+      if (itemType.getId() == '90001') {
+        this.caster.drink()
+      } else if (itemType.getId() == '90003') {
+        this.caster.eat()
       }
-
-      this.caster.drink()
     }
   }
 }
