@@ -122,12 +122,12 @@ onMounted(async () => {
         return
     }
 
-    if (e.ctrlKey && EMOTES.includes(e.key) && !chatMessage.show) {
+    if (canEmote(e)) {
       window.dispatchEvent(new CustomEvent('ui:emote', { detail: { id: e.key } }))
       return
     }
 
-    if (!e.ctrlKey && e.key >= '1' && e.key <= '6' && !chatMessage.show) {
+    if (canHotkey(e)) {
         const hotkeys = getHotkeys()
         const hotkey = hotkeys.find((h) => h.name === `ctrl${e.key}`)
 
@@ -138,6 +138,14 @@ onMounted(async () => {
     }
   })
 })
+
+const canEmote = (e) => {
+    return e.ctrlKey && EMOTES.includes(e.key) && !chatMessage.show && !showPianoModal.value
+}
+
+const canHotkey = (e) => {
+    return !e.ctrlKey && e.key >= '1' && e.key <= '6' && !chatMessage.show && !showPianoModal.value
+}
 
 onUnmounted(() => {
   window.removeEventListener('keydown', () => {})

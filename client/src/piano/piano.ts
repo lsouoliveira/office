@@ -85,13 +85,7 @@ class Piano {
   }
 
   private normalizeVolume(volume: number) {
-    if (volume <= 0.25) {
-      return Math.max((volume / 0.25) * 20 - 20, -20)
-    }
-
-    const t = (volume - 0.25) / 0.75
-
-    return t ** 2 * (3 - 2 * t) * 20
+    return volume ** 2 * (3 - 2 * volume) * 40 - 20
   }
 }
 

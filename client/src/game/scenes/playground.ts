@@ -243,6 +243,7 @@ class Playground extends Scene {
   private inspect: Inspect
   private projectiles: Map<string, Projectile> = new Map()
   private jukebox: Jukebox
+  private jukeboxTimeout: NodeJS.Timeout
 
   async onStart() {
     // const stats = new Stats(this.app.renderer)
@@ -312,6 +313,10 @@ class Playground extends Scene {
 
     this.jukebox = new Jukebox()
 
+    this.jukeboxTimeout = setInterval(() => {
+      this.jukebox.update(1.0 / 60.0)
+    }, 1000 / 60)
+
     this.connectToServer()
   }
 
@@ -332,7 +337,6 @@ class Playground extends Scene {
     }
 
     this.camera.update()
-    this.jukebox.update(dt.deltaMS / 1000)
   }
 
   fixedUpdate(dt: number) {
@@ -428,6 +432,8 @@ class Playground extends Scene {
     window.removeEventListener('keyup', this.handleKeyUp.bind(this))
 
     this.client.socket.disconnect()
+
+    clearInterval(this.jukeboxTimeout)
   }
 
   setupMap(mapData) {
