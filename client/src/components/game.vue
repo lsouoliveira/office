@@ -41,6 +41,8 @@ const piano = ref(null)
 const isAudioEnabled = ref(false)
 const itemsSearch = ref('')
 const audio = ref(null)
+const volume = ref(50)
+const hasFocus = ref(false)
 
 const osRoot = useTemplateRef('osRoot')
 
@@ -50,8 +52,23 @@ onMounted(async () => {
 
   audio.value = new Audio('resources/audio/notification.mp3')
 
+  loadAudioSettings()
+  loadVolume()
+
   loadSprites().then((sprites) => {
     items.data = sprites
+  })
+
+  window.addEventListener('focus', () => {
+    hasFocus.value = true
+  })
+
+  window.addEventListener('blur', () => {
+    hasFocus.value = false
+  })
+
+  window.addEventListener('click', () => {
+    enableAudio()
   })
 
   window.addEventListener('ui:show_os', () => {
@@ -66,7 +83,7 @@ onMounted(async () => {
   })
 
   window.addEventListener('ui:player_message', () => {
-    if (isAudioEnabled.value && !document.hasFocus()) {
+    if (isAudioEnabled.value && !hasFocus.value) {
       audio.value?.fastSeek(0)
       audio.value?.play()
     }
@@ -232,11 +249,17 @@ const handleNoteRelease = (note) => {
 const toggleAudio = () => {
   isAudioEnabled.value = !isAudioEnabled.value
 
+  localStorage.setItem('audio:enabled', isAudioEnabled.value)
+}
+
+const enableAudio = () => {
   if (isAudioEnabled.value && !piano.value) {
     const pianoInstance = new Piano()
 
     pianoInstance.init().then(() => {
       piano.value = pianoInstance
+
+      setVolume(volume.value)
 
       window.addEventListener('ui:note_played', ({ detail: { note } }) => {
         if (!isAudioEnabled.value) {
@@ -257,13 +280,48 @@ const toggleAudio = () => {
   }
 }
 
+const loadAudioSettings = () => {
+    const audioEnabled = localStorage.getItem('audio:enabled') == 'true'
+    isAudioEnabled.value = audioEnabled
+}
+
 const filteredItems = computed(() => {
   return items.data.filter((item) => item.id.includes(itemsSearch.value))
+})
+
+const handleVolumeChange = () => {
+    setVolume(volume.value)
+
+    localStorage.setItem('audio:volume', volume.value)
+}
+
+const setVolume = (volume: number)  => {
+    const normalizedVolume = volume / 100
+
+    if (audio.value) {
+        audio.value.volume = normalizedVolume
+    }
+
+    if (piano.value) {
+        piano.value.setVolume(normalizedVolume)
+    }
+}
+
+const loadVolume = () => {
+    const volumeValue = parseInt(localStorage.getItem('audio:volume') || 50)
+
+    volume.value = volumeValue
+
+    setVolume(volumeValue)
+}
+
+const isOverlayVisible = computed(() => {
+    return isAudioEnabled.value && !piano.value
 })
 </script>
 <template>
   <config-modal @close="showConfigModal = false" v-model="showConfigModal" v-if="showConfigModal" />
-  <tennis-modal @close="showTennisModal = false" v-model="showTennisModal" v-if="showTennisModal" />
+  <tennis-modal @close="showTennisModal = false" v-model="showTennisModal" v-if="showTennisModal" :volume="volume" />
   <inventory-modal @close="showInventoryModal = false" v-model="showInventoryModal" v-if="showInventoryModal" />
   <shop-modal @close="showShopModal = false" v-model="showShopModal" v-if="showShopModal" />
   <lottery-modal @close="showLotteryModal = false" v-model="showLotteryModal" v-if="showLotteryModal" />
@@ -272,6 +330,22 @@ const filteredItems = computed(() => {
 
   <div class="fixed top-0 left-0 w-full">
     <div class="flex items-center justify-end p-4 gap-2">
+      <b-dropdown :triggers="['hover']" aria-role="list">
+          <template #trigger>
+              <b-button
+                :icon-left="isAudioEnabled ? 'volume-high' : 'volume-mute'"
+                type="is-info"
+                @click="toggleAudio"
+              />
+          </template>
+
+          <b-dropdown-item custom="true">
+              <b-field class="w-48">
+                <b-slider v-model="volume" @change="handleVolumeChange"></b-slider>
+              </b-field>
+          </b-dropdown-item>
+      </b-dropdown>
+
       <b-button
         icon-left="keyboard"
         type="is-primary"
@@ -296,11 +370,6 @@ const filteredItems = computed(() => {
         @click="showInventoryModal = true"
       />
 
-      <b-button
-        :icon-left="isAudioEnabled ? 'volume-high' : 'volume-mute'"
-        type="is-info"
-        @click="toggleAudio"
-      />
       <b-button icon-left="cog" type="is-warning" @click="showConfigModal = true" />
     </div>
   </div>
@@ -360,6 +429,12 @@ const filteredItems = computed(() => {
   </b-modal>
 
   <piano-modal v-model="showPianoModal" @press="handleNotePress" @release="handleNoteRelease" />
+
+  <div class="fixed top-0 left-0 w-full h-full bg-black/80" v-if="isOverlayVisible">
+    <div class="flex items-center justify-center w-full h-full text-yellow-500 font-bold">
+        Clique para habilitar o som
+    </div>
+  </div>
 </template>
 
 <style scoped>

@@ -3,6 +3,7 @@ import * as Tone from 'tone'
 class Piano {
   private playCallback?: (note: string) => void
   private releaseCallback?: (note: string) => void
+  private sampler?: Tone.Sampler
 
   constructor() {
     console.log('Piano constructor')
@@ -48,6 +49,8 @@ class Piano {
       baseUrl: 'https://tonejs.github.io/audio/salamander/'
     }).toDestination()
 
+    this.sampler = sampler
+
     this.playCallback = (note: string) => {
       sampler.triggerAttack(note)
     }
@@ -71,6 +74,24 @@ class Piano {
     }
 
     this.releaseCallback(note)
+  }
+
+  setVolume(volume: number) {
+    if (!this.sampler) {
+      return
+    }
+
+    this.sampler.volume.value = this.normalizeVolume(volume)
+  }
+
+  private normalizeVolume(volume: number) {
+    if (volume <= 0.25) {
+      return Math.max((volume / 0.25) * 20 - 20, -20)
+    }
+
+    const t = (volume - 0.25) / 0.75
+
+    return t ** 2 * (3 - 2 * t) * 20
   }
 }
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineModel, ref, onMounted, computed, useTemplateRef } from 'vue'
+import { defineModel, ref, onMounted, computed, useTemplateRef, defineProps } from 'vue'
 import { TennisClient } from '../tennis/client'
 import { TennisGame, StageType, WIDTH, HEIGHT, PAD_WIDTH } from '../tennis/game'
 
@@ -10,6 +10,9 @@ enum State {
 }
 
 const model = defineModel()
+const props = defineProps<{
+    volume: number
+}>()
 const tennisClient = ref(null)
 const isLoading = ref(false)
 const users = ref([])
@@ -57,7 +60,7 @@ onMounted(() => {
     rematchSent.value = false
 
     if (!game.value) {
-      game.value = new TennisGame(gameRoot.value, handlePadMove, handleUpdate)
+      game.value = new TennisGame(gameRoot.value, handlePadMove, handleUpdate, volume.value)
 
       game.value.init()
       game.value.start()

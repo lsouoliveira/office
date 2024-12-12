@@ -399,11 +399,12 @@ class TennisGame {
   private hitSound: HTMLAudioElement
   private mainloopInterval?: NodeJS.Timeout
 
-  constructor(root: HTMLElement, onPadMove: (x: number) => void, onUpdate: (dt: number) => void) {
+  constructor(root: HTMLElement, onPadMove: (x: number) => void, onUpdate: (dt: number) => void, volume: number) {
     this.root = root
     this.onPadMove = onPadMove
     this.onUpdate = onUpdate
     this.hitSound = new Audio('resources/hit.mp3')
+    this.hitSound.volume = volume / 100
   }
 
   init() {
