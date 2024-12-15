@@ -18,8 +18,8 @@ class SummonPatronusAbility implements Ability {
     const projectilePosition = {
       x:
         casterPosition.x +
-        caster.getDirectionVector().x * (TILE_SIZE + PatronumProjectile.RADIUS) +
-        (Math.abs(caster.getDirectionVector().y) * TILE_SIZE) / 2,
+        TILE_SIZE / 2 +
+        caster.getDirectionVector().x * (TILE_SIZE / 2 + PatronumProjectile.RADIUS),
       y:
         casterPosition.y +
         caster.getDirectionVector().y * (TILE_SIZE + PatronumProjectile.RADIUS) +

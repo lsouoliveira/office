@@ -16,8 +16,8 @@ class KillingCurseAbility implements Ability {
     const projectilePosition = {
       x:
         casterPosition.x +
-        caster.getDirectionVector().x * (TILE_SIZE + KillingCurseProjectile.RADIUS) +
-        (Math.abs(caster.getDirectionVector().y) * TILE_SIZE) / 2,
+        TILE_SIZE / 2 +
+        caster.getDirectionVector().x * (TILE_SIZE / 2 + KillingCurseProjectile.RADIUS),
       y:
         casterPosition.y +
         caster.getDirectionVector().y * (TILE_SIZE + KillingCurseProjectile.RADIUS) +

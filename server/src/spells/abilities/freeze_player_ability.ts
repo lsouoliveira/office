@@ -16,8 +16,8 @@ class FreezePlayerAbility implements Ability {
     const projectilePosition = {
       x:
         casterPosition.x +
-        caster.getDirectionVector().x * (TILE_SIZE + FreezeProjectile.RADIUS) +
-        (Math.abs(caster.getDirectionVector().y) * TILE_SIZE) / 2,
+        TILE_SIZE / 2 +
+        caster.getDirectionVector().x * (TILE_SIZE / 2 + FreezeProjectile.RADIUS),
       y:
         casterPosition.y +
         caster.getDirectionVector().y * (TILE_SIZE + FreezeProjectile.RADIUS) +

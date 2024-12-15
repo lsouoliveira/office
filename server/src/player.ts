@@ -413,7 +413,7 @@ const patronos = [
   '🦢',
   '🦉'
 ]
-const PROTEGO_DURATION = 2500
+const PROTEGO_DURATION = 5000
 
 class Player extends EventEmitter {
   playerData: PlayerData
