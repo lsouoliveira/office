@@ -332,13 +332,23 @@ export default {
           data: { scaleMode: 'nearest' }
         },
         {
-          alias: 'Modern_Exteriors_Complete_Tileset_48x48.png',
-          src: 'resources/maps/Modern_Exteriors_Complete_Tileset_48x48.png',
+          alias: '2_City_Terrains_48x48.png',
+          src: 'resources/maps/2_City_Terrains_48x48.png',
           data: { scaleMode: 'nearest' }
         },
         {
           alias: 'Car_classic_red_complete_48x48.png',
           src: 'resources/images/Car_classic_red_complete_48x48.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
+          alias: '1_Terrains_and_Fences_48x48.png',
+          src: 'resources/maps/1_Terrains_and_Fences_48x48.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
+          alias: '3_City_Props_48x48.png',
+          src: 'resources/maps/3_City_Props_48x48.png',
           data: { scaleMode: 'nearest' }
         }
       ]

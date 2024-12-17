@@ -9,6 +9,7 @@ import Spell from './spells/spell'
 import { SPELLS } from './spells/spells'
 import SpellData from './spells/spell_data'
 import { TILE_SIZE } from './config'
+import { EQUIPMENTS } from './world'
 
 const getTileBehindPlayer = (player: Player): number[] => {
   const playerX = player.movement.gridX()
@@ -88,6 +89,7 @@ interface PlayerData {
   glassesSlot?: Item
   faceMaskSlot?: Item
   rightHandSlot?: Item
+  vehicle?: Item
   userId: number
   money: number
   isLevitating: boolean
@@ -98,7 +100,8 @@ enum EquipmentType {
   Helmet,
   Wand,
   Glasses,
-  FaceMask
+  FaceMask,
+  Vehicle
 }
 
 class Equipment {
@@ -386,6 +389,10 @@ class PlayerMovement {
 
     return grid
   }
+
+  getMap() {
+    return this.map
+  }
 }
 
 const DRINKING_TIME = 30000
@@ -445,6 +452,7 @@ class Player extends EventEmitter {
     this.playerData.isEating = false
     this.isPatronoActive = false
     this.originalSpeed = this.playerData.speed
+    this.playerData.vehicle = undefined
 
     SPELLS.forEach((spellData: SpellData) => this.spells.push(new Spell(spellData)))
   }
@@ -568,7 +576,7 @@ class Player extends EventEmitter {
     this.notifyChange()
   }
 
-  teleport(x, y) {
+  teleport(x: number, y: number) {
     this.clearTasks()
     this.movement.stop()
     this.playerData.position.x = x
@@ -630,6 +638,13 @@ class Player extends EventEmitter {
 
         this.playerData.rightHandSlot = eq
         break
+      case EquipmentType.Vehicle:
+        if (this.playerData.vehicle) {
+          return
+        }
+
+        this.playerData.vehicle = eq
+        break
     }
 
     this.notifyChange()
@@ -655,6 +670,11 @@ class Player extends EventEmitter {
       case EquipmentType.Wand:
         if (this.playerData.rightHandSlot?.getId() === item.getId()) {
           this.playerData.rightHandSlot = undefined
+        }
+        break
+      case EquipmentType.Vehicle:
+        if (this.playerData.vehicle?.getId() === item.getId()) {
+          this.exitVehicle()
         }
         break
     }
@@ -717,6 +737,7 @@ class Player extends EventEmitter {
       glassesSlot: this.playerData.glassesSlot?.toData(),
       faceMaskSlot: this.playerData.faceMaskSlot?.toData(),
       rightHandSlot: this.playerData.rightHandSlot?.toData(),
+      vehicle: this.playerData.vehicle?.toData(),
       userId: this.playerData.userId,
       money: this.playerData.money,
       patrono: this.getPatrono(),
@@ -893,6 +914,71 @@ class Player extends EventEmitter {
   stopFollowing() {
     this.followee = undefined
     this.movement.stop()
+  }
+
+  exitVehicle() {
+    const vehicle = this.playerData.vehicle
+
+    if (!vehicle) {
+      return
+    }
+
+    const map = this.movement.getMap()
+
+    let tileX = this.movement.gridX()
+    let tileY = this.movement.gridY()
+
+    switch (this.playerData.direction) {
+      case Direction.North:
+        break
+      case Direction.South:
+        break
+      case Direction.East:
+        break
+      case Direction.West:
+        break
+    }
+
+    if (map.contains(tileX, tileY)) {
+      const tile = map.getTile(tileX, tileY)
+
+      const equipment = EQUIPMENTS.find(
+        (equipment) => equipment.id == vehicle.getType().getEquipmentId()
+      )
+
+      if (!equipment || !equipment.directions) {
+        return
+      }
+
+      this.playerData.vehicle = undefined
+
+      vehicle.getType().setId(equipment.directions[this.playerData.direction])
+      tile.addItem(vehicle)
+      this.getInventory().removeItem(vehicle)
+      this.clearTasks()
+      this.movement.stop()
+
+      switch (this.playerData.direction) {
+        case Direction.North:
+          this.playerData.position.x = (tileX - 1) * TILE_SIZE
+          this.playerData.position.y = tileY * TILE_SIZE
+          break
+        case Direction.South:
+          this.playerData.position.x = (tileX + 1) * TILE_SIZE
+          this.playerData.position.y = tileY * TILE_SIZE
+          break
+        case Direction.East:
+          this.playerData.position.x = tileX * TILE_SIZE
+          this.playerData.position.y = tileY * TILE_SIZE
+          break
+        case Direction.West:
+          this.playerData.position.x = tileX * TILE_SIZE
+          this.playerData.position.y = (tileY + 1) * TILE_SIZE
+          break
+      }
+
+      this.emit('item:added', { item: vehicle, tileX, tileY })
+    }
   }
 }
 

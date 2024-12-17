@@ -220,7 +220,7 @@ const EQUIPMENTS = [
 
 const VEHICLES = [
   {
-    id: 1,
+    id: 'classic_red_car',
     sprite: 'Car_classic_red_complete_48x48.png'
   }
 ]
@@ -241,7 +241,7 @@ class Playground extends Scene {
   private chat: Chat
   private playerSkins: Map<string, ComposedSpritesheet> = new Map()
   private equipmentSpritesheets: Map<string, Spritesheet> = new Map()
-  private vehicleSpritesheets: Map<number, Spritesheet> = new Map()
+  private vehicleSpritesheets: Map<string, Spritesheet> = new Map()
   private layers: PIXI.Container[] = []
   private isConnected: boolean = false
   private isConnectingText: PIXI.Text
@@ -579,25 +579,7 @@ class Playground extends Scene {
     this.players[playerData.id] = this.player
 
     this.updatePlayerEquipment(this.player, playerData)
-
-    try {
-      const vehicleSpritesheet = this.vehicleSpritesheets.get(1)
-      const vehicleSprite = new PIXI.AnimatedSprite(vehicleSpritesheet.animations.idle_east)
-      vehicleSprite.animationSpeed = 0.1
-      vehicleSprite.play()
-
-      const vehicleAnimator = new BaseAnimator(vehicleSprite, [
-        new Animation('idle_north', vehicleSpritesheet.animations.idle_north, 0.1),
-        new Animation('idle_south', vehicleSpritesheet.animations.idle_south, 0.1),
-        new Animation('idle_east', vehicleSpritesheet.animations.idle_east, 0.1),
-        new Animation('idle_west', vehicleSpritesheet.animations.idle_west, 0.1)
-      ])
-      const vehicle = new Vehicle(vehicleSprite, vehicleAnimator)
-
-      this.player.drive(vehicle)
-    } catch (e) {
-      console.error(e)
-    }
+    this.driveVehicle(this.player, playerData)
 
     this.moneyDisplay = new MoneyDisplay()
     this.moneyDisplay.position.set(8, 8)
@@ -666,6 +648,7 @@ class Playground extends Scene {
 
     player.onStart()
     this.updatePlayerEquipment(player, playerData)
+    this.driveVehicle(this.player, playerData)
     player.updateData(playerData)
 
     this.players[playerData.id] = player
@@ -732,6 +715,7 @@ class Playground extends Scene {
       }
 
       this.updatePlayerEquipment(player, playerData)
+      this.driveVehicle(this.player, playerData)
 
       const topHalfAnimator = this.createAnimator(player.topHalfSprite, spritesheet, 0, 0)
       const bottomHalfAnimator = this.createAnimator(player.bottomHalfSprite, spritesheet, 0, 1)
@@ -752,6 +736,22 @@ class Playground extends Scene {
     this.updatePlayerGlasses(player, playerData)
     this.updatePlayerFaceMask(player, playerData)
     this.updatePlayerRightHand(player, playerData)
+  }
+
+  private driveVehicle(player: Player, playerData: any) {
+    if (!playerData.vehicle) {
+      player.exitVehicle()
+
+      return
+    }
+
+    const vehicle = this.createVehicle(playerData.vehicle.itemType.equipment.id)
+
+    if (!vehicle) {
+      return
+    }
+
+    player.drive(vehicle)
   }
 
   private updatePlayerHelmet(player: Player, playerData: any) {
@@ -1194,6 +1194,27 @@ class Playground extends Scene {
 
   destroyEntity(entity: any) {
     this.entities.splice(this.entities.indexOf(entity), 1)
+  }
+
+  private createVehicle(vehicleId: string) {
+    const vehicleSpritesheet = this.vehicleSpritesheets.get(vehicleId)
+
+    if (!vehicleSpritesheet) {
+      return
+    }
+
+    const vehicleSprite = new PIXI.AnimatedSprite(vehicleSpritesheet.animations.idle_east)
+    vehicleSprite.animationSpeed = 0.1
+    vehicleSprite.play()
+
+    const vehicleAnimator = new BaseAnimator(vehicleSprite, [
+      new Animation('idle_north', vehicleSpritesheet.animations.idle_north, 0.1),
+      new Animation('idle_south', vehicleSpritesheet.animations.idle_south, 0.1),
+      new Animation('idle_east', vehicleSpritesheet.animations.idle_east, 0.1),
+      new Animation('idle_west', vehicleSpritesheet.animations.idle_west, 0.1)
+    ])
+
+    return new Vehicle(vehicleSprite, vehicleAnimator)
   }
 }
 

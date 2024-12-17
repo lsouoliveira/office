@@ -57,9 +57,17 @@ TILESETS = {
         "id": 190000,
         "path": "resources/maps/6_Music_and_sport_Black_Shadow_48x48.png"
     },
-    "exterior": {
+    "city_terrains": {
         "id": 200000,
-        "path": "Modern_Exteriors_Complete_Tileset_48x48.png"
+        "path": "resources/maps/2_City_Terrains_48x48.png"
+    },
+    "terrains": {
+        "id": 210000,
+        "path": "resources/maps/1_Terrains_and_Fences_48x48.png"
+    },
+    "city_props": {
+      "id": 220000,
+      "path": "resources/maps/3_City_Props_48x48.png"
     }
 }
 

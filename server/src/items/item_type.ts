@@ -43,6 +43,10 @@ class ItemType {
     return this.id
   }
 
+  setId(id: string) {
+    this.id = id
+  }
+
   isGround(): boolean {
     return this._isGround
   }

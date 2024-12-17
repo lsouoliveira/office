@@ -12,6 +12,7 @@ import { DrinkTask } from './tasks/drink_task'
 import { EatTask } from './tasks/eat_task'
 import { ReplaceItemTask } from './tasks/replace_item_task'
 import { EquipTempEquipmentTask } from './tasks/equip_temp_equipment_task'
+import { DriveTask } from './tasks/drive_task'
 import { ClaimRewardTask } from './tasks/claim_reward_task'
 import { EquipEquipment } from './tasks/equip_equipment_task'
 import { Inventory } from './inventory/inventory'
@@ -197,6 +198,11 @@ const EQUIPMENTS = [
   {
     id: 'oak_wand',
     type: EquipmentType.Wand
+  },
+  {
+    id: 'classic_red_car',
+    type: EquipmentType.Vehicle,
+    directions: ['100033', '100034', '100035', '100036']
   }
 ]
 
@@ -480,6 +486,14 @@ class World {
         this.io.emit('player:change', playerData)
       })
 
+      player.on('item:added', ({ item, tileX, tileY }) => {
+        this.io.emit('item:added', {
+          item: item.toData(),
+          x: tileX,
+          y: tileY
+        })
+      })
+
       player.on('move', ({ x, y, direction }) => {
         this.io.emit('player:move', {
           playerId: player.playerData.id,
@@ -649,8 +663,8 @@ class World {
     const player = new Player({
       id: crypto.randomUUID(),
       position: {
-        x: 3 * TILE_SIZE,
-        y: 3 * TILE_SIZE
+        x: 60 * TILE_SIZE,
+        y: 60 * TILE_SIZE
       },
       direction: Direction.South,
       state: PlayerState.Idle,
@@ -668,6 +682,14 @@ class World {
 
     player.on('change', (playerData) => {
       this.io.emit('player:change', playerData)
+    })
+
+    player.on('item:added', (item, tileX, tileY) => {
+      this.io.emit('item:added', {
+        x: tileX,
+        y: tileY,
+        item: item.toData()
+      })
     })
 
     player.on('move', ({ x, y, direction }) => {
@@ -1013,17 +1035,18 @@ class World {
       return
     }
 
-    let playerName = parts[1]
-    playerName = playerName.substring(1, playerName.length - 1)
+    const playerId = parts[1].substring(1, parts[1].length - 1)
 
-    for (const player of Object.values(this.players)) {
-      if (player.playerData.name === playerName) {
-        player.clearTasks()
-        player.teleport(TILE_SIZE * admin.movement.gridX(), TILE_SIZE * admin.movement.gridY())
-
-        return
-      }
+    if (!this.players[playerId]) {
+      return
     }
+
+    const playerToTeleport: Player = this.players[playerId]
+
+    playerToTeleport.teleport(
+      TILE_SIZE * admin.movement.gridX(),
+      TILE_SIZE * admin.movement.gridY()
+    )
   }
 
   private handleClearMapCommand(socket) {
@@ -1378,6 +1401,8 @@ class World {
       this.performJukeboxAction(socket, player, tile, item)
     } else if (item.getActionId() == 'computer') {
       this.performComputerAction(socket, player, tile)
+    } else if (item.getActionId() == 'drive') {
+      this.performDriveTask(socket, player, tile, item)
     } else if (item.getActionId() == 'ping_pong') {
       this.performPingPongAction(socket, player, tile)
     } else if (item.getActionId() == 'drink') {
@@ -1659,6 +1684,26 @@ class World {
     player.addTask(equipTempEquipmentTask)
   }
 
+  private performDriveTask(socket, player, tile, item) {
+    logger.info(`[ Server ] Performing drive task for player ${player.playerData.name}`)
+
+    player.clearTasks()
+
+    if (!player.movement.isNeighbour(tile.getX(), tile.getY())) {
+      const target = this.findAvailableNeighbourTile(player, tile)
+
+      if (!target) {
+        return
+      }
+
+      const moveTask = new MoveTask(player, [target[0], target[1]])
+      player.addTask(moveTask)
+    }
+
+    const driveTask = new DriveTask(this.io, player, tile, item)
+    player.addTask(driveTask)
+  }
+
   private performEquipEquipment(socket, player, equipment) {
     logger.info(
       `[ Server ] Equipping equipment ${equipment.getId()} to player ${player.playerData.name}`
@@ -1820,4 +1865,4 @@ class World {
   }
 }
 
-export { World }
+export { World, EQUIPMENTS }

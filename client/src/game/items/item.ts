@@ -47,6 +47,7 @@ class Item {
         const tileId = spriteData.states[0]
         const tileSize = spriteData.tileSize || TILE_SIZE
         const tilesWidth = tilesetTexture.width / tileSize
+        const anchor = spriteData.anchor || { x: 0, y: 0 }
 
         const tilesetX = tileId % tilesWidth
         const tilesetY = Math.floor(tileId / tilesWidth)
@@ -60,8 +61,9 @@ class Item {
           i,
           tileSize
         )
-        const spriteX = x
-        const spriteY = y + i * tileSize - spriteData.height * tileSize + tileSize - divY * tileSize
+        const spriteX = x + j * tileSize - tileSize * anchor.x
+        const spriteY =
+          y + i * tileSize - spriteData.height * tileSize + tileSize - (divY - anchor.y) * tileSize
 
         let sprite
 

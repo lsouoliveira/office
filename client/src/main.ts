@@ -62,7 +62,11 @@ const i18n = createI18n({
         '100029': 'Boné Nacional',
         '100030': 'Capacete Lendário',
         '100031': 'Tijolo',
-        '100032': 'Gorro de Natal'
+        '100032': 'Fiat Uno',
+        '100033': 'Fiat Uno',
+        '100034': 'Fiat Uno',
+        '100035': 'Fiat Uno',
+        '100036': 'Fiat Uno'
       }
     }
   }

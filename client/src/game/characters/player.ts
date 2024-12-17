@@ -583,11 +583,23 @@ class Player extends PIXI.Container implements Entity {
   }
 
   drive(vehicle: Vehicle) {
+    this.exitVehicle()
+
     this.vehicle = vehicle
     this.isDriving = true
     this.bottomHalf.addChild(vehicle.sprite)
 
     this.updateVehicle()
+  }
+
+  exitVehicle() {
+    if (!this.vehicle) {
+      return
+    }
+
+    this.bottomHalf.removeChild(this.vehicle.sprite)
+    this.vehicle = undefined
+    this.isDriving = false
   }
 
   updateVehicle() {
