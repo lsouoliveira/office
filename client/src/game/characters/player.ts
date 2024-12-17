@@ -7,6 +7,7 @@ import { Emote } from './../entities/emote'
 import { type Entity } from './../entities/entity'
 import { createAnimatedSpriteFromTexture } from './../utils'
 import { TILE_SIZE } from '../map/tile'
+import { Vehicle } from './../vehicle'
 
 enum Direction {
   North,
@@ -113,6 +114,9 @@ class Player extends PIXI.Container implements Entity {
 
   private isHiding: boolean
 
+  private vehicle?: Vehicle
+  private isDriving: boolean = false
+
   constructor(id: string, composedSpritesheet: ComposedSpritesheet, layers: PIXI.Container[]) {
     super()
 
@@ -216,8 +220,10 @@ class Player extends PIXI.Container implements Entity {
         this.bottomHalf.pivot.set(0, 0)
       }
 
-      this.topHalfSprite.visible = !this.isHiding && (!this.helmetSlot || !this.helmetSlot.hideHair)
+      this.topHalfSprite.visible =
+        !this.isDriving && !this.isHiding && (!this.helmetSlot || !this.helmetSlot.hideHair)
       this.bottomHalf.visible = !this.isHiding
+      this.bottomHalfSprite.visible = !this.isDriving
     } catch (e) {
       console.debug(e)
     }
@@ -284,6 +290,8 @@ class Player extends PIXI.Container implements Entity {
         items.forEach((item) => item?.getAnimator()?.play(animation + '_west'))
         break
     }
+
+    this.updateVehicle()
   }
 
   moveToPoint(x, y, dt) {
@@ -572,6 +580,35 @@ class Player extends PIXI.Container implements Entity {
 
   canEmote(id: string) {
     return this.lastEmote?.getID() != id
+  }
+
+  drive(vehicle: Vehicle) {
+    this.vehicle = vehicle
+    this.isDriving = true
+    this.bottomHalf.addChild(vehicle.sprite)
+
+    this.updateVehicle()
+  }
+
+  updateVehicle() {
+    if (!this.vehicle) {
+      return
+    }
+
+    switch (this.direction) {
+      case Direction.North:
+        this.vehicle.turnNorth()
+        break
+      case Direction.South:
+        this.vehicle.turnSouth()
+        break
+      case Direction.East:
+        this.vehicle.turnEast()
+        break
+      case Direction.West:
+        this.vehicle.turnWest()
+        break
+    }
   }
 }
 

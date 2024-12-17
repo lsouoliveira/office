@@ -26,6 +26,7 @@ import { Explosion, ExplosionType } from './../entities/explosion'
 import { extractSpriteTextures } from '../utils'
 import { TILE_SIZE } from './../map/tile'
 import { Jukebox } from '../jukebox/jukebox'
+import { Vehicle } from '../vehicle'
 
 const DEFAULT_SKIN = 'Bob'
 
@@ -217,6 +218,13 @@ const EQUIPMENTS = [
   }
 ]
 
+const VEHICLES = [
+  {
+    id: 1,
+    sprite: 'Car_classic_red_complete_48x48.png'
+  }
+]
+
 class Playground extends Scene {
   private camera: Camera
   private player: Player
@@ -233,6 +241,7 @@ class Playground extends Scene {
   private chat: Chat
   private playerSkins: Map<string, ComposedSpritesheet> = new Map()
   private equipmentSpritesheets: Map<string, Spritesheet> = new Map()
+  private vehicleSpritesheets: Map<number, Spritesheet> = new Map()
   private layers: PIXI.Container[] = []
   private isConnected: boolean = false
   private isConnectingText: PIXI.Text
@@ -289,7 +298,18 @@ class Playground extends Scene {
       )
     })
 
+    VEHICLES.forEach(({ id, sprite }) => {
+      this.vehicleSpritesheets.set(
+        id,
+        new Spritesheet(Assets.get(sprite), Assets.get('car_spritesheet_48x48.json').data)
+      )
+    })
+
     for (const spritesheet of this.equipmentSpritesheets.values()) {
+      await spritesheet.parse()
+    }
+
+    for (const spritesheet of this.vehicleSpritesheets.values()) {
       await spritesheet.parse()
     }
 
@@ -559,6 +579,25 @@ class Playground extends Scene {
     this.players[playerData.id] = this.player
 
     this.updatePlayerEquipment(this.player, playerData)
+
+    try {
+      const vehicleSpritesheet = this.vehicleSpritesheets.get(1)
+      const vehicleSprite = new PIXI.AnimatedSprite(vehicleSpritesheet.animations.idle_east)
+      vehicleSprite.animationSpeed = 0.1
+      vehicleSprite.play()
+
+      const vehicleAnimator = new BaseAnimator(vehicleSprite, [
+        new Animation('idle_north', vehicleSpritesheet.animations.idle_north, 0.1),
+        new Animation('idle_south', vehicleSpritesheet.animations.idle_south, 0.1),
+        new Animation('idle_east', vehicleSpritesheet.animations.idle_east, 0.1),
+        new Animation('idle_west', vehicleSpritesheet.animations.idle_west, 0.1)
+      ])
+      const vehicle = new Vehicle(vehicleSprite, vehicleAnimator)
+
+      this.player.drive(vehicle)
+    } catch (e) {
+      console.error(e)
+    }
 
     this.moneyDisplay = new MoneyDisplay()
     this.moneyDisplay.position.set(8, 8)

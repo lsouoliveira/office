@@ -83,6 +83,10 @@ export default {
           src: 'resources/characters/default_spritesheet_48x48.json'
         },
         {
+          alias: 'car_spritesheet_48x48.json',
+          src: 'resources/characters/car_spritesheet_48x48.json'
+        },
+        {
           alias: 'Bob_48x48.png',
           src: 'resources/images/Bob_48x48.png',
           data: { scaleMode: 'nearest' }
@@ -325,6 +329,16 @@ export default {
         {
           alias: '6_Music_and_sport_Black_Shadow_48x48.png',
           src: 'resources/maps/6_Music_and_sport_Black_Shadow_48x48.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
+          alias: 'Modern_Exteriors_Complete_Tileset_48x48.png',
+          src: 'resources/maps/Modern_Exteriors_Complete_Tileset_48x48.png',
+          data: { scaleMode: 'nearest' }
+        },
+        {
+          alias: 'Car_classic_red_complete_48x48.png',
+          src: 'resources/images/Car_classic_red_complete_48x48.png',
           data: { scaleMode: 'nearest' }
         }
       ]

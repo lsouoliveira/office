@@ -56,6 +56,10 @@ TILESETS = {
     "music": {
         "id": 190000,
         "path": "resources/maps/6_Music_and_sport_Black_Shadow_48x48.png"
+    },
+    "exterior": {
+        "id": 200000,
+        "path": "Modern_Exteriors_Complete_Tileset_48x48.png"
     }
 }
 
