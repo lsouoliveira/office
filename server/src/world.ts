@@ -871,6 +871,8 @@ class World {
       this.handleTeleportCommand(socket, parts)
     } else if (command == 'tp_player') {
       this.handleTeleportPlayerCommand(socket, parts)
+    } else if (command == 'add_item') {
+      this.handleAddItemCommand(socket, parts)
     } else if (command == 'clear_map') {
       this.handleClearMapCommand(socket)
     } else if (command == 'skip') {
@@ -1047,6 +1049,50 @@ class World {
       TILE_SIZE * admin.movement.gridX(),
       TILE_SIZE * admin.movement.gridY()
     )
+  }
+
+  private handleAddItemCommand(socket, parts) {
+    const session = this.sessions[socket.sessionId]
+
+    if (!session) {
+      return
+    }
+
+    const admin = this.players[session.playerId]
+
+    if (!admin) {
+      return
+    }
+
+    if (parts.length <= 1) {
+      return
+    }
+
+    const itemId = parts[1].substring(1, parts[1].length - 1)
+
+    if (!this.items[itemId]) {
+      return
+    }
+
+    const itemTypeData = this.items[itemId]
+    const equipment = this.createEquipment(itemTypeData.equipment_id)
+    const itemType = new ItemType(
+      itemId,
+      {
+        isGround: itemTypeData.is_ground,
+        isWalkable: itemTypeData.is_walkable,
+        isWall: itemTypeData.is_wall,
+        actionId: itemTypeData.action_id,
+        facing: itemTypeData.facing,
+        nextItemId: itemTypeData.next_item_id,
+        description: itemTypeData.description,
+        isDoor: itemTypeData.is_door
+      },
+      equipment
+    )
+    const item = new Item(itemType)
+
+    admin.getInventory().addItem(item)
   }
 
   private handleClearMapCommand(socket) {
