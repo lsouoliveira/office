@@ -648,7 +648,7 @@ class Playground extends Scene {
 
     player.onStart()
     this.updatePlayerEquipment(player, playerData)
-    this.driveVehicle(this.player, playerData)
+    this.driveVehicle(player, playerData)
     player.updateData(playerData)
 
     this.players[playerData.id] = player
@@ -715,7 +715,7 @@ class Playground extends Scene {
       }
 
       this.updatePlayerEquipment(player, playerData)
-      this.driveVehicle(this.player, playerData)
+      this.driveVehicle(player, playerData)
 
       const topHalfAnimator = this.createAnimator(player.topHalfSprite, spritesheet, 0, 0)
       const bottomHalfAnimator = this.createAnimator(player.bottomHalfSprite, spritesheet, 0, 1)
