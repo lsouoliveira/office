@@ -224,6 +224,14 @@ class Player extends PIXI.Container implements Entity {
         !this.isDriving && !this.isHiding && (!this.helmetSlot || !this.helmetSlot.hideHair)
       this.bottomHalf.visible = !this.isHiding
       this.bottomHalfSprite.visible = !this.isDriving
+
+      const items = [this.helmetSlot, this.glassesSlot, this.faceMaskSlot]
+
+      items.forEach((item) => {
+        if (item) {
+          item.visible = !this.isDriving
+        }
+      })
     } catch (e) {
       console.debug(e)
     }
