@@ -68,6 +68,10 @@ TILESETS = {
     "city_props": {
       "id": 220000,
       "path": "resources/maps/3_City_Props_48x48.png"
+    },
+    "garden": {
+        "id": 230000,
+        "path": "resources/maps/17_Garden_48x48.png"
     }
 }
 

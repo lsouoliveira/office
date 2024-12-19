@@ -33,6 +33,10 @@ class Item {
     return this.id
   }
 
+  getItemTypeId() {
+    return this.type.getId()
+  }
+
   render(layers: PIXI.Container[], x: number, y: number, index: number): void {
     const spriteData = spritesData[this.type.getId()]
 

@@ -65,6 +65,10 @@ class SpriteCursor extends PIXI.Sprite {
     this.visible = false
   }
 
+  isActive() {
+    return this.visible && this.getSpriteId()
+  }
+
   moveTo(x: number, y: number) {
     if (!this.visible) {
       return

@@ -350,6 +350,11 @@ export default {
           alias: '3_City_Props_48x48.png',
           src: 'resources/maps/3_City_Props_48x48.png',
           data: { scaleMode: 'nearest' }
+        },
+        {
+          alias: '17_Garden_48x48.png',
+          src: 'resources/maps/17_Garden_48x48.png',
+          data: { scaleMode: 'nearest' }
         }
       ]
     }

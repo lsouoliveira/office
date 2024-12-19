@@ -238,6 +238,8 @@ class Playground extends Scene {
   private spriteCursor: SpriteCursor
   private isPlacingItem: boolean = false
   private ctrlPressed: boolean = false
+  private altPressed: boolean = false
+  private shiftPressed: boolean = false
   private chat: Chat
   private playerSkins: Map<string, ComposedSpritesheet> = new Map()
   private equipmentSpritesheets: Map<string, Spritesheet> = new Map()
@@ -319,7 +321,7 @@ class Playground extends Scene {
     this.camera.scale = Math.min(
       window.innerWidth / (TILE_SIZE * 32),
       window.innerHeight / (TILE_SIZE * 18)
-    )
+    ).toFixed(2)
 
     for (let i = 0; i < 10; i++) {
       const layer = new PIXI.Container()
@@ -668,6 +670,10 @@ class Playground extends Scene {
 
     this.cursor.moveTo(x, y)
     this.spriteCursor.moveTo(x, y)
+
+    if (this.spriteCursor.isActive() && this.altPressed) {
+      this.handlePlaceItem(Math.floor(x / TILE_SIZE), Math.floor(y / TILE_SIZE))
+    }
   }
 
   private onClick(e) {
@@ -681,6 +687,20 @@ class Playground extends Scene {
     }
 
     const tile = this.map.getTile(tileX, tileY)
+
+    if (this.shiftPressed) {
+      const topItem = tile.getTopItem()
+
+      if (!topItem) {
+        return
+      }
+
+      const itemTypeId = topItem.getItemTypeId()
+
+      this.handleSelectItem({ detail: { id: itemTypeId } })
+
+      document.title = `id: ${itemTypeId}`
+    }
 
     if (this.isPlacingItem) {
       this.handlePlaceItem(tileX, tileY)
@@ -893,7 +913,13 @@ class Playground extends Scene {
   }
 
   private handleSendMessage({ detail: { message } }) {
-    this.client.sendMessage(message.substring(0, 100))
+    const sanitazedMessage = message.substring(0, 400).trim()
+
+    if (!sanitazedMessage) {
+      return
+    }
+
+    this.client.sendMessage(sanitazedMessage)
   }
 
   private handleSelectItem({ detail: { id } }) {
@@ -958,10 +984,14 @@ class Playground extends Scene {
 
   private handleKeyDown(e) {
     this.ctrlPressed = e.ctrlKey
+    this.altPressed = e.altKey
+    this.shiftPressed = e.shiftKey
   }
 
   private handleKeyUp(e) {
     this.ctrlPressed = e.ctrlKey
+    this.altPressed = e.altKey
+    this.shiftPressed = e.shiftKey
   }
 
   private handlePlayerMessage({ playerId, message, color, compact }) {
