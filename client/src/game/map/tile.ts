@@ -65,6 +65,10 @@ class Tile {
     return this.items.find((item) => item.getId() === id)
   }
 
+  getItems() {
+    return [...this.items]
+  }
+
   replaceItem(oldId: string, newItem: Item): void {
     const index = this.items.findIndex((item) => item.getId() === oldId)
 

@@ -235,7 +235,7 @@ class Playground extends Scene {
   private map: GameMap
   private uiLayer: PIXI.Container = new PIXI.Container()
   private cursor: Cursor
-  private spriteCursor: SpriteCursor
+  private spriteCursor?: SpriteCursor
   private isPlacingItem: boolean = false
   private ctrlPressed: boolean = false
   private altPressed: boolean = false
@@ -255,6 +255,8 @@ class Playground extends Scene {
   private projectiles: Map<string, Projectile> = new Map()
   private jukebox: Jukebox
   private jukeboxTimeout: NodeJS.Timeout
+  private brushWidth: number = 1
+  private brushHeight: number = 1
 
   async onStart() {
     // const stats = new Stats(this.app.renderer)
@@ -669,9 +671,9 @@ class Playground extends Scene {
     const { x, y } = this.camera.transformToViewport(e.data.global.x, e.data.global.y)
 
     this.cursor.moveTo(x, y)
-    this.spriteCursor.moveTo(x, y)
+    this.spriteCursor?.moveTo(x, y)
 
-    if (this.spriteCursor.isActive() && this.altPressed) {
+    if (this.spriteCursor?.isActive() && this.altPressed) {
       this.handlePlaceItem(Math.floor(x / TILE_SIZE), Math.floor(y / TILE_SIZE))
     }
   }
@@ -689,17 +691,9 @@ class Playground extends Scene {
     const tile = this.map.getTile(tileX, tileY)
 
     if (this.shiftPressed) {
-      const topItem = tile.getTopItem()
-
-      if (!topItem) {
-        return
-      }
-
-      const itemTypeId = topItem.getItemTypeId()
-
-      this.handleSelectItem({ detail: { id: itemTypeId } })
-
-      document.title = `id: ${itemTypeId}`
+      this.isPlacingItem = true
+      this.spriteCursor?.setBrushFromMapPosition(tileX, tileY, this.brushWidth, this.brushHeight)
+      this.cursor.hide()
     }
 
     if (this.isPlacingItem) {
@@ -712,14 +706,32 @@ class Playground extends Scene {
   }
 
   private handlePlaceItem(x: number, y: number) {
-    if (!this.spriteCursor.getSpriteId()) {
+    if (!this.spriteCursor?.isActive()) {
       return
     }
 
     if (!this.ctrlPressed) {
-      this.client.placeItem(x * TILE_SIZE, y * TILE_SIZE, this.spriteCursor.getSpriteId())
+      const itemDatas = this.spriteCursor.getItemDatas()
+
+      for (let i = 0; i < this.spriteCursor.getBrushHeight(); i++) {
+        for (let j = 0; j < this.spriteCursor.getBrushWidth(); j++) {
+          const itemData = itemDatas[i][j]
+
+          if (!itemData) {
+            continue
+          }
+
+          itemData.ids.forEach((id) => {
+            this.client.placeItem((x + j) * TILE_SIZE, (y + i) * TILE_SIZE, id)
+          })
+        }
+      }
     } else {
-      this.client.removeItem(x * TILE_SIZE, y * TILE_SIZE)
+      for (let i = 0; i < this.spriteCursor.getBrushHeight(); i++) {
+        for (let j = 0; j < this.spriteCursor.getBrushWidth(); j++) {
+          this.client.removeItem((x + j) * TILE_SIZE, (y + i) * TILE_SIZE)
+        }
+      }
     }
   }
 
@@ -924,13 +936,13 @@ class Playground extends Scene {
 
   private handleSelectItem({ detail: { id } }) {
     this.isPlacingItem = true
-    this.spriteCursor.setSprite(id)
+    this.spriteCursor?.setBrush(id)
     this.cursor.hide()
   }
 
   private handleClearSelection() {
     this.isPlacingItem = false
-    this.spriteCursor.clear()
+    this.spriteCursor?.clear()
     this.cursor.show()
   }
 
@@ -992,6 +1004,27 @@ class Playground extends Scene {
     this.ctrlPressed = e.ctrlKey
     this.altPressed = e.altKey
     this.shiftPressed = e.shiftKey
+
+    if (this.spriteCursor?.isActive()) {
+      switch (e.key) {
+        case 'K':
+          this.brushHeight++
+          break
+        case 'J':
+          this.brushHeight--
+          break
+        case 'H':
+          this.brushWidth--
+          break
+        case 'L':
+          this.brushWidth++
+          break
+      }
+
+      this.brushWidth = Math.max(1, this.brushWidth)
+      this.brushHeight = Math.max(1, this.brushHeight)
+      this.spriteCursor.resizePreview(this.brushWidth, this.brushHeight)
+    }
   }
 
   private handlePlayerMessage({ playerId, message, color, compact }) {
