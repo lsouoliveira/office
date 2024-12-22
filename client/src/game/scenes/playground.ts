@@ -722,7 +722,9 @@ class Playground extends Scene {
           }
 
           itemData.ids.forEach((id) => {
-            this.client.placeItem((x + j) * TILE_SIZE, (y + i) * TILE_SIZE, id)
+            if (spritesData[id]) {
+              this.client.placeItem((x + j) * TILE_SIZE, (y + i) * TILE_SIZE, id)
+            }
           })
         }
       }
