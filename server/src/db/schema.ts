@@ -36,3 +36,9 @@ export const lotteryResultWinnersRelations = relations(lotteryResultWinnersTable
     references: [lotteryResultsTable.id]
   })
 }))
+
+export const housesTable = sqliteTable('houses_table', {
+  id: int().primaryKey({ autoIncrement: true }),
+  price: real().notNull(),
+  ownerId: text()
+})

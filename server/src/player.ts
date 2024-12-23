@@ -9,7 +9,7 @@ import Spell from './spells/spell'
 import { SPELLS } from './spells/spells'
 import SpellData from './spells/spell_data'
 import { TILE_SIZE } from './config'
-import { EQUIPMENTS } from './world'
+import { EQUIPMENTS } from './equipments/equipments'
 import { VehicleController } from './vehicles/vehicle_controller'
 
 const getTileBehindPlayer = (player: Player): number[] => {

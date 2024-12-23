@@ -1,5 +1,5 @@
 import { Player, PlayerMovement, PlayerData, Direction } from '../player'
-import { EQUIPMENTS } from './../world'
+import { EQUIPMENTS } from './../equipments/equipments'
 import { Item } from './../items/item'
 import { TILE_SIZE } from './../config'
 

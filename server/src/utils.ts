@@ -23,6 +23,10 @@ namespace Errors {
     static badRequest() {
       return new CustomError('general.bad_request', 'Bad request')
     }
+
+    static notFound() {
+      return new CustomError('general.not_found', 'Not found')
+    }
   }
 
   export class User {
@@ -38,6 +42,19 @@ namespace Errors {
 
     static playerAlreadyHasTicket() {
       return new CustomError('lottery.player_already_has_ticket', 'Player already has ticket')
+    }
+  }
+
+  export class Housing {
+    static alreadyHasOwner() {
+      return new CustomError('housing.already_has_owner', 'House already has a owner')
+    }
+
+    static insufficientFunds() {
+      return new CustomError(
+        'housing.insufficient_funds',
+        'The buyer does not have enough money to buy the house'
+      )
     }
   }
 }

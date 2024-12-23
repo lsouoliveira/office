@@ -13,6 +13,7 @@ import ShopModal from './shop_modal.vue'
 import LotteryModal from './lottery_modal.vue'
 import HotkeysModal from './hotkeys_modal.vue'
 import JukeboxModal from './jukebox_modal.vue'
+import BuyHouseModal from './buy_house_modal.vue'
 
 const EMOTES = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', '=']
 
@@ -34,6 +35,7 @@ const showShopModal = ref(false)
 const showLotteryModal = ref(false)
 const showHotkeysModal = ref(false)
 const showJukeboxModal = ref(false)
+const showBuyHouseModal = ref(true)
 const showOs = ref(false)
 const showPianoModal = ref(false)
 const osApplication = ref(null)
@@ -335,6 +337,7 @@ const isOverlayVisible = computed(() => {
   <lottery-modal @close="showLotteryModal = false" v-model="showLotteryModal" v-if="showLotteryModal" />
   <hotkeys-modal @close="showHotkeysModal = false" v-model="showHotkeysModal" v-if="showHotkeysModal" />
   <jukebox-modal @close="showJukeboxModal = false" v-model="showJukeboxModal" v-if="showJukeboxModal" />
+  <buy-house-modal @close="showBuyHouseModal = false" v-model="showBuyHouseModal" v-if="showBuyHouseModal" />
 
   <div class="fixed top-0 left-0 w-full">
     <div class="flex items-center justify-end p-4 gap-2">

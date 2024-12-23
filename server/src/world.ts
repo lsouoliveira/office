@@ -26,6 +26,7 @@ import { UnequipItemAction } from './actions/unequip_item_action'
 import { GetShopAction } from './actions/get_shop_action'
 import { BuyItemAction } from './actions/buy_item_action'
 import { LotterySystem } from './lottery/lottery_system'
+import { HousingSystem } from './housing/housing_system'
 import { GetPlayerLotteryTicketAction } from './actions/get_player_lottery_ticket_action'
 import { GetLastLotteryResultsAction } from './actions/get_last_lottery_results_action'
 import { BuyLotteryTicketAction } from './actions/buy_lottery_ticket_action'
@@ -39,6 +40,7 @@ import SpellSystem from './spells/spell_system'
 import ProjectileSystem from './projectiles/projectile_system'
 import { Jukebox, SheetParser } from './jukebox/jukebox'
 import { TILE_SIZE } from './config'
+import { EQUIPMENTS } from './equipments/equipments'
 
 import jsonwebtoken from 'jsonwebtoken'
 import { db } from './db'
@@ -62,149 +64,6 @@ enum MessageColor {
   GREEN = 'green',
   BLUE = 'blue'
 }
-
-const EQUIPMENTS = [
-  {
-    id: 'ladybug_01',
-    type: EquipmentType.Helmet,
-    hideHair: false
-  },
-  {
-    id: 'bee_01',
-    type: EquipmentType.Helmet,
-    hideHair: false
-  },
-  {
-    id: 'snapback_01',
-    type: EquipmentType.Helmet
-  },
-  {
-    id: 'snapback_02',
-    type: EquipmentType.Helmet
-  },
-  {
-    id: 'snapback_03',
-    type: EquipmentType.Helmet
-  },
-  {
-    id: 'snapback_04',
-    type: EquipmentType.Helmet
-  },
-  {
-    id: 'snapback_05',
-    type: EquipmentType.Helmet
-  },
-  {
-    id: 'dino_snapback_01',
-    type: EquipmentType.Helmet
-  },
-  {
-    id: 'snapback_mclaren',
-    type: EquipmentType.Helmet
-  },
-  {
-    id: 'snapback_nacional',
-    type: EquipmentType.Helmet
-  },
-  {
-    id: 'helmet',
-    type: EquipmentType.Helmet
-  },
-  {
-    id: 'santa_hat',
-    type: EquipmentType.Helmet
-  },
-  {
-    id: 'policeman_hat_01',
-    type: EquipmentType.Helmet
-  },
-  {
-    id: 'bataclava_01',
-    type: EquipmentType.Helmet
-  },
-  {
-    id: 'detective_hat_01',
-    type: EquipmentType.Helmet
-  },
-  {
-    id: 'zombie_brain_01',
-    type: EquipmentType.Helmet,
-    hideHair: false
-  },
-  {
-    id: 'bolt_01',
-    type: EquipmentType.Helmet,
-    hideHair: false
-  },
-  {
-    id: 'beanie_01',
-    type: EquipmentType.Helmet
-  },
-  {
-    id: 'mustache_01',
-    type: EquipmentType.FaceMask
-  },
-  {
-    id: 'beard_01',
-    type: EquipmentType.FaceMask
-  },
-  {
-    id: 'glasses_01',
-    type: EquipmentType.Glasses
-  },
-  {
-    id: 'monocle_01',
-    type: EquipmentType.Glasses
-  },
-  {
-    id: 'medical_mask_01',
-    type: EquipmentType.FaceMask
-  },
-  {
-    id: 'chef_01',
-    type: EquipmentType.Helmet,
-    hideHair: false
-  },
-  {
-    id: 'party_cone_01',
-    type: EquipmentType.Helmet,
-    hideHair: false
-  },
-  {
-    id: 'party_cone_04',
-    type: EquipmentType.Helmet,
-    hideHair: false
-  },
-  {
-    id: 'wooden_wand',
-    type: EquipmentType.Wand
-  },
-  {
-    id: 'willow_wand',
-    type: EquipmentType.Wand
-  },
-  {
-    id: 'holly_wand',
-    type: EquipmentType.Wand
-  },
-  {
-    id: 'walnut_wand',
-    type: EquipmentType.Wand
-  },
-  {
-    id: 'yew_wand',
-    type: EquipmentType.Wand
-  },
-  {
-    id: 'oak_wand',
-    type: EquipmentType.Wand
-  },
-  {
-    id: 'classic_red_car',
-    type: EquipmentType.Vehicle,
-    directions: ['100033', '100034', '100035', '100036']
-  }
-]
 
 const ACTION_HANDLER = {
   helloWorld: HelloWorldAction,
@@ -264,6 +123,7 @@ class World {
   private spellSystem: SpellSystem
   private projectileSystem: ProjectileSystem
   private jukebox: Jukebox
+  private housingSystem: HousingSystem
 
   constructor(io: Server) {
     this.io = io
@@ -279,6 +139,7 @@ class World {
     this.spellSystem = new SpellSystem(this)
     this.projectileSystem = new ProjectileSystem(this)
     this.jukebox = new Jukebox(this.io)
+    this.housingSystem = new HousingSystem()
 
     for (const spawnPoint of spawnPoints) {
       const x = spawnPoint.start.x
@@ -303,6 +164,7 @@ class World {
     this.loadServer()
     this.scheduleServerSave()
     this.scheduleRecurrentTasks()
+    this.housingSystem.loadHouses()
   }
 
   mainloop(dt: number) {
