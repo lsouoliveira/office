@@ -60,7 +60,7 @@ onMounted(() => {
     rematchSent.value = false
 
     if (!game.value) {
-      game.value = new TennisGame(gameRoot.value, handlePadMove, handleUpdate, volume.value)
+      game.value = new TennisGame(gameRoot.value, handlePadMove, handleUpdate, props.volume)
 
       game.value.init()
       game.value.start()
