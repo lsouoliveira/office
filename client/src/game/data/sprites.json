@@ -17926,6 +17926,34 @@
     },
     "tileset_id": 220000
   },
+  "220081": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      81
+    ],
+    "tileset": "resources/maps/3_City_Props_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 220000
+  },
+  "220082": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      82
+    ],
+    "tileset": "resources/maps/3_City_Props_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 220000
+  },
   "220085": {
     "y": 0,
     "width": 1,
@@ -17960,6 +17988,62 @@
     "height": 2,
     "states": [
       87
+    ],
+    "tileset": "resources/maps/3_City_Props_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 220000
+  },
+  "220113": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      113
+    ],
+    "tileset": "resources/maps/3_City_Props_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 220000
+  },
+  "220114": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      114
+    ],
+    "tileset": "resources/maps/3_City_Props_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 220000
+  },
+  "220145": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      145
+    ],
+    "tileset": "resources/maps/3_City_Props_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 220000
+  },
+  "220146": {
+    "y": 0,
+    "width": 1,
+    "height": 2,
+    "states": [
+      146
     ],
     "tileset": "resources/maps/3_City_Props_48x48.png",
     "pivot": {
@@ -18010,34 +18094,6 @@
     },
     "tileset_id": 220000
   },
-  "220177": {
-    "y": 0,
-    "width": 1,
-    "height": 2,
-    "states": [
-      177
-    ],
-    "tileset": "resources/maps/3_City_Props_48x48.png",
-    "pivot": {
-      "x": 0,
-      "y": 1
-    },
-    "tileset_id": 220000
-  },
-  "220178": {
-    "y": 0,
-    "width": 1,
-    "height": 2,
-    "states": [
-      178
-    ],
-    "tileset": "resources/maps/3_City_Props_48x48.png",
-    "pivot": {
-      "x": 0,
-      "y": 1
-    },
-    "tileset_id": 220000
-  },
   "220188": {
     "y": 0,
     "width": 1,
@@ -18058,6 +18114,34 @@
     "height": 1,
     "states": [
       190
+    ],
+    "tileset": "resources/maps/3_City_Props_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 220000
+  },
+  "220209": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      209
+    ],
+    "tileset": "resources/maps/3_City_Props_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 0
+    },
+    "tileset_id": 220000
+  },
+  "220210": {
+    "y": 0,
+    "width": 1,
+    "height": 1,
+    "states": [
+      210
     ],
     "tileset": "resources/maps/3_City_Props_48x48.png",
     "pivot": {
