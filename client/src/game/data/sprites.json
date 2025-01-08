@@ -4199,6 +4199,34 @@
     },
     "tileset_id": 10000
   },
+  "10192": {
+    "y": 2,
+    "width": 1,
+    "height": 2,
+    "states": [
+      192
+    ],
+    "tileset": "resources/maps/Modern_Office_Black_Shadow_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 10000
+  },
+  "10193": {
+    "y": 2,
+    "width": 1,
+    "height": 2,
+    "states": [
+      193
+    ],
+    "tileset": "resources/maps/Modern_Office_Black_Shadow_48x48.png",
+    "pivot": {
+      "x": 0,
+      "y": 1
+    },
+    "tileset_id": 10000
+  },
   "10198": {
     "y": 0,
     "width": 1,
@@ -23888,4 +23916,3 @@
     "tileset_id": 230000
   }
 }
-
