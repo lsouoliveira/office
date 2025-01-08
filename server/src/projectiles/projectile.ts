@@ -64,7 +64,7 @@ class Projectile {
     this.timer += dt
 
     if (this.timer >= this.duration) {
-      this.onTimerEnd.forEach((cb) => cb(this))
+      this.destroy()
     }
   }
 
