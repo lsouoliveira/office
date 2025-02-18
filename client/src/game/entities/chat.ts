@@ -1,5 +1,4 @@
 import { Container, Text, CanvasTextMetrics } from 'pixi.js'
-import { Player } from './../characters/player'
 import { type Entity } from './entity'
 
 const formatTime = (date: Date) => {
@@ -33,7 +32,7 @@ class Chat extends Container implements Entity {
     this.updateLayout()
   }
 
-  updateEntity(dt: number) {}
+  updateEntity() {}
 
   updateLayout() {
     let y = 0
@@ -55,23 +54,24 @@ class Chat extends Container implements Entity {
   }
 
   createMessage(playerName: string, message: string) {
-    const now = new Date()
-    const time = formatTime(now)
-    const formattedMessage = `${time} ${playerName} diz: ${message}`
+    return new Text(
+      this.formattedMessageFor(playerName, message), 
+      {
+        fill: 0xffff00,
+        fontFamily: 'Arial',
+        fontSize: 16,
+        stroke: 0x000000,
+        strokeThickness: 4,
+        wordWrap: true,
+        wordWrapWidth: window.innerWidth * 0.3,
+        breakWords: true,
+        lineHeight: 20
+      }
+    )
+  }
 
-    const newMessage = new Text(formattedMessage, {
-      fill: 0xffff00,
-      fontFamily: 'Arial',
-      fontSize: 16,
-      stroke: 0x000000,
-      strokeThickness: 4,
-      wordWrap: true,
-      wordWrapWidth: window.innerWidth * 0.3,
-      breakWords: true,
-      lineHeight: 20
-    })
-
-    return newMessage
+  formattedMessageFor(playerName: string, message: string) {
+    return `${formatTime(new Date())} ${playerName} diz: ${message}`
   }
 }
 

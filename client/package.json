@@ -16,6 +16,7 @@
     "axios": "^1.7.7",
     "buefy": "npm:@ntohq/buefy-next@^0.1.4",
     "dayjs": "^1.11.13",
+    "node-emoji": "^2.2.0",
     "pixi-stats": "^3.0.0",
     "pixi.js": "^8.4.1",
     "socket.io-client": "^4.8.0",

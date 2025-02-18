@@ -27,6 +27,7 @@ import { extractSpriteTextures } from '../utils'
 import { TILE_SIZE } from './../map/tile'
 import { Jukebox } from '../jukebox/jukebox'
 import { Vehicle } from '../vehicle'
+import * as emoji from 'node-emoji'
 
 const DEFAULT_SKIN = 'Bob'
 
@@ -1036,15 +1037,16 @@ class Playground extends Scene {
       return
     }
 
-    const chatMessage = player.say(message, color || 'yellow', compact || false)
+    const formattedMessage = emoji.emojify(message)
+    const chatMessage = player.say(formattedMessage, color || 'yellow', compact || false)
 
     this.addEntity(chatMessage)
     this.uiLayer.addChild(chatMessage)
 
-    this.chat.addMessage(player.name, message)
+    this.chat.addMessage(player.name, formattedMessage)
 
     if (player.id !== this.player?.id) {
-      window.dispatchEvent(new CustomEvent('ui:player_message', { detail: { message } }))
+      window.dispatchEvent(new CustomEvent('ui:player_message', { detail: { formattedMessage } }))
     }
   }
 
